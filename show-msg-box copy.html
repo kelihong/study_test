@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .alertMsgBox {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: auto;
+            padding: 10px 30px;
+            line-height: 20px;
+            font-size: 14px;
+            border-radius: 10px;
+            background: #eee;
+            color: #666;
+            z-index: 7001;
+            opacity: 1;
+        }
+
+        .alertMsgBox.move {
+            transform: translate(-50%, -100%);
+
+            opacity: 0;
+            transition: opacity 2s, transform 2s;
+        }
+
+        .alertMsgBox.success {
+            background: #67c23a;
+            color: #fff;
+        }
+
+        .alertMsgBox.error {
+            background: #f56c6c;
+            color: #fff;
+        }
+
+        .alertMsgBox.warning {
+            background: #e6a23c;
+            color: #fff;
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <button>click</button>
+    <div class="alertMsgBox"></div>
+    <script src="./static/js/jquery.min.js"></script>
+    <script>
+        var a = 1
+        $('button').click(function () {
+            showMsgBox({
+                txt: '暂未开通' + a,
+            })
+            a++
+        })
+
+        /*
+            txt: '弹窗文本',
+            type: '弹窗类型，可选：默认（无， 灰色）， success: 成功（绿色）， warning:警告（橙色） ， error: 错误（红色）'
+        */
+        showMsgBox()
+        function showMsgBox(params) {
+            params = params || {}
+            clearTimeout(window.alertMsgBoxTimer)
+
+            var txt = params.txt || '通知~',
+                type = params.type || '',
+                duration = params.duration || 2500;
+
+            if ($('.alertMsgBox').length !== 0) {
+                $('.alertMsgBox').addClass('move')
+                setTimeout(() => {
+                    $('.alertMsgBox').remove()
+                }, 2000);
+            }
+            var alertMsgBox = $('<div class="alertMsgBox"></div>')
+            alertMsgBox.html(txt)
+            alertMsgBox.addClass(type)
+
+            $('body').append(alertMsgBox)
+
+            window.alertMsgBoxTimer = setTimeout(() => {
+                console.log(1)
+                if ($('.alertMsgBox').length !== 0) {
+                    $('.alertMsgBox').remove()
+                }
+            }, duration);
+            clearTimeout(window.alertMsgBoxTimer)
+
+        }
+
+    </script>
+</body>
+
+</html>

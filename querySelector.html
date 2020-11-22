@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="other">
+        <div class="child">222</div>
+    </div>
+    <div class="father">
+        <div class="child">111</div>
+    </div>
+
+    <script>
+
+        function qs(selector, element) {
+
+            // 如果指定父元素 element 那么就会获取 父元素下的child, 如果没有指定父元素， 就以整个文档的根元素为父元素
+            element = document.querySelector(element) || document
+
+            var a = element.querySelector(selector)
+            console.log(a)
+        }
+
+
+        qs('.child', '.father')   // 指定从father 中获取 child  输出： <div class="child">111</div>
+        sq('.child') // 没有指定父元素，则直接获取它看到的第一个 child 输出的是: <div class="child">222</div>
+        
+    </script>
+</body>
+
+</html>

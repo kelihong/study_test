@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+
+        canvas {
+            border: 1px solid grey;
+
+        }
+
+    </style>
+</head>
+
+<body>
+
+
+    <script>
+
+        imageList = ['/static/images/cup_bg.jpg', '/static/images/cup.png',]
+        canvasToImage({ cWidth: 600, cHeight: 600, scale: 0.3, imageList: imageList })
+        // canvasToImage({ cWidth: 600, cHeight: 600, scale: 0.83, imageList: imageList })
+        function canvasToImage({ cWidth = 600, cHeight = 600, scale = 1, imageList = [] } = {}) {
+            var canvas = document.createElement('canvas')
+
+            canvas.setAttribute('width', cWidth)
+            canvas.setAttribute('height', cHeight)
+            // let drawImgFun = null
+            let i = 0
+            // for (let i = 0; i < imageList.length; i++) {
+            async function drawImgFun() {
+                return drawImg({
+                    imgUrl: imageList[i],
+                    canvas: canvas,
+                    width: cWidth,
+                    height: cHeight,
+                })
+            }
+
+            console.log(drawImgFun())
+
+            // function test() {
+            //     await drawImgFun()
+            // }
+
+            // }
+            // drawImg({
+            //     imgUrl: imageList[0],
+            //     canvas: canvas,
+            //     width: cWidth,
+            //     height: cHeight,
+            // }).then(() => {
+            //     return drawImg({
+            //         imgUrl: imageList[1],
+            //         canvas: canvas,
+            //         width: cWidth,
+            //         height: cHeight,
+
+            //     })
+
+            // }).then(() => {
+            //     var url = canvasToImageUrl(canvas)
+            //     var img = new Image()
+            //     img.src = url
+            //     img.style.transform = 'scale(' + scale + ')'
+            //     document.body.appendChild(img)
+            // })
+
+            function canvasToImageUrl(canvas) {
+                var image = new Image();
+                urlData = canvas.toDataURL("image/png");
+                return urlData;
+            }
+
+
+            function drawImg({
+                imgUrl = '',
+                canvas = null,
+                x = 0,
+                y = 0,
+                width = undefined,
+                height = undefined
+            } = {}) {
+                return new Promise((resolve, reject) => {
+                    var img = new Image()
+                    img.src = imgUrl
+                    img.onload = function () {
+                        var ctx = canvas.getContext('2d')
+                        if (width && height) {
+                            ctx.drawImage(img, x, y, width, height)
+
+                        } else {
+                            ctx.drawImage(img, x, y)
+                        }
+                        resolve(canvas)
+                    }
+                    img.onerror = (e) => {
+                        reject(e)
+                    }
+
+                })
+            }
+
+        }
+
+
+
+    </script>
+</body>
+
+</html>

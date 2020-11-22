@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>递归</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        li {
+            list-style: none;
+        }
+
+        .box {
+            background: peachpuff;
+            width: 300px;
+            height: 300px;
+        }
+
+        .list {
+            padding-left: 10px;
+        }
+
+        .list-item::before {
+            content: '>';
+        }
+
+    </style>
+</head>
+
+<body>
+    <div id="box" class="box">afds</div>
+    <script src="/static/js/jquery.min.js"></script>
+    <script>
+        var list = [
+            {
+                id: 1,
+                list: [
+                    {
+                        id: 211,
+                        list: [
+                            {
+                                id: 31,
+                                list: [
+                                    {
+                                        id: 41,
+                                    },
+                                    {
+                                        id: 42,
+                                        list: [
+                                            {
+                                                id: 51,
+                                                list: [
+                                                    {
+                                                        id: 61
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                id: 32
+                            },
+                        ]
+                    },
+                    {
+                        id: 212,
+                        list: [
+                            {
+                                id: 331
+                            },
+                            {
+                                id: 332
+                            },
+                        ]
+                    },
+                ]
+            },
+            {
+                id: 2,
+                list: [
+                    {
+                        id: 221,
+                        list: [
+                            {
+                                id: 321
+                            },
+                            {
+                                id: 322
+                            },
+                        ]
+                    }
+                ]
+            }
+        ]
+
+        createMenu(list, $('#box'))
+        function createMenu(list, node) {
+            var frag = document.createDocumentFragment();
+
+            function setMenuList(list, frag) {
+
+                var elWrap
+
+                for (var i = 0; i < list.length; i++) {
+                    elWrap = $('<ul class="list"></ul>')
+                    li = $('<li class="list-item"></li>')
+                    li.html(list[i].id)
+
+
+                    frag.append(elWrap[0])
+
+                    elWrap.append(li)
+
+                    if (list[i].list) {
+                        let element = setMenuList(list[i].list, elWrap)
+                        elWrap.append(element)
+                    }
+                }
+                return elWrap
+            }
+
+            node.append(frag)
+
+            setMenuList(list, frag)
+        }
+
+
+
+
+
+    </script>
+</body>
+
+</html>

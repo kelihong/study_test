@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <base target="_blank">
+    <title>属于我的第一个网页【笔记向】</title>
+    <style>
+        body{
+            text-align: center;
+        }
+      
+    </style>
+</head>
+<body>
+    <h1>今天开始学习代码~</h1>
+    无论如何，让我试试吧！秃了就秃了吧！<br />
+    让我试试什么是换行。
+    <hr width="520" color="red" />
+    <!-- 横线 宽度520 颜色红色 -->
+    <!-- ctrl+/等于注释 -->
+    <H2>目录：</H2>
+    <ul>
+        <li><a href="#yi">一、标签属性：</a></li>
+        <!-- 无序列表 开始 标签链接 跳转目标 #代号 名称 完结 无序列表 -->
+        <li><a href="#er">二、链接标签：</a></li>
+        <li><a href="#san">三、锚点定位：</a></li>
+        <li><a href="#si">四、base标签：</a></li>
+        <li><a href="#wu">五、特殊字符：</li>
+        <li><a href="#liu">六、注释标签：</li>
+        <li><a href="#qi">七、路径（难点）：</a></li>
+        <li><a href="#ba">八、列表标签：</a></li>
+        <li>待定</li>
+        <li>待定</li>
+        <li>待定</li>
+        .....
+    </ul>
+        <xmp>标准语法：<li><a href="#代码">N、分类名：</a></li></xmp>
+    <hr width="520" color="red" />
+    <H3 id="yi">一、标签属性：</H3>
+    1.标签可以拥有多个属性，必须写在开始标签中，位于标签名后面。<br />
+    2.属性之间不分先后顺序，属性名与属性之间均以空格分开。<br />
+    3.任何标签的属性都有默认值，省略该属性则取默认值<br />
+    <h4>标签类型</h4>
+    img 标记属性<br>
+    src 图像的路径<br />
+    alt 图像不能显示时的替代文本<br />
+    title 鼠标悬停时显示的文本<br />
+    width 设置图像的宽度<br />
+    height 设置图像的高度<br /> 
+    border 设置图像边框的宽度   <br /> 
+    <br>
+    标准语法：<xmp><img src="图片链接" width="宽度" alt="未刷新展示文本" title="悬停显示文本" border="边框宽度"/></xmp>
+    <hr width="520" color="red" />
+    1.基本图片插入方式<br />
+    <img src="柯宝宝.jpg" width="120"/><br>
+    <xmp>标准语法：<img src="柯宝宝.jpg" width="120"/></xmp>
+    <!-- 图片 图像的路径 名称 宽度120 -->
+    2.带有altd【图像不能显示时代替的文本】的图像<br />
+    <img src="柯宝宝1.jpg" width="120" alt="这是柯宝宝的大头贴"/><br />
+    <xmp>标准语法：<img src="柯宝宝1.jpg" width="120" alt="这是柯宝宝的大头贴"/></xmp>
+    <!-- 图片 图像的路径 名称 宽度120 图像不能显示时代替的文本 -->
+    3.带有title【鼠标悬停时显示的文本】的图像<br />
+    <img src="柯宝宝.jpg" width="120" title="这是我家宝贝的图片" border="10"/> 
+    <xmp>标准语法：<img src="柯宝宝.jpg" width="120" title="这是我家宝贝的图片" border="10"/></xmp>
+    <!-- 图片 图像的路径 名称 宽度120 鼠标悬停时显示的文本 边框10-->
+    <hr width="520" color="red" />
+    <H3 id="er">二、链接标签：</H3>
+    单词缩写，anchord的缩写。创建十分简单，用标签环绕需要被链接的对象即可。<br>
+    <h3>小可爱家的链接：</h3>
+    <a href="http://kbbnice.com" target="_blank">甜蜜的家</a>
+    <!-- 链接标签 跳转目标 点击后弹窗显示 网页中显示的网址名称 注意：记得符号成对 -->
+    <a href="./柯宝宝.jpg">试试呗 </a>
+    <!-- 链接标签 +（/根目录）或者(./当前文件夹)、（../上一级文件夹）可直接导内部链接 -->
+    <a href="#">我的作品地址</a>
+    <!-- 临时地址，#号代替，待有链接了再补录，网页中点击只会原地踏步 -->
+    <hr width="520" color="red" />
+    <H3 id="san">三、锚点定位：</H3>
+    目录处标准语法：<xmp><a href="#代码">跳转目标地：</a><br></xmp>
+    <!-- xmp 标签之间不会被当做文档内容解析，而是以会被当做文本展现 -->
+    目的地标准语法：<xmp><H3 id="代码">跳转目的地：</H3></xmp>
+    <hr width="520" color="red" />
+    <H3 id="si">四、base标签：</H3>
+    让页面中所有的链接都是以新窗口的方式打开，非常的便捷。<br>
+    <br>
+    新窗口标准语法：<xmp><base target="_blank"></xmp><br>
+    该语法植入于head内的title上方<br>
+    本窗口打开语法：<xmp><a href="链接" target="_self"></xmp><br>
+    <h3>小笔记</h3>
+    常见的单标签：<xmp><img>图像 <br>换行 <hr>横线 <base>base标签</xmp><br>
+    <hr width="520" color="red" />
+    <H3 id="wu">五、特殊字符：</H3>
+    html为这些特殊字符准备了专门的替代代码。<br>
+    <xmp>空格 空格符 &nbsp;</xmp>
+    <xmp>< 小于号 &lt;</xmp>
+    <xmp>> 大于号 &gt;</xmp>
+    <xmp>& 和号 &amp;</xmp>
+    <xmp>￥ 人民币 &yen;</xmp>
+    <xmp>© 版权 &copy;</xmp>
+    <xmp>® 注册商标 &reg;</xmp>
+    <xmp>° 摄氏度 &deg; </xmp>
+    <xmp>± 正负号 &plusmn;</xmp>
+    <xmp>× 乘号 &times;</xmp>
+    <xmp>÷ 除号 &divide;</xmp>
+    <xmp>² 平方2 &sup2;</xmp>
+    <xmp>³ 立方3 &sup3;</xmp>
+    让我来尝试一下吧~ &lt; &nbsp; &gt; &amp; &yen; &copy; &reg; &deg; &plusmn; &times; &divide; &sup2; &sup3;
+    <hr width="520" color="red" />
+    <H3 id="liu">六、注释标签：</H3>
+    1.多写注释是非常好的写代码习惯，团队协作更顺畅。<br>
+    2.注释是写给队友看的，浏览器是不执行的。<br>
+    <!-- 没想到吧，我早就开始使用注释功能了，嘿嘿嘿嘿~ -->
+    <xmp>标准语法：<!--  --></xmp><br>
+    <hr width="520" color="red" />
+    <h3 id="qi">七、路径（难点）：</h3>
+    相对路径：相对于html文件本身而言的路径。<br>
+    <br>
+    <img src="./恶狼.jpg" alt="试炼代码" width="299"><br>
+    <xmp>同文件夹：<img src="./恶狼.jpg" alt="试炼代码" width="299"></xmp><br>
+    <img src="../恶狼.jpg" alt="试炼代码" width="299">
+    <xmp>上一级文件夹：<img src="../恶狼.jpg" alt="试炼代码" width="299"></xmp><br>
+    <img src="images/恶狼.jpg" alt="试炼代码" width="299"><br>
+    <xmp>下一级文件夹：<img src="images/恶狼.jpg" alt="试炼代码" width="299"></xmp><br>
+    <xmp>/等同于下一级的意思 如果是上两级则重复输入../</xmp>
+    绝对路径：相对于电脑本身，文件所在的具体路径。<br>
+    <br>
+    <img src="E:\第一层\第二层\第三层\恶狼.jpg" alt="试炼代码" width="299">
+    <xmp>本地文件夹：<img src="E:\第一层\第二层\第三层\恶狼.jpg" alt="试炼代码" width="299"></xmp><br>
+    <img src="http://192.2.2.16/images/external/login-h2.png" alt="试炼代码" width="299">
+    <xmp>网上图片地址：<img src="http://192.2.2.16/images/external/login-h2.png" alt="试炼代码" width="299"></xmp>
+    <!-- 链接标签 +（/根目录）或者(./当前文件夹)、（../上一级文件夹）可直接导内部链接 -->
+    <hr width="520" color="red" />
+    <h3 id="ba">八、列表标签：</h3>
+    把....制成表，以表显示，<br>
+    容器里面装载着文字或图表的一种形式，叫列表。<br>
+    列表最大的特点就是： 整齐 、 整洁 、 有序 。<br>
+    <h3>1.无序列表 ul (重点)</h3>
+    简单说，无序列表就是将无（指定）顺序的文本，整齐的排列起来。<br>
+    <xmp>标准语法：</xmp>
+    <xmp><h3>标题</h3></xmp>
+    <xmp><ul></xmp>
+        <xmp><li>列表项1</li></xmp>
+        <xmp><li>列表项2</li></xmp>
+        <xmp><li>列表项3</li></xmp>
+        <xmp>.....</xmp>
+    <xmp></ul></xmp>
+    <h3>2.有序列表 ol (了解)</h3>
+    简单说，有序列表就是将有（指定/数据高低）顺序的文本，整齐的排列起来。<br>
+    <h3>3.自定义列表（理解）</h3>
+
+    <hr width="520" color="red" />
+    <h3>具体字母在代码中含义的注释：</h3>
+    &lt;html&gt;&lt;/html&gt;:代码整体
+    <xmp><head></head>:核心部分设定（如：meta、base、style、script、link等）</xmp>
+    <xmp><title></title>：网页标题</xmp>
+    &lt;body&gt;&lt;/body&gt;：代码主体编辑(如：p、h、a、b、u、i、s、em、del、ins、strong、img等)
+    <xmp></xmp>
+    <xmp></xmp>
+
+
+
+
+
+</body>
+</html>

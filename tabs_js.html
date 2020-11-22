@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        li {
+            list-style: none;
+        }
+
+        .tab-wrap {
+            width: 800px;
+            border: 1px solid rgb(97, 97, 97);
+            margin: 10px auto;
+        }
+
+        .tab {
+            width: 100%;
+            background: #eee;
+        }
+
+        .tab li {
+            float: left;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+
+        .tab li.active {
+            background: #fff;
+        }
+
+        .tab::after {
+            content: ' ';
+            display: block;
+            clear: both;
+        }
+
+        .tab-body {
+            position: relative;
+            margin: 10px;
+        }
+
+        .tab-body li {
+            position: relative;
+
+            display: none;
+        }
+
+        .tab-body li.active {
+            display: block;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="tab-wrap">
+        <ul class="tab">
+            <li class="active">菜单1</li>
+            <li>菜单2</li>
+            <li>菜单3</li>
+        </ul>
+
+        <ul class="tab-body">
+            <li class="active">内容1</li>
+            <li>内容2</li>
+            <li>内容3</li>
+        </ul>
+    </div>
+
+    <script>
+
+        // 选项卡列表：
+        var menuList = document.getElementsByClassName('tab')[0].getElementsByTagName('li')
+
+        // 选项卡详情：
+        var menuBodyList = document.getElementsByClassName('tab-body')[0].getElementsByTagName('li')
+
+        //    获取点击的索引值
+        for (var i = 0; i < menuList.length; i++) {
+
+            menuList[i].index = i
+            menuList[i].onclick = function () {
+                // console.log(this.index)
+
+                // 获取当前点击元素的index 
+                var index = this.index
+
+                /*
+                * 思路： 
+                * 切换 ul 下 中对应下标 li 元素为可见：其余 li 为不可见。（步骤：）
+                * 1. 取消所有元素的 active 类
+                * 2. 给当前应该显示的元素 添加 active 类
+                */
+
+                // 去掉所有导航tab 选项卡的 active 类
+                for (var k = 0; k < menuList.length; k++) {
+                    menuList[k].classList.remove('active')
+                }
+
+                // 给当前点击的选项卡 添加 active 标签：
+                menuList[index].classList.add('active')
+
+                // 去掉所有导航tab-body 选项卡详情 li 的 active 类
+                for (var j = 0; j < menuBodyList.length; j++) {
+                    menuBodyList[j].classList.remove('active')
+                }
+
+                // 给当前应该显示的选项卡 添加 active 标签：
+                menuBodyList[index].classList.add('active')
+            }
+        }
+    </script>
+</body>
+
+</html>

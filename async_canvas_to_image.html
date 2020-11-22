@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <script>
+
+        var i = 0;
+        var testTimer = null
+        function ajax() {
+            clearTimeout(testTimer)
+            testTimer = setTimeout(() => {
+
+                console.log(i += 1)
+                if (i < 4) {
+                    
+                    ajax()
+                } else {
+                    clearTimeout(testTimer)
+                    console.log(testTimer)
+                }
+            }, 1000);
+        }
+
+        ajax()
+
+        
+
+
+    </script>
+</body>
+
+</html>

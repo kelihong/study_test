@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>动画</title>
+
+    <style>
+        div {
+            position: relative;
+            top: 0;
+            left: 0;
+
+        }
+
+        div.moved {
+            animation: moveDiv 2000ms infinite;
+        }
+
+        @keyframes moveDiv {
+            0% {
+                top: 0;
+                left: 0;
+            }
+
+            50% {
+                left: 200px;
+            }
+
+            100% {
+                left: 0;
+            }
+
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <div>测试</div>
+    <div class="moved">测试</div>
+</body>
+
+</html>

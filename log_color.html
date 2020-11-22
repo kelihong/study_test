@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>console.log</title>
+</head>
+
+<body>
+    <script>
+        log('sdfad', 2, 'sss')
+        function log() {
+
+            var myarg = arguments
+
+            // 生成随机数
+            function randomNum(max, min) {
+                max = max + 0.1 || 1
+                min = min || 0
+                return Math.floor(Math.random() * (max - min)) + min
+            }
+
+            // 生成随机颜色
+            function randomColor() {
+                let r = randomNum(255)
+                let g = randomNum(255)
+                let b = randomNum(255)
+                return 'rgb(' + r + ',' + g + ',' + b + ')'
+            }
+
+            log = (function (oriLogFun) {
+                return function () {
+                    const styles = [
+                        'color:' + randomColor(),
+                        'background:#eee',
+                        'font-size:12px',
+                        'padding:2px',
+                    ].join(';');    // 生成样式字符串
+                    try {
+                        oriLogFun.call(console, '%c%s', styles, ...arguments)
+                    } catch (e) {
+                        console.error('console.log error', e)
+                    }
+                }
+            })(console.log)
+
+            log(...myarg)
+        }
+
+
+
+    </script>
+</body>
+
+</html>

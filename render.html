@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <script src="/static/js/jquery.min.js"></script>
+
+    <script>
+
+    </script>
+
+    <script>
+
+        (function (global) {
+
+            var version = '1.0.0';
+
+            var kbb = function (selector) {
+
+                if (!selector) {
+                    selector = document.body
+                }
+
+                return selector
+            }
+
+            kbb.extends = {
+                per: 11
+            }
+
+
+            kbb.prototype = {
+
+                version: version,
+
+                append: function (elNode) {
+
+                    console.log(this)
+
+                    console.log(elNode)
+
+                }
+
+
+            }
+
+
+            window.kbb = new kbb();
+
+
+
+
+
+
+
+
+        })(window)
+
+
+
+        console.log(kbb.version)
+
+        kbb.append(111)
+
+
+
+    </script>
+</body>
+
+</html>

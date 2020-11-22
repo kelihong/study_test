@@ -1,0 +1,30 @@
+<html>
+<head>
+    <title></title>
+    <script type="text/javascript" defer="defer">
+        function setSelectText(el, start, end) {
+            var range = document.body.createTextRange();
+            range.collapse();
+            range.moveToElementText(el)
+            range.moveEnd('character', end);
+            range.moveStart('character', start);
+            range.select();
+        }
+
+
+    </script>
+</head>
+<body style="position: relative;">
+    <div id="pinYinBlocks">
+        <p>
+            <span id="start"></span>一难曰∶十二经皆有动脉，独取寸口，以决五脏六腑死生吉凶之法，何谓也？然∶寸口者，脉之大会，手太阴之脉动也。
+        </p>
+        <p>
+            人一呼，脉行三寸，一吸脉行三寸，呼吸定息，脉行六寸。人一日一夜，凡一万三千五百息，脉行五十度，周于身。漏水下百刻，荣卫行阳二十五度，行阴亦二十五度，为一周也。故五十度复会于手太阴。寸口者，五脏六腑之所终始，故法取于寸口也。
+        </p>
+    </div>
+    <input id="Text1" type="text" />
+    <input id="Text2" type="text" />
+    <input id="Button1" type="button" value="button" onclick="setSelectText(document.getElementById('start'),document.getElementById('Text1').value,document.getElementById('Text2').value)" />
+</body>
+</html>

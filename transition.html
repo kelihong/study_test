@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        div {
+            position: relative;
+            left: 0;
+            transition: left 1000ms;
+        }
+
+        div.moved {
+            left: 100px;
+            transition: left 1000ms;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div id="box">测试</div>
+    <button id="btn">点击</button>
+    <script>
+
+        var div = document.getElementById("box");
+        var btn = document.getElementById("btn");
+
+        btn.onclick = function () {
+            if (div.classList.contains('moved')) {
+                div.classList.remove('moved')
+            } else {
+                div.classList.add('moved')
+            }
+        }
+    </script>
+
+</body>
+
+</html>

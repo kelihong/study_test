@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        function fetchData() {
+            return new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    var data = { data: 1 }
+                    resolve(data)
+
+                }, 1000);
+            })
+        }
+
+        function setProduct() {
+            var str = ''
+            fetchData().then(res => {
+              return  str += res.data
+            }).then(res => {
+                console.log(res)
+            }) 
+           
+
+        }
+
+     (setProduct()
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>自定选择框</title>
+    <link rel="stylesheet" href="./static/css/index.css">
+
+    <style>
+        .filter-box .sort-box {
+            display: inline-block;
+            width: 120px;
+        }
+
+        .filter-box .sort-box:hover .sort-list {
+            display: block;
+        }
+
+        .filter-box .sort-box .sort-list {
+            display: none;
+        }
+
+        .filter-box  .sort-box .sort-txt,
+        .filter-box .sort-box .sort-list {
+            border: 1px solid grey;
+            border-radius: 5px;
+            text-align: center;
+            line-height: 24px;
+        }
+        .filter-box  .sort-box .sort-txt {
+            border-bottom-left-radius: unset;
+            border-bottom-right-radius: unset;
+        }
+        .filter-box  .sort-box .sort-list {
+            border-top-left-radius: unset;
+            border-top-right-radius: unset;
+            border-top: unset;
+        }
+       
+
+        .filter-box  .sort-box .sort-list .sort-item:not(:last-child) {
+            border-bottom: 1px solid grey;
+            padding: 0 10px;
+
+        }
+
+        .filter-box  .sort-box .sort-list .sort-item {
+            cursor: pointer;
+        }
+
+        .filter-box  .sort-box .sort-list .sort-item:hover {
+            color: #fdaf48;
+        }
+        .sort-box .sort-list .sort-item {}
+        .sort-box .sort-list .sort-item {}
+        .sort-box .sort-list .sort-item {}
+        .sort-box .sort-list .sort-item {}
+        .sort-box .sort-list .sort-item {}
+        .sort-box .sort-list .sort-item {}
+
+    </style>
+</head>
+
+<body>
+
+    <div class="sort-box">
+        <p class="sort-txt">默认排序</p>
+        <div class="sort-list">
+            <div class="sort-item">默认排序</div>
+            <div class="sort-item">价格从高到低</div>
+            <div class="sort-item">价格从低到高</div>
+            <div class="sort-item">销量从高到低</div>
+            <div class="sort-item">销量从低到高</div>
+
+        </div>
+    </div>
+</body>
+
+</html>

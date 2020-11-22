@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>圆角星星</title>
+</head>
+
+<body>
+    <canvas id="tutorial" width="800" height="800"></canvas>
+    <script>
+        setStar({
+            color: '#ffeeee',
+            x: 100,
+            y: 200,
+            R: 180,
+            r: 60,
+            rot: 0
+        })
+        function setStar(param) {
+            var color = param.color
+            // （x，y）起点坐标，R 大圆半径， r小圆半径， rot起始旋转角度
+            var x = param.x || 100,
+                y = param.y || 200,
+                R = param.R || 180,
+                r = param.r || 60,
+                rot = param.rot || 0
+            var canvas = document.getElementById('tutorial');
+            var ctx = canvas.getContext("2d");
+            ctx.lineWidth = 6;
+            ctx.strokeStyle = color || "#FF0000";
+            ctx.fillStyle = color || "#FF0000";
+
+
+
+            function drawStar(cxt, R, r, x, y, rot) {
+                cxt.beginPath();
+
+                // 画5个圆弧
+                for (var i = 0; i < 5; i++) {
+                    // 拉伸点 P1(x1, y1)
+                    var x1 = Math.cos((18 + 72 * i - rot) / 180 * Math.PI) * R + x;
+                    var y1 = -Math.sin((18 + 72 * i - rot) / 180 * Math.PI) * R + y;
+
+                    // 起点坐标 P0(x2, y2)
+                    var x2 = Math.cos((54 + 72 * i - rot) / 180 * Math.PI) * r + x;
+                    var y2 = -Math.sin((54 + 72 * i - rot) / 180 * Math.PI) * r + y;
+
+                    // 终点坐标 P2(x3, y3)
+                    var x3 = Math.cos((54 + 72 * (i - 1) - rot) / 180 * Math.PI) * r + x;
+                    var y3 = -Math.sin((54 + 72 * (i - 1) - rot) / 180 * Math.PI) * r + y;
+                    ctx.moveTo(x2, y2);
+                    ctx.quadraticCurveTo(x1, y1, x3, y3);
+                }
+
+                // 画五边形
+                for (var i = 0; i < 5; i++) {
+                    var x1 = Math.cos((54 + 72 * (i - 1) - rot) / 180 * Math.PI) * r + x;;
+                    var y1 = -Math.sin((54 + 72 * (i - 1) - rot) / 180 * Math.PI) * r + y;
+                    ctx.lineTo(x1, y1);
+                }
+
+                ctx.fill();
+                cxt.stroke();
+            }
+            drawStar(ctx, R, r, x, y, rot)
+        }
+    </script>
+</body>
+
+</html>

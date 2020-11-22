@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>设置 console.log 颜色</title>
+</head>
+
+<body>
+    <script>
+
+        log = function () {
+
+            // 生成随机数
+            function randomNum(max, min) {
+                max = max + 0.1 || 1
+                min = min || 0
+                return Math.floor(Math.random() * (max - min)) + min
+            }
+
+            // 生成随机颜色
+            function randomColor() {
+                let r = randomNum(255)
+                let g = randomNum(255)
+                let b = randomNum(255)
+                return 'rgb(' + r + ',' + g + ',' + b + ')'
+            }
+
+            function randomStyle() {
+                return `
+                color: ${randomColor()};
+                background: #efefef;
+            `
+            }
+
+            for (let i = 0; i < arguments.length; i++) {
+                if ((typeof arguments[i] === 'string') || (typeof arguments[i] === 'number') || (typeof arguments[i] === 'boolean')) {
+                    if (arguments.length > 1 && i === 0) {
+                        console.log('%c' + arguments[i] + '============>', randomStyle())
+                    } else {
+
+                        console.log('%c' + arguments[i], randomStyle())
+                    }
+                } else {
+                    console.log(arguments[i])
+                }
+            }
+        }
+
+        // log(window)
+
+
+        test(this)
+        function test() {
+            console.log(arguments[0])
+        }
+
+
+    </script>
+</body>
+
+</html>

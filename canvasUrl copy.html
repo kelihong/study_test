@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script type="text/javascript" src="https://cdn.polyfill.io/v2/polyfill.min.js?features=es6"></script>
+    <style>
+        .box {
+            /* width: 400px; */
+
+            height: 400px;
+            text-align: center;
+            padding: 10px;
+        }
+
+        canvas {
+            border: 1px solid grey;
+        }
+
+        .img {
+            height: 400px;
+            background-color: blanchedalmond;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="img box">
+        <img src="" id="showImg" alt="">
+    </div>
+    <div id="box1" class="box">
+
+    </div>
+
+    <script>
+
+        var box1 = document.getElementById('box1')
+        var canvas = document.createElement('canvas')
+        var imgUrl = 'http://www.dividiy.com/front/divi/raws/base/20201015/42d1fa1519d1435b8c2e388c8e1f2a98.jpg'
+        var imgUrl2 = '/static/images/cup.png'
+        var imgUrlList = [
+
+
+            'http://www.dividiy.com/front/divi/raws/base/20201015/42d1fa1519d1435b8c2e388c8e1f2a98.jpg',
+            '/static/images/cup.png',
+            '/static/images/snow.png',
+            '/static/images/snow2.png',
+        ]
+        setCanvasImage({
+            canvas: canvas,
+            parent: box1,
+            params: {
+                cx: 10,
+                cy: 20,
+                cw: 400,
+                ch: 400,
+            },
+            callback: function (canvas) {
+
+                drawImage(canvas, imgUrl)
+                drawImage(canvas, imgUrl2)
+
+            }
+        })
+
+        // 小小封装
+        function setCanvasImage({ canvas, parent, params, callback } = {
+            parent: document.body,
+            params: {
+                id: '',
+                cw: 300,
+                ch: 150,
+
+            },
+            callback: function () { }
+        }) {
+
+            if (!canvas) {
+                return console.log('没有指定 canvas 元素')
+            }
+            params.id && (canvas.id = params.id)
+
+            canvas.setAttribute('width', params.cw)
+            canvas.setAttribute('height', params.ch)
+
+            if (canvas.getContext) {
+
+
+                callback(canvas)
+
+            } else {
+                console.log('暂不支持 canvas 操作！')
+            }
+
+
+
+
+            parent.appendChild(canvas)
+        }
+
+        // canvas 转 图片
+        function convertCanvasToImage(canvas, type) {
+
+            if (!type) { type = 'png' }
+
+            if (!canvas.tagName || canvas.tagName.toLowerCase() !== 'canvas') {
+                return console.log('非canvas')
+            }
+
+            var url = canvas.toDataURL('image/' + type)
+            return url
+
+        }
+
+        // 绘制图片
+        function drawImage(canvas, imgUrl, params) {
+
+            var ctx = canvas.getContext('2d')
+            // canvas 宽度
+            var cw = parseFloat(canvas.getAttribute('width'))
+            var ch = parseFloat(canvas.getAttribute('height'))
+
+            var img = new Image()
+            img.src = imgUrl
+
+            // 图片跨域问题
+            img.crossOrigin = 'Anonymous'
+
+            // 图片加载后：
+            return new Promise((resolve, reject) => {
+                img.onload = function () {
+
+                    var imgW = img.width
+                    var imgH = img.height
+
+                    // 图片宽高比
+                    var whRatio = imgW / imgH
+
+                    // 渲染图片
+                    ctx.drawImage(img, 0, 0, ch * whRatio, ch)
+
+                        resolve(canvas)
+                 
+
+                }
+                img.onerror = function (error) { 
+                    reject(error)
+                }
+            })
+
+        }
+        test(canvas)
+        async function test(canvas) {
+            for (let i = 0; i < 4; i++) {
+
+
+                await drawImage(canvas, imgUrlList[i])
+
+            }
+        }
+
+
+
+
+    </script>
+</body>
+
+</html>

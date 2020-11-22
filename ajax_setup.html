@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <script src="/static/js/jquery.min.js"></script>
+
+    <script>
+
+        // 测试添加 cookie: 
+        setCookie('sessionId', 'asdfasdfsdafafasdfs')
+
+
+        $(function () {
+
+            // 请求默认配置
+            $.ajaxSetup({
+                data: {
+                    sessionId: getCookie('sessionId')  // 每个请求都自带 cookie
+                },
+                beforeSend: function(){
+                    console.log(this)
+                }
+            })
+
+            $.ajax({
+                type: 'get',
+                url: '/',
+                data: {
+                    test: 111
+                },
+                success: function (res) {
+                    console.log(res)
+                }
+            })
+        })
+
+
+
+        // 设置 cookie 
+        /**
+         * 设置cookie
+         * @param {String} cname cookie 名
+         * @param {*} cvalue cookie 值
+         * @param {*} exdays 有效天数
+         */
+        function setCookie(cname, cvalue, exdays) {
+
+            // 设置过期时间：
+            let date = new Date();
+            date.setTime(date.getTime() + (exdays * 24 * 60 * 60 * 1000))
+            let expires = "expires=" + date.toGMTString()
+
+            // 设置cookie
+            document.cookie = cname + '=' + cvalue + ';' + expires
+
+        }
+
+
+        function removeCookie(key) {
+            setCookie(key, '')
+        }
+
+        // 获取 cookie
+        /**
+         * 
+         * @param {String} cname cookie 名
+         */
+        function getCookie(cname) {
+
+            let name = cname + '='
+            let carray = document.cookie.split(';')
+
+            for (let i = 0; i < carray.length; i++) {
+
+                let citem = carray[i].trim() // 注意去空格
+                if (citem.indexOf(name) == 0) {
+                    return citem.substring(name.length, citem.length)
+                }
+            }
+            return ''
+        }
+    </script>
+</body>
+
+</html>

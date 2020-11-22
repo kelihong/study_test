@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .labelname {
+            display: inline-block;
+            width: 80px;
+            text-align: right;
+        }
+
+        .upload-item {
+            padding: 10px;
+        }
+
+        .upload-item.center {
+            margin-left: 100px;
+        }
+
+        .upload-item button {
+            width: 100px;
+            height: 30px;
+            line-height: 30px;
+
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="upload-item">
+        <label for="fileName">
+            <span class="labelname">文件名：</span>
+            <input type="text" id="fileName">
+        </label>
+
+    </div>
+
+    <div class="upload-item">
+        <label for="fileinput">
+            <span class="labelname">文件上传：</span>
+            <input id="fileinput" type="file">
+        </label>
+    </div>
+
+    <div class="upload-item center">
+        <button id="submit">提交</button>
+    </div>
+    <script src="/static/js/jquery.min.js"></script>
+    <script src="/static/js/crypto-js.min.js"></script>
+    <script>
+
+        let fileConfig = {
+            fileName: '',
+            fileData: '',
+            fileType: ''
+        }
+
+        // 上传文件
+        function uploadFile(callback) {
+            var fileinput = document.getElementById('fileinput')
+            fileinput.onchange = function () {
+                let fileNameArr = this.files[0].name.split('.')
+                fileConfig.fileType = fileNameArr[fileNameArr.length - 1] || ''
+
+                let resultFile = this.files[0]
+                let reader = new FileReader()
+
+                reader.readAsDataURL(resultFile)
+
+                reader.onload = function (e) {
+                    fileConfig.fileData = e.target.result
+
+                    callback(fileConfig)
+                }
+
+            }
+        }
+        uploadFile(function ({ fileData, fileType, fileName } = { ...fileConfig }) {
+            console.log('文件加载成功！')
+        })
+
+
+        // 点击按钮
+        let submit = document.getElementById('submit')
+
+        submit.onclick = function ({ fileData, fileType, fileName } = { ...fileConfig }) {
+
+            fileConfig.fileName = document.getElementById('fileName').value.trim()
+
+            for (let key in fileConfig) {
+                if (fileConfig[key] == '') {
+                    return console.log('选项不能为空')
+                }
+            }
+            fetchAjax({ ...fileConfig })
+
+        }
+
+
+        // 发起ajax 请求
+        function fetchAjax({ fileData, fileType, fileName } = {}) {
+
+            $.ajax({
+                type: 'post',
+                url: 'http://localhost:1314/saveFile',
+                data: {
+                    fileData,
+                    fileType,
+                    fileName,
+                },
+                success: function (res) {
+                    console.log(res)
+                    if (res.status !== 200) {
+                        console.log(res.msg)
+                    } else {
+                        console.log('上传成功！')
+                    }
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            })
+        }
+
+    </script>
+</body>
+
+</html>

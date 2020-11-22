@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>设置 console.log 颜色</title>
+</head>
+
+<body>
+    <script>
+
+        // 生成随机数
+        function randomNum(max, min) {
+            max = max + 0.1 || 1
+            min = min || 0
+            return Math.floor(Math.random() * (max - min)) + min
+        }
+
+        // 生成随机颜色
+        function randomColor() {
+            let r = randomNum(255)
+            let g = randomNum(255)
+            let b = randomNum(255)
+            return 'rgb(' + r + ',' + g + ',' + b + ')'
+        }
+
+        console.log = (function (oriLogFun) {
+            var argLog = arguments[0]
+            var simpleStr = true
+            argLog = function () {
+                console.log(arguments)
+                for (let i = 0; i < arguments.length; i++) {
+                    console.log(arguments[i])
+                    if ((typeof arguments[i] !== 'string') && (typeof arguments[i] !== 'number') && (typeof arguments[i] !== 'boolean')) {
+                        simpleStr = false
+                        // break
+                    }
+                }
+            }
+            if (simpleStr) {
+                return function () {
+                    const styles = [
+                        'color:' + randomColor(),
+                        'background:#eee',
+                        'font-size:12px',
+                        'padding:2px',
+                    ].join(';');    // 生成样式字符串
+                    try {
+                        oriLogFun.call(console, '%c%s', styles, ...arguments)
+                    } catch (e) {
+                        console.error('console.log error', e)
+                    }
+                }
+            } else {
+                return function () {
+                    try {
+                        oriLogFun.call(console, ...arguments)
+                    } catch (e) {
+                        console.error('console.log error', e)
+                    }
+                }
+            }
+        })(console.log)
+
+
+        console.log(11,'xxxx', 11, { a: 1 }, 2333, 'xxx', 'xxx','xxx', true)
+
+
+    </script>
+</body>
+
+</html>

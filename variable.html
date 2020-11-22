@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+
+    <style>
+        button {
+            width: 80px;
+            height: 80px;
+            line-height: 80px;
+            text-align: center;
+            vertical-align: top;
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <button id="btn1"></button>
+    <button id="btn2"></button>
+    <script>
+
+        test(document.getElementById('btn1'))
+        test(document.getElementById('btn2'))
+
+        function test(el) {
+            var i = 0;
+            el.onclick = function () {
+                i++;
+                el.innerHTML = i
+            }
+        }
+    </script>
+</body>
+
+</html>

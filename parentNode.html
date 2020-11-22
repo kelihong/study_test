@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        /* * {
+            position: relative;
+        } */
+
+        .code-copy-area {
+            position: absolute;
+            top: 0;
+            left: 0;
+            resize: none;
+        }
+
+        .alert-box {
+            position: fixed;
+            z-index: 999999;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.63);
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 10px;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="grand">
+        <div class="father">
+            <div class="father">
+                <div class="father11">
+                    <div class="father">
+                        <div class="father">
+                            <div class="father">
+                                <div class="test">
+                                    wafsdafd
+                                </div>
+                                <div class="child">
+                                    是打发斯蒂芬
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <button id="btn">按钮</button>
+
+    <script>
+        el = document.getElementsByClassName('father')[0]
+
+        console.log(window.getComputedStyle(el).position)
+
+        document.getElementById('btn').onclick = function copy() {
+            var child = document.getElementsByClassName('child')[0]
+
+            var parent = child.parentNode
+            while (parent) {
+
+
+                if (parent.classList.contains('father11')) {
+                    // parent.setAttribute('contenteditable', true)
+                    copyText(parent)
+
+
+                    break
+                } else {
+                    parent = parent.parentNode
+                }
+
+            }
+
+        }
+
+        function copyText(el) {
+
+            // 添加 position:
+            if (window.getComputedStyle(el).position === 'static') {
+                el.style.position = 'relative'
+            }
+
+            // 创建元素：
+            var textarea = document.createElement('textarea')
+
+            // 该类名定位为 绝对定位 左上角
+            textarea.classList.add('code-copy-area')
+
+            // 获取父元素宽高
+            var h = window.getComputedStyle(el).height
+            var w = window.getComputedStyle(el).width
+            var fontsize = window.getComputedStyle(el).fontSize
+
+            // 文本框与父元素同大小
+            textarea.style.width = w
+            textarea.style.height = h
+            textarea.style.fontSize = fontsize
+
+            // 将父元素内容赋值给文本框：
+            textarea.value = el.innerText
+
+            // 添加页面元素， 并全选、复制
+            var area = el.appendChild(textarea)
+
+            // 全选、复制
+            area.select()
+            document.execCommand('copy')
+
+            // 绑定 失去焦点事件：
+            area.addEventListener('blur', function () {
+                area.remove()
+            })
+
+            var div = document.createElement('div')
+            div.classList.add('alert-box')
+            div.innerHTML = '复制成功！'
+
+            var alertBox = document.body.appendChild(div)
+            setTimeout(() => {
+                alertBox.remove()
+            }, 1000);
+
+        }
+    </script>
+</body>
+
+</html>

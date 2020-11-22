@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+
+        (function() {
+            var a = function (selector) {
+                window.a.prototype = {
+                    name: 1
+                }
+
+                a.personal = {
+                    test: 111
+                }
+
+                console.log(a.prototype)
+
+
+            }
+
+            a.prototype = {
+                test: 1
+            }
+
+            window.kbb= new a();
+
+
+
+        })(window)
+
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <script>
+
+        var obj = {
+            name: 'xxx',
+            age: 'xx',
+            grade: '',
+            sex: 'male'
+        }
+
+        var r = isEmpty(obj, ['grade'])
+        console.log(r)
+        function isEmpty(data = {}, notFilter = []) {
+            for (let key in data) {
+                if (!data[key]) {
+                    var isRealEmpty = true
+                    for (var i = 0; i < notFilter.length; i++) {
+
+                        // 一旦匹配到可为空的选项，立即退出循环
+                        if (key === notFilter[i]) {
+                            isRealEmpty = false
+                            break
+                        } 
+                    }
+                   return isRealEmpty
+                }
+            }
+            return false
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>获取cookie</title>
+</head>
+
+<body>
+
+    <script>
+
+        document.cookie = 'a=ddddd'
+        document.cookie = 'b=sssss'
+        document.cookie = 'c=fffff'
+        document.cookie = 'd=14ddd'
+
+
+        let a = getCookie('d')
+        console.log(a)
+        function getCookie(cname) {
+
+            let name = cname + '='
+            let carray = document.cookie.split(';')
+
+            for (let i = 0; i < carray.length; i++) {
+               
+                let citem = carray[i].trim() // 注意去空格
+                if(citem.indexOf(name) ==0) {
+                    return citem.substring(name.length, citem.length)
+                }
+            }
+            return ''
+
+        }
+
+    </script>
+</body>
+
+</html>

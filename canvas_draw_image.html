@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script type="text/javascript" src="https://cdn.polyfill.io/v2/polyfill.min.js?features=es6"></script>
+    <style>
+        .box {
+            /* width: 400px; */
+
+            height: 400px;
+            text-align: center;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.096);
+        }
+
+        canvas {
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.199);
+            background: #fff;
+        }
+
+        .img {
+            height: 400px;
+            background-color: rgba(255, 235, 205, 0.315);
+        }
+
+    </style>
+</head>
+
+<body>
+    <div id="box1" class="box">
+
+    </div>
+    <div class="img box">
+        <img src="" id="showImg" alt="">
+    </div>
+
+    <script>
+
+        var box1 = document.getElementById('box1')
+        var canvas = document.createElement('canvas')
+        var imgUrl = 'http://www.dividiy.com/front/divi/raws/base/20201015/42d1fa1519d1435b8c2e388c8e1f2a98.jpg'
+        var imgUrl2 = '/static/images/cup.png'
+        var imgUrlList = [
+
+
+            '/static/images/star_bg.jpg',
+            'http://www.dividiy.com/front/divi/raws/base/20201015/42d1fa1519d1435b8c2e388c8e1f2a98.jpg',
+            '/static/images/snow.png',
+            '/static/images/cup.png',
+        ]
+        setCanvasImage({
+            canvas: canvas,
+            parent: box1,
+            cx: 10,
+            cy: 20,
+            cw: 400,
+            ch: 400,
+
+            callback: async function (canvas) {
+
+                // 绘制图片
+                for (let i = 0; i < imgUrlList.length; i++) {
+
+                    await drawImage({ canvas, imgUrl: imgUrlList[i], imgH: 300 - i * i * 3 })
+
+                }
+
+                
+            }
+        })
+
+        // 小小封装
+        function setCanvasImage({
+            canvas,
+            parent = document.body,
+            id = '',
+            cw = 300,
+            ch = 150,
+            callback = function () { }
+        } = {}) {
+
+            // 如果 canvas 参数未传入
+            if (!canvas) {
+                return console.log('没有指定 canvas 元素')
+            }
+
+            // 设置 id 
+            id && (canvas.id = id)
+
+            canvas.setAttribute('width', cw)
+            canvas.setAttribute('height', ch)
+
+            if (canvas.getContext) {
+
+
+                callback(canvas)
+
+            } else {
+                console.log('暂不支持 canvas 操作！')
+                canvas.innerHTML = '暂不支持 canvas 操作！'
+            }
+
+
+
+
+            parent.appendChild(canvas)
+        }
+
+        // canvas 转 图片
+        function convertCanvasToImage(canvas, type) {
+
+            if (!type) { type = 'png' }
+
+            if (!canvas.tagName || canvas.tagName.toLowerCase() !== 'canvas') {
+                return console.log('非canvas')
+            }
+
+            var url = canvas.toDataURL('image/' + type)
+            return url
+
+        }
+
+        // 绘制图片
+        function drawImage({
+            canvas, // canvas 对象
+            imgUrl = 'http://127.0.0.1:5502/static/images/no_data.png', // 图片路径
+            imgW = 0,   // 图片宽度
+            imgH = 0,   // 图片高度
+            imgX = 0,   // 图片左侧距离
+            imgY = 0    // 图片顶部距离
+        } = {}) {
+
+            var ctx = canvas.getContext('2d')
+            // canvas 宽度
+            var cw = parseFloat(canvas.getAttribute('width'))
+            var ch = parseFloat(canvas.getAttribute('height'))
+
+            imgW = (imgW ? imgW : cw)
+            imgH = (imgH ? imgH : ch)
+
+
+            var img = new Image()
+            img.src = imgUrl
+
+            // 图片跨域问题
+            img.crossOrigin = 'Anonymous'
+
+            // 图片加载后：
+            return new Promise((resolve, reject) => {
+                img.onload = function () {
+
+                    // 获取默认图片宽高
+                    var imgDefaultW = img.width
+                    var imgDefaultH = img.height
+
+                    // 图片宽高比
+                    var whRatio = imgDefaultW / imgDefaultH
+
+                    // 判断是否有设置宽高，若无，则用canvas 默认宽高
+                    if (imgH) {
+                        imgW = imgH * whRatio
+                    } else if (imgW) {
+                        imgH = imgW / whRatio
+                    } else {
+                        imgW = imgDefaultW
+                        imgH = imgDefaultH
+                    }
+
+                    // 渲染图片
+                    ctx.drawImage(img, imgX, imgY, imgW, imgH)
+
+                    ctx.beginPath();
+                    ctx.moveTo(20, 20);
+                    ctx.quadraticCurveTo(20, 100, 200, 100, 200, 20);
+                    ctx.stroke();
+
+                    resolve(canvas)
+
+                }
+                img.onerror = function (error) {
+                    reject(error)
+                }
+            })
+
+        }
+
+
+        // 绘制文字
+        function drawText() {
+
+        }
+
+
+
+
+
+
+
+    </script>
+</body>
+
+</html>

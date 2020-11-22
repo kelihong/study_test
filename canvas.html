@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>canvas</title>
+
+    <style>
+        body {
+            text-align: center;
+            background-color: rgba(85, 85, 85, 0.705);
+        }
+
+        canvas {
+            border: 1px solid grey;
+            margin: 50px auto;
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <canvas id="tutorial" width="550" height="550"></canvas>
+
+    <!-- 
+    1. canvas 只有两个属性： width 和 height , 如果不设置， 默认初始化为 w = 300, h = 150， css只会伸缩扭曲适应框架尺寸。
+    2. 结束标签不可省，否则canvas标签包含的内容会被当成替代内容，不会展示出来。
+    3. 
+ -->
+
+    <script>
+        // var canvas = document.createElement('canvas')
+        var canvas = document.getElementById('tutorial')
+
+
+        function draw({ canvas, callback } = {}) {
+
+            // getContext 方法只有一个参数：上下文格式。（如 2d 等）
+
+            if (canvas.getContext) {
+
+                var ctx = canvas.getContext('2d')
+                canvas.setAttribute('width', 600)
+                canvas.setAttribute('height', 600)
+                callback(ctx)
+            } else {
+                console.log('不支持 getContext 方法')
+            }
+
+
+
+        }
+
+
+
+
+
+        function canvasToImageUrl(canvas) {
+            var image = new Image();
+            urlData = canvas.toDataURL("image/png");
+            return urlData;
+        }
+
+
+
+        console.log(canvasToImageUrl(canvas))
+
+        var imglist = [
+            '/static/images/cup_bg.jpg',
+            '/static/images/cup.png',
+            '/static/images/star_bg.jpg'
+        ]
+        draw(function (canvas) {
+
+            var ctx = canvas.getContext('2d')
+
+            ctx.fillStyle = 'rgb(200, 0, 0)'
+            ctx.fillRect(10, 10, 55, 50)
+
+            drawImg({
+                imgUrl: imglist[0],
+                canvas: canvas
+            }).then(() => {
+                return drawImg({
+                    imgUrl: imglist[0],
+                    canvas: canvas,
+                    x: 100,
+                    y: 140,
+                })
+            }).then(() => {
+                return drawImg({
+                    imgUrl: imglist[1],
+                    canvas: canvas,
+                    x: 200,
+                    y: 140,
+                })
+            }).then(() => {
+                return drawImg({
+                    imgUrl: imglist[2],
+                    canvas: canvas,
+                    x: 300,
+                    y: 240,
+                    width: 50,
+                    height: 40
+                })
+            }).then((canvas) => {
+                console.log(canvasToImageUrl(canvas))
+
+                document.body.appendChild(canvas)
+            })
+
+        })
+
+
+        function drawImg({
+            imgUrl = '',
+            canvas = null,
+            x = 0,
+            y = 0,
+            width = undefined,
+            height = undefined
+        } = {}) {
+            return new Promise((resolve, reject) => {
+                var img = new Image()
+                img.src = imgUrl
+                img.onload = function () {
+                    var ctx = canvas.getContext('2d')
+                    if (width && height) {
+                        ctx.drawImage(img, x, y, width, height)
+
+                    } else {
+                        ctx.drawImage(img, x, y)
+                    }
+                    resolve(canvas)
+                }
+                img.onerror = (e) => {
+                    reject(e)
+                }
+
+            })
+        }
+
+
+
+
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/index.css">
+    <link rel="stylesheet" href="/static/css/toast.css">
+    <title>Document</title>
+
+    <style>
+        body {
+            background: #f2f2f2;
+        }
+
+        .my-toast {}
+
+    </style>
+</head>
+
+<body>
+    <!-- <div class="my-toast">三大发送到发发生的范德萨发生发的发的</div>
+    <div class="my-toast error">测定多多多多</div> -->
+
+    <script>
+        // toast()
+        var time = 100
+        // setInterval(() => {
+        //     time += 600
+        //     toast({
+        //         text: time
+        //     })
+        // }, time);
+
+        function toast(params = {
+            text: '文本',
+            type: 'normal',
+            duration: 1000
+        }) {
+
+            let div = document.createElement('div')
+            div.classList.add('my-toast')
+            div.classList.add(params.type)
+            div.innerHTML = params.text
+
+            var curToast = document.body.appendChild(div)
+
+            // 消失前 css 动画
+            var timerInner = setTimeout(() => {
+
+                clearTimeout(timerInner)
+                curToast.classList.add('slide')
+
+            }, params.duration);
+
+            // 移除 toast
+            var timer = setTimeout(() => {
+
+                clearInterval(timer)
+                curToast.remove()
+
+            }, params.duration + 400);  // 此处 400 为 css 动画时延
+        }
+
+        function createEl(params) {
+            const defaultParams = {
+                parentNode: document.body,
+                tagName: 'div', classLists: [],
+                html: '',
+                styles: {},
+                otherAttr: {}
+            }
+
+            Object.keys(defaultParams).forEach(key => {
+                console.log(key)
+                if (!params[key]) {
+                    params[key] = defaultParams[key]
+                }
+            })
+
+            const { parentNode, tagName, classLists, html, styles, otherAttr } = params
+
+            console.log(params)
+            var el = document.createElement(tagName)
+
+            // 类名：
+            for (var i = 0; i < classLists.length; i++) {
+                if (classLists[i]) {
+                    el.classList.add(classLists[i])
+                }
+            }
+
+            // html 内容：
+            el.innerHTML = html
+
+            // 行内样式
+            if (Object.keys(styles)) {
+                for (let key in styles) {
+                    el.style[key] = styles[key]
+                }
+            }
+
+            // 其他属性
+            if (Object.keys(otherAttr)) {
+                for (let key in otherAttr) {
+                    el.setAttribute(key, otherAttr[key])
+                }
+            }
+
+            // 添加
+            parentNode.appendChild(el)
+
+        }
+
+    </script>
+
+</body>
+
+</html>

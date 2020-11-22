@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <script>
+
+        var arr = [142, 43, 323, 12, 86, 34, 97, 30, 100, 456, 334]
+
+        for (let index = 0; index < arr.length; index++) {
+            var item = arr[index];
+            var replace = null
+            for (let j = 1; j < (arr.length - index); j++) {
+                var item2 = arr[j]
+                if(item < item2) {
+                    if(item > item2) {
+                        replace = item
+                        arr[index] = item2
+                        arr[j] = replace
+                    }
+                    
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>
