@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>canvas 根据图形切割</title>
+    <style>
+        canvas {
+            background-color: #eee;
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <canvas id="canvas" width="500" height="500"></canvas>
+    <img src="" alt="" id="img">
+
+    <script>
+
+        let imgUrl = '/static/images/shape.png'
+        let imgUrl2 = '/static/images/index_bg.png'
+        let imgUrl3 = '/static/images/snow2.png'
+        // image superposition
+        superpositionCanvas()
+        function superpositionCanvas(imgList) {
+            var canvas = document.getElementById('canvas')
+            let cw = 800
+            let ch = 800
+            canvas.setAttribute('width', cw)
+            canvas.setAttribute('height', ch)
+            var ctx = canvas.getContext('2d')
+
+            drawImage(canvas, imgUrl)
+
+
+
+        }
+
+        function drawImage(canvas, imgUrl, type) {
+            let ctx = canvas.getContext('2d')
+            var cw = canvas.getAttribute('width')
+            var ch = canvas.getAttribute('height')
+            var img = new Image()
+            img.src = imgUrl
+            img.onload = function () {
+                if (type) {
+                    ctx.globalCompositeOperation = "source-in";
+                }
+                ctx.drawImage(img, 0, 0, cw, ch)
+
+                drawImage(canvas, imgUrl2, true)
+
+                let newImgUrl = canvas.toDataURL('image/png')
+                document.getElementById('img').setAttribute('src', newImgUrl)
+
+            }
+        }
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <canvas id="canvas" width="1400" height="1400"></canvas>
+    <script>
+
+        var canvas = document.getElementById('canvas')
+        let ctx = canvas.getContext('2d')
+        ctx.transform(1, 0, 0, 1, 0, 0)
+
+
+        var img = new Image()
+        img.src = '/static/images/index_bg.png'
+        img.onload = function () {
+            ctx.drawImage(img, 0, 0, 200, 200)
+        }
+
+
+    </script>
+</body>
+
+</html>

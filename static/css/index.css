@@ -1,1 +1,498 @@
-@import url(https://at.alicdn.com/t/font_2084007_g884dw9euze.css);blockquote,body,button form,code,dd,div,dl,dt,fieldset,h1,h2,h3,h4,h5,h6,input,legend,li,ol,p,pre,td,textarea,th,ul{padding:0;margin:0}body{background:#fff;color:#333;font-size:14px;font-family:"黑体",SimSun,"宋体","Arial Narrow"}q:after,q:before{content:”}abbr,acronym,fieldset,img{border:0 none}abbr,acronym{font-variant:normal}legend{color:#000}address,caption,cite,code,dfn,em,strong,th,var{font-weight:400;font-style:normal}sup{vertical-align:text-top}sub{vertical-align:text-bottom}table{border-collapse:collapse;border-spacing:0}caption,th{text-align:left}img,input,select{vertical-align:middle}ol,ul{list-style:none}button,input,optgroup,option,select,textarea{font-family:inherit;font-size:inherit;font-style:inherit;font-weight:inherit}h1,h2,h3,h4,h5,h6{font-weight:400;font-size:100%}a,del,ins{text-decoration:none}a:link{color:inherit}a:visited{color:inherit}a:active,a:focus,a:hover{color:inherit}input[type=submit]{cursor:pointer}button{cursor:pointer}input::-moz-focus-inner{border:0;padding:0}.clear{clear:both}body,html{height:100%}body{max-width:750px;margin:0 auto}.hide{display:none!important}.index-body{font:14px Microsoft YaHei;-webkit-text-size-adjust:100%;-moz-user-select:none;-webkit-user-select:none;user-select:none;position:relative;background:#000;overflow-y:scroll}.index-body #canvas{position:fixed;left:0;right:0;top:0;bottom:0;display:block;opacity:.8;z-index:1}.index-body .index-wrap{position:fixed;left:0;right:0;top:0;bottom:0;overflow-y:scroll;z-index:2}.index-body .index-wrap .box{height:2000px;position:relative}.index-body .index-wrap .box .star-item{width:30px;height:30px;line-height:30px;color:#fff;position:absolute;border-radius:50%;padding:10px;box-shadow:0 0 20px #fff;transform:translate(100px,100px);animation:moveStar 10s infinite}@keyframes moveStar{0%{transform:translate(100px,100px)}40%{transform:translate(200px,140px)}70%{transform:translate(150px,200px)}100%{transform:translate(100px,100px)}}.add-food-body{width:100%;height:auto;background:url(/static/images/list_bg_1.png)}.add-food-body h1{text-align:center;font-size:20px;line-height:40px;color:#ffbb2a;background:#fff;width:80%;margin:20px auto 40px;box-shadow:0 0 10px #ffbb2a;border-radius:30px}.add-food-body .info-input{line-height:30px;margin-bottom:40px}.add-food-body .info-input .input-item{margin:10px}.add-food-body .info-input .input-item .label{display:inline-block;width:80px;text-align:right}.add-food-body .info-input .input-item input{line-height:20px;padding:5px;outline:0;width:calc(100% - 130px);background:0 0;border:none;border-bottom:1px solid #000}.add-food-body .info-input .input-item #remark{display:inline-block;line-height:20px;padding:5px;outline:0;width:calc(100% - 152px);min-height:40px;background:0 0;border:1px solid #ccc;vertical-align:top;margin-top:8px}.add-food-body .info-input .input-item input:focus{border-color:#ffbb2a}.add-food-body .star-box{margin:0 10px;padding:10px 0 10px}.add-food-body .star-box .star-item-title{margin:8px 0}.add-food-body .star-box .star-item-title .score{color:#ffbb2a}.add-food-body .star-box .star-item .icon-memory{font-size:25px;color:#d0d0d0;margin:0 2px}.add-food-body .total{padding:15px;margin-bottom:30px}.add-food-body .total .total-score{color:#ffbb2a}.add-food-body .btns{text-align:center;margin-bottom:10px}.add-food-body .btns button{border:1px solid #eee;outline:0;padding:10px 0;width:100px;margin:0 5px;border-radius:5px;box-shadow:0 0 10px rgba(255,255,255,.412);background-color:#ffbb2a;color:#fff;border:1px solid #ffbb2a}.add-food-body .btns button.list-btn{color:#ffbb2a;background:#fff}.list-body{width:100%;height:100%;background:url(/static/images/list_bg_1.png);overflow:hidden}.list-body h1{color:#333;font-size:20px;text-align:center;height:50px;line-height:50px;position:fixed;top:0;left:0;right:0;background:#111;color:#fff;box-shadow:0 0 10px rgba(0,0,0,.329)}.list-body h1 .back{position:absolute;border-radius:50%;background:#fff;line-height:28px;height:30px;width:30px;color:#333;top:10px;right:10px}.list-body .list-box{margin-top:50px;height:calc(100% - 50px)}.list-body .list-box .filter{height:60px;text-align:center;border-bottom-left-radius:50%;border-bottom-right-radius:50%;border-bottom:1px solid #cecece}.list-body .list-box .filter .filter-item{display:inline-block;width:40px;height:40px;line-height:40px;border-radius:50%;margin:8px 8px 5px;background-color:#fff;box-shadow:0 0 10px rgba(0,0,0,.384)}.list-body .list-box .filter .filter-item:active{box-shadow:0 0 10px rgba(0,0,0,.384) inset}.list-body .list-box .filter .filter-item.active{box-shadow:0 0 10px rgba(0,0,0,.384) inset}.list-body .list-box .list-wrap{height:calc(100% - 70px);overflow-y:scroll}.list-body .list-box .list-wrap .list-item{padding:10px 15px;min-height:50px;margin:8px 15px;background-color:#fff;border:1px solid #f5f5f5d7;box-shadow:0 0 10px rgba(0,0,0,.3);border-radius:15px}.list-body .list-box .list-wrap .list-item .title{color:#ffbb2a;line-height:20px;font-size:18px;line-height:28px;margin-bottom:10px}.list-body .list-box .list-wrap .list-item .title .delete-btn{font-size:12px;color:#999;float:right;padding:0 5px}.list-body .list-box .list-wrap .list-item .title::after{content:' ';display:block;clear:both}.list-body .list-box .list-wrap .list-item .remark{font-size:0;color:#999;padding-top:10px}.list-body .list-box .list-wrap .list-item .remark .key{display:inline-block;width:40px;font-size:12px;vertical-align:top}.list-body .list-box .list-wrap .list-item .remark .value{display:inline-block;width:calc(100% - 40px);font-size:12px;vertical-align:top}.list-body .list-box .list-wrap .list-item .shop-address{color:#999;padding-top:10px;font-size:12px}.list-body .list-box .list-wrap .list-item .food-name{font-size:16px;color:#333;margin-bottom:10px}.list-body .list-box .list-wrap .list-item .score-list{font-size:0}.list-body .list-box .list-wrap .list-item .score-list .score-item{font-size:12px;color:#666;display:inline-block;width:50%;line-height:20px}
+@import url(https://at.alicdn.com/t/font_2084007_g884dw9euze.css);
+
+blockquote,
+body,
+button form,
+code,
+dd,
+div,
+dl,
+dt,
+fieldset,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+input,
+legend,
+li,
+ol,
+p,
+pre,
+td,
+textarea,
+th,
+ul {
+    padding: 0;
+    margin : 0
+}
+
+body {
+    background : #fff;
+    color      : #333;
+    font-size  : 14px;
+    font-family: "黑体", SimSun, "宋体", "Arial Narrow"
+}
+
+q:after,
+q:before {
+    content: ”
+}
+
+abbr,
+acronym,
+fieldset,
+img {
+    border: 0 none
+}
+
+abbr,
+acronym {
+    font-variant: normal
+}
+
+legend {
+    color: #000
+}
+
+address,
+caption,
+cite,
+code,
+dfn,
+em,
+strong,
+th,
+var {
+    font-weight: 400;
+    font-style : normal
+}
+
+sup {
+    vertical-align: text-top
+}
+
+sub {
+    vertical-align: text-bottom
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing : 0
+}
+
+caption,
+th {
+    text-align: left
+}
+
+img,
+input,
+select {
+    vertical-align: middle
+}
+
+ol,
+ul {
+    list-style: none
+}
+
+button,
+input,
+optgroup,
+option,
+select,
+textarea {
+    font-family: inherit;
+    font-size  : inherit;
+    font-style : inherit;
+    font-weight: inherit
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-weight: 400;
+    font-size  : 100%
+}
+
+a,
+del,
+ins {
+    text-decoration: none
+}
+
+a:link {
+    color: inherit
+}
+
+a:visited {
+    color: inherit
+}
+
+a:active,
+a:focus,
+a:hover {
+    color: inherit
+}
+
+input[type=submit] {
+    cursor: pointer
+}
+
+button {
+    cursor: pointer
+}
+
+input::-moz-focus-inner {
+    border : 0;
+    padding: 0
+}
+
+.clear {
+    clear: both
+}
+
+body,
+html {
+    height: 100%
+}
+
+body {
+    max-width: 750px;
+    margin   : 0 auto
+}
+
+.hide {
+    display: none !important
+}
+
+.index-body {
+    font                    : 14px Microsoft YaHei;
+    -webkit-text-size-adjust: 100%;
+    -moz-user-select        : none;
+    -webkit-user-select     : none;
+    user-select             : none;
+    position                : relative;
+    background              : #000;
+    overflow-y              : scroll
+}
+
+.index-body #canvas {
+    position: fixed;
+    left    : 0;
+    right   : 0;
+    top     : 0;
+    bottom  : 0;
+    display : block;
+    opacity : .8;
+    z-index : 1
+}
+
+.index-body .index-wrap {
+    position  : fixed;
+    left      : 0;
+    right     : 0;
+    top       : 0;
+    bottom    : 0;
+    overflow-y: scroll;
+    z-index   : 2
+}
+
+.index-body .index-wrap .box {
+    height  : 2000px;
+    position: relative
+}
+
+.index-body .index-wrap .box .star-item {
+    width        : 30px;
+    height       : 30px;
+    line-height  : 30px;
+    color        : #fff;
+    position     : absolute;
+    border-radius: 50%;
+    padding      : 10px;
+    box-shadow   : 0 0 20px #fff;
+    transform    : translate(100px, 100px);
+    animation    : moveStar 10s infinite
+}
+
+@keyframes moveStar {
+    0% {
+        transform: translate(100px, 100px)
+    }
+
+    40% {
+        transform: translate(200px, 140px)
+    }
+
+    70% {
+        transform: translate(150px, 200px)
+    }
+
+    100% {
+        transform: translate(100px, 100px)
+    }
+}
+
+.add-food-body {
+    width     : 100%;
+    height    : auto;
+    background: url(/static/images/list_bg_1.png)
+}
+
+.add-food-body h1 {
+    text-align   : center;
+    font-size    : 20px;
+    line-height  : 40px;
+    color        : #ffbb2a;
+    background   : #fff;
+    width        : 80%;
+    margin       : 20px auto 40px;
+    box-shadow   : 0 0 10px #ffbb2a;
+    border-radius: 30px
+}
+
+.add-food-body .info-input {
+    line-height  : 30px;
+    margin-bottom: 40px
+}
+
+.add-food-body .info-input .input-item {
+    margin: 10px
+}
+
+.add-food-body .info-input .input-item .label {
+    display   : inline-block;
+    width     : 80px;
+    text-align: right
+}
+
+.add-food-body .info-input .input-item input {
+    line-height  : 20px;
+    padding      : 5px;
+    outline      : 0;
+    width        : calc(100% - 130px);
+    background   : 0 0;
+    border       : none;
+    border-bottom: 1px solid #000
+}
+
+.add-food-body .info-input .input-item #remark {
+    display       : inline-block;
+    line-height   : 20px;
+    padding       : 5px;
+    outline       : 0;
+    width         : calc(100% - 152px);
+    min-height    : 40px;
+    background    : 0 0;
+    border        : 1px solid #ccc;
+    vertical-align: top;
+    margin-top    : 8px
+}
+
+.add-food-body .info-input .input-item input:focus {
+    border-color: #ffbb2a
+}
+
+.add-food-body .star-box {
+    margin : 0 10px;
+    padding: 10px 0 10px
+}
+
+.add-food-body .star-box .star-item-title {
+    margin: 8px 0
+}
+
+.add-food-body .star-box .star-item-title .score {
+    color: #ffbb2a
+}
+
+.add-food-body .star-box .star-item .icon-memory {
+    font-size: 25px;
+    color    : #d0d0d0;
+    margin   : 0 2px
+}
+
+.add-food-body .total {
+    padding      : 15px;
+    margin-bottom: 30px
+}
+
+.add-food-body .total .total-score {
+    color: #ffbb2a
+}
+
+.add-food-body .btns {
+    text-align   : center;
+    margin-bottom: 10px
+}
+
+.add-food-body .btns button {
+    border          : 1px solid #eee;
+    outline         : 0;
+    padding         : 10px 0;
+    width           : 100px;
+    margin          : 0 5px;
+    border-radius   : 5px;
+    box-shadow      : 0 0 10px rgba(255, 255, 255, .412);
+    background-color: #ffbb2a;
+    color           : #fff;
+    border          : 1px solid #ffbb2a
+}
+
+.add-food-body .btns button.list-btn {
+    color     : #ffbb2a;
+    background: #fff
+}
+
+.list-body {
+    width     : 100%;
+    height    : 100%;
+    background: url(/static/images/list_bg_1.png);
+    overflow  : hidden
+}
+
+.list-body h1 {
+    color      : #333;
+    font-size  : 20px;
+    text-align : center;
+    height     : 50px;
+    line-height: 50px;
+    position   : fixed;
+    top        : 0;
+    left       : 0;
+    right      : 0;
+    background : #111;
+    color      : #fff;
+    box-shadow : 0 0 10px rgba(0, 0, 0, .329)
+}
+
+.list-body h1 .back {
+    position     : absolute;
+    border-radius: 50%;
+    background   : #fff;
+    line-height  : 28px;
+    height       : 30px;
+    width        : 30px;
+    color        : #333;
+    top          : 10px;
+    right        : 10px
+}
+
+.list-body .list-box {
+    margin-top: 50px;
+    height    : calc(100% - 50px)
+}
+
+.list-body .list-box .filter {
+    height                    : 60px;
+    text-align                : center;
+    border-bottom-left-radius : 50%;
+    border-bottom-right-radius: 50%;
+    border-bottom             : 1px solid #cecece
+}
+
+.list-body .list-box .filter .filter-item {
+    display         : inline-block;
+    width           : 40px;
+    height          : 40px;
+    line-height     : 40px;
+    border-radius   : 50%;
+    margin          : 8px 8px 5px;
+    background-color: #fff;
+    box-shadow      : 0 0 10px rgba(0, 0, 0, .384)
+}
+
+.list-body .list-box .filter .filter-item:active {
+    box-shadow: 0 0 10px rgba(0, 0, 0, .384) inset
+}
+
+.list-body .list-box .filter .filter-item.active {
+    box-shadow: 0 0 10px rgba(0, 0, 0, .384) inset
+}
+
+.list-body .list-box .list-wrap {
+    height    : calc(100% - 70px);
+    overflow-y: scroll
+}
+
+.list-body .list-box .list-wrap .list-item {
+    padding         : 10px 15px;
+    min-height      : 50px;
+    margin          : 8px 15px;
+    background-color: #fff;
+    border          : 1px solid #f5f5f5d7;
+    box-shadow      : 0 0 10px rgba(0, 0, 0, .3);
+    border-radius   : 15px
+}
+
+.list-body .list-box .list-wrap .list-item .title {
+    color        : #ffbb2a;
+    line-height  : 20px;
+    font-size    : 18px;
+    line-height  : 28px;
+    margin-bottom: 10px
+}
+
+.list-body .list-box .list-wrap .list-item .title .delete-btn {
+    font-size: 12px;
+    color    : #999;
+    float    : right;
+    padding  : 0 5px
+}
+
+.list-body .list-box .list-wrap .list-item .title::after {
+    content: ' ';
+    display: block;
+    clear  : both
+}
+
+.list-body .list-box .list-wrap .list-item .remark {
+    font-size  : 0;
+    color      : #999;
+    padding-top: 10px
+}
+
+.list-body .list-box .list-wrap .list-item .remark .key {
+    display       : inline-block;
+    width         : 40px;
+    font-size     : 12px;
+    vertical-align: top
+}
+
+.list-body .list-box .list-wrap .list-item .remark .value {
+    display       : inline-block;
+    width         : calc(100% - 40px);
+    font-size     : 12px;
+    vertical-align: top
+}
+
+.list-body .list-box .list-wrap .list-item .shop-address {
+    color      : #999;
+    padding-top: 10px;
+    font-size  : 12px
+}
+
+.list-body .list-box .list-wrap .list-item .food-name {
+    font-size    : 16px;
+    color        : #333;
+    margin-bottom: 10px
+}
+
+.list-body .list-box .list-wrap .list-item .score-list {
+    font-size: 0
+}
+
+.list-body .list-box .list-wrap .list-item .score-list .score-item {
+    font-size  : 12px;
+    color      : #666;
+    display    : inline-block;
+    width      : 50%;
+    line-height: 20px
+}

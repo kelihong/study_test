@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+     
+
+    </style>
+</head>
+
+<body>
+
+
+
+    <script>
+
+       
+        var reg = /^\d+(\.\d{0,2})?$/;
+
+        var num = 11112.323
+
+        var str = '11122.334343.343'
+
+        // 替换两位小数
+        function test(str) {
+            newStr = str.replace(/^(\-)*(\d+)\.(\d\d).*$/, '$1$2.$3')
+            console.log(newStr);
+        }
+
+        // test(str)
+
+        function test2(str) {
+            str1 = str.replace(/[^0-9\.]/g, '')
+            console.log(str1)
+        }
+
+        test2('22.3adsf43adsf')
+
+    </script>
+</body>
+
+</html>

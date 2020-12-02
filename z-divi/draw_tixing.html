@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+
+        canvas {
+            background: rgb(255, 223, 218);
+            transform: skew(10deg, 29deg);
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <canvas id="trails" width="200" height="170"> </canvas>
+    </div>
+
+
+    <script>
+        var canvas = document.getElementById("trails");
+        var test = canvas.getContext("2d");
+        var img = new Image();
+        // 添加四个角的坐标,最后要回到起始点坐标
+        test.moveTo(0, 0);            //moveTo()起始位置
+        test.lineTo(200, 0);         //lineTo()路径位置
+        test.lineTo(140, 170);
+        test.lineTo(0, 170);
+        test.lineTo(0, 0);
+        img.onload = function () {                  //要让图片先加载完再填充
+            var pat = test.createPattern(img, "no-repeat",);
+            test.fillStyle = pat;
+            test.fill();
+        }
+        img.src = "/static/images/snow2.png";  
+    </script>
+</body>dd
+
+</html>

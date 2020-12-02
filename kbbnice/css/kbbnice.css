@@ -1,0 +1,42 @@
+@import 'initialize.css';
+.kbb-classify-box {
+  --color-main: #2eb600;
+  --color-primary: #fff;
+  --fs-main-color: #555;
+  --fs-main-size: 13px;
+}
+.kbb-classify-box .kbb-classify-wrap {
+  font-size: 0;
+  margin: 5px 0;
+}
+.kbb-classify-box .kbb-classify-wrap .kbb-classify-label {
+  font-size: var(--fs-main-size);
+  display: inline-block;
+  width: 80px;
+  text-align: right;
+  margin-right: 20px;
+}
+.kbb-classify-box .kbb-classify-wrap .kbb-classify-label::after {
+  content: '：';
+  display: inline-block;
+}
+.kbb-classify-box .kbb-classify-wrap .kbb-classify-list {
+  display: inline-block;
+}
+.kbb-classify-box .kbb-classify-wrap .kbb-classify-list .kbb-classify-item {
+  font-size: var(--fs-main-size);
+  display: inline-block;
+  margin: 0 8px;
+  padding: 0 5px;
+  border-radius: 4px;
+  background: #ffffff;
+  cursor: pointer;
+  color: var(--fs-main-color);
+  height: 22px;
+  line-height: 22px;
+}
+.kbb-classify-box .kbb-classify-wrap .kbb-classify-list .kbb-classify-item:hover,
+.kbb-classify-box .kbb-classify-wrap .kbb-classify-list .kbb-classify-item.active {
+  background: var(--color-main);
+  color: var(--color-primary);
+}

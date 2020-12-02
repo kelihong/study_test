@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/static/css/initialize.css">
+    <link rel="stylesheet" href="/static/css/swiper.css">
+
+    <style>
+        .kbb-3d-box {
+            width: 200px;
+            height: 200px;
+            background: rgb(255, 234, 237);
+            position: relative;
+            margin: 20px auto 0;
+
+        }
+
+        .kbb-3d-box .swiper-container {
+            width: 100%;
+            height: 100%;
+
+            /* 修改swiper 颜色 样式 */
+            --swiper-navigation-size: 20px;
+            --swiper-navigation-color: #E79020;
+            --swiper-pagination-color: #E79020;
+        }
+
+
+        .kbb-3d-box .swiper-slide img {
+            width: 100%;
+            height: 100%;
+        }
+
+        .kbb-3d-box .loading {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.207);
+            z-index: 99999;
+        }
+
+        .kbb-3d-box .loading::after {
+            content: ' ';
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: 60px;
+            height: 60px;
+            background: url('/static/images/loading.png') center center no-repeat;
+            background-size: 100%;
+            transform: translate(-50%, -50%);
+            color: #fff;
+            border-radius: 10px;
+            animation: loading 2s infinite linear;
+        }
+
+        @keyframes loading {
+            0% {
+                transform: translate(-50%, -50%) rotate(0);
+            }
+
+            100% {
+                transform: translate(-50%, -50%) rotate(360deg);
+            }
+        }
+
+        img {
+            width: 200px;
+            height: 200px;
+        }
+
+    </style>
+</head>
+
+<body>
+
+
+    <div class="kbb-3d-box">
+        <div class="swiper-container kbb-3d-swiper swiper-no-swiping">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide"></div>
+            </div>
+            <div class="swiper-button-next kbb-3d-btn-next"></div>
+            <div class="swiper-button-prev kbb-3d-btn-prev"></div>
+            <div class="swiper-pagination kbb-3d-pagination"></div>
+        </div>
+    </div>
+
+    <img src="" alt="" id="img">
+
+    <script src="/static/js/jquery.min.js"></script>
+    <script src="/static/js/swiper.js"></script>
+    <script src="/static/js/three.js"></script>
+    <script src="/static/js/GLTFLoader.js"></script>
+
+    <script>
+        window.kbb = {}
+
+        $(function () {
+            var imgUrl = '/static/images/index_bg.png'
+            var glbUrl = '/static/files/cup.glb'
+            render3D({
+                imgUrl,
+                glbUrl,
+                camaraPos: 10
+            })
+
+
+            // 创建轮播图
+            var kbb3Dswiper = new Swiper('.kbb-3d-swiper', {
+                navigation: {
+                    nextEl: '.kbb-3d-btn-next',
+                    prevEl: '.kbb-3d-btn-prev',
+                },
+                pagination: {
+                    el: '.kbb-3d-pagination',
+                    clickable: true,
+                }
+            })
+
+            // -------------------------------------------------------------------------------
+
+            // 用生成的图片干点啥
+            async function createImage(parentEl, url) {
+
+                // 开始加载图片
+                setLoading(true)
+                let img = await createImageEl(url)
+                parentEl.appendChild(img)
+
+
+            }
+
+            // 创建
+            createImage(document.getElementsByClassName('swiper-slide')[0], imgUrl)
+
+
+            /** 
+             记得加 loading 图
+            */
+
+            // 创建图片
+            function createImageEl(url) {
+                let img = new Image()
+                img.src = url
+
+                return new Promise((reslove, reject) => {
+                    img.onload = function () {
+                        setTimeout(() => {
+                            setLoading(false)
+                            reslove(img)
+                        }, 1000);
+
+                        //  setLoading(false)
+                        // reslove(img)
+                    }
+                    img.error = function (error) {
+                        setLoading(false)
+                        reject(error)
+                    }
+                })
+
+            }
+
+
+            // 设置loading 
+            function setLoading(type) {
+                if (type) {
+                    let div = document.createElement('div')
+                    div.classList.add('loading')
+
+                    kbb.loading = div
+                    document.getElementsByClassName('kbb-3d-swiper')[0].appendChild(div)
+
+                } else {
+                    if (kbb.loading) {
+                        kbb.loading.remove()
+                    }
+                }
+            }
+
+
+            function render3D({ imgUrl, glbUrl, camaraPos } = {}) {
+
+                var camera, scene, renderer;
+
+                var camaraPosX = 1;
+                var mouseX = 0, mouseY = 0;
+
+                var windowHalfX = window.innerWidth / 2;
+                var windowHalfY = window.innerHeight / 2;
+
+                switch (camaraPos) {
+                    case 'left':
+                        camaraPosX = 10;
+                        break;
+                    case 'middle':
+                        camaraPosX = 1;
+                        break;
+                    case 'right':
+                        camaraPosX = -10;
+                        break;
+                    default:
+                        camaraPosX = 1;
+                }
+
+
+
+                init();
+                animate();
+
+
+                function init() {
+
+                    /**
+                     * 相机设置
+                     */
+                    var k = 1; //窗口宽高比
+                    var s = 3; //三维场景显示范围控制系数，系数越大，显示的范围越大
+
+                    //创建相机对象
+                    camera = new THREE.OrthographicCamera(-s * k, s * k, s, -s, 1, 3000);
+                    camera.position.set(camaraPosX, 4, -14); //设置相机位置
+                    camera.updateProjectionMatrix();
+
+                    // scene
+                    scene = new THREE.Scene();
+                    var ambient = new THREE.AmbientLight(0xffffff, 0.55);
+                    scene.add(ambient);
+
+                    //点光源
+                    var point = new THREE.PointLight(0xffffff, 0.8);
+                    point.position.set(0.25, 3.25, -6.25); //点光源位置
+                    scene.add(point); //点光源添加到场景中
+
+                    var point2 = new THREE.PointLight(0xffffff, 0.17);
+                    point2.position.set(0.75406058033363, 3.710668839028, 5.9690041193016); //点光源位置
+                    scene.add(point2); //点光源添加到场景中
+
+                    var manager = new THREE.LoadingManager();
+
+                    var texture = new THREE.Texture();
+                    var imgLoader = new THREE.ImageLoader(manager);
+                    imgLoader.load(imgUrl, function (image) {
+
+                        texture.image = image;
+                        texture.needsUpdate = true;
+
+                    });
+
+                    var material = new THREE.MeshStandardMaterial({
+                        map: texture,
+                        roughness: 0.35,
+                        color: 0xffffff,
+                        metalness: 0.1
+                    });
+
+                    var glbLoader = new THREE.GLTFLoader();
+                    glbLoader.load(glbUrl, function (glb) {
+
+                        var sc = glb.scene
+                        sc.children[0].children[0].material = material;
+                        scene.add(glb.scene);
+
+                    });
+
+                    //渲染器
+                    renderer = new THREE.WebGLRenderer();
+                    renderer.setPixelRatio(window.devicePixelRatio);
+                    renderer.setSize(window.innerWidth, window.innerHeight);
+                    renderer.setClearColor(0xffffff, 1); //设置背景颜色
+                    renderer.gammaFactor = 2.2;
+                }
+
+                function animate() {
+
+
+                    let str = render();
+                    $('#img').attr('src', str)
+
+                }
+
+
+
+                function render() {
+
+                    camera.lookAt(scene.position);
+                    renderer.render(scene, camera);
+
+                    var strMime = "image/png";
+                    imgData = renderer.domElement.toDataURL(strMime);
+
+                    let str = imgData
+                    return str
+
+                }
+
+            }
+
+
+
+
+        })
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        .box {
+            background: pink;
+            width: 100px;
+            height: 100px;
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <script>
+
+        let div = document.createElement('div')
+        div.classList.add('box')
+        div.id = 'box'
+
+        document.body.prepend(div)
+
+        setTimeout(() => {
+            div.remove()
+        }, 1000);
+
+        
+
+
+    </script>
+</body>
+
+</html>

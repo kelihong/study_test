@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>canvas 根据图形切割</title>
+    <style>
+        canvas {
+            background-color: #eee;
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <canvas id="myCanvas" width="500" height="500"></canvas>
+
+
+    <script>
+        var imgUrl = '/static/images/index_bg.png'
+
+        var c = document.getElementById('myCanvas')
+        var ctx = c.getContext('2d')
+        var imgBg = new Image()
+        imgBg.src = '/static/images/shape.png'
+        imgBg.onload = function () {
+            let w = imgBg.width
+            let h = imgBg.height
+
+            ctx.drawImage(imgBg, 0, 0, w, h)
+            var img = new Image()
+            img.src = imgUrl
+            img.onload = function () {
+                let w = img.width
+                let h = img.height
+                ctx.globalCompositeOperation = "source-in";
+
+                ctx.drawImage(img, 0, 0, w, h)
+            }
+
+        }
+
+     
+
+
+
+
+
+
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/kbbnice/css/kbbnice.css">
+</head>
+
+<body>
+    <div id="kbbClassify" class="kbb-classify-box">
+        <div class="kbb-classify-wrap">
+            <div class="kbb-classify-label">标签</div>
+            <div class="kbb-classify-list">
+                <div class="kbb-classify-item">
+                    <span>内容内容</span>
+                </div>
+                <div class="kbb-classify-item">
+                    <span>内容内容</span>
+                </div>
+                <div class="kbb-classify-item">
+                    <span>内容内容</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/js/jquery-3.5.1.js"></script>
+    <script src="/kbbnice/js/kbbnice.js"></script>
+    <script>
+        $(function () {
+
+
+            // 获取分类列表
+            getMenuClassifyList()
+            function getMenuClassifyList() {
+                $.ajax({
+                    type: 'get',
+                    url: '/kbbnice/js/menulist.json',
+                    success: function (res) {
+                        console.log(res)
+                        let htmlStr = ''
+                        for (let i = 0; i < res.data.length; i++) {
+                            htmlStr += '<div class="kbb-classify-wrap">'
+                            htmlStr += '<div class="kbb-classify-label">' + res.data[i].label + '</div>'
+                            htmlStr += ' <div class="kbb-classify-list">'
+                            for (let j = 0; j < res.data[i].list.length; j++) {
+                                let item = res.data[i].list[j]
+                                // 添加是否选中
+                                htmlStr += '<div class="kbb-classify-item' + ' key_id=' + item.id + ' ' + '">'
+                                htmlStr += ' <span>' + item.name + '</span>'
+                                htmlStr += '</div>'
+                            }
+                            htmlStr += ' </div>'
+                        }
+
+                        htmlStr += '</div>'
+                        let newEl = $('#kbbClassify').html(htmlStr)
+                        console.log(newEl);
+                    },
+                    error: function (err) {
+                        console.log(err);
+
+                    }
+                })
+            }
+
+            // 点击事件
+            chooseClassifyItem(function (item, index) {
+                console.log(index, item)
+            })
+            function chooseClassifyItem(callback) {
+                callback = callback || function () { }
+                $(document).on('click', '.kbb-classify-item', function () {
+                    $(this).addClass('active')
+                        .siblings().removeClass('active')
+
+                    callback($(this), $(this).index())
+
+                })
+            }
+
+            getProductList({})
+            function getProductList(data) {
+                $.ajax({
+                    type: 'get',
+                    url: '/kbbnice/js/product.json',
+                    data: data,
+
+                })
+            }
+        })
+
+    </script>
+
+</body>
+
+</html>

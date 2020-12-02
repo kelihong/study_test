@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/static/css/initialize.css">
+    <link rel="stylesheet" href="/static/css/swiper.css">
+
+    <style>
+        .kbb-3d-box {
+            width: 200px;
+            height: 200px;
+            background: rgb(255, 234, 237);
+            position: relative;
+            margin: 20px auto 0;
+
+        }
+
+        .kbb-3d-box .swiper-container {
+            width: 100%;
+            height: 100%;
+
+            /* 修改swiper 颜色 样式 */
+            --swiper-navigation-size: 20px;
+            --swiper-navigation-color: #E79020;
+            --swiper-pagination-color: #E79020;
+        }
+
+
+        .kbb-3d-box .swiper-slide img {
+            width: 100%;
+            height: 100%;
+        }
+
+        .kbb-3d-box .loading {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.207);
+            z-index: 99999;
+        }
+
+        .kbb-3d-box .loading::after {
+            content: ' ';
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: 60px;
+            height: 60px;
+            background: url('/static/images/loading.png') center center no-repeat;
+            background-size: 100%;
+            transform: translate(-50%, -50%);
+            color: #fff;
+            border-radius: 10px;
+            animation: loading 2s infinite linear;
+        }
+
+        @keyframes loading {
+            0% {
+                transform: translate(-50%, -50%) rotate(0);
+            }
+
+            100% {
+                transform: translate(-50%, -50%) rotate(360deg);
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+
+
+    <div class="kbb-3d-box">
+        <div class="swiper-container kbb-3d-swiper swiper-no-swiping">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide"></div>
+            </div>
+            <div class="swiper-button-next kbb-3d-btn-next"></div>
+            <div class="swiper-button-prev kbb-3d-btn-prev"></div>
+            <div class="swiper-pagination kbb-3d-pagination"></div>
+        </div>
+    </div>
+
+    <script src="/static/js/jquery.min.js"></script>
+    <script src="/static/js/swiper.js"></script>
+
+    <script>
+        window.kbb = {}
+
+        $(function () {
+            var imgUrl = '/static/images/index_bg.png'
+
+            // 创建轮播图
+            var kbb3Dswiper = new Swiper('.kbb-3d-swiper', {
+                navigation: {
+                    nextEl: '.kbb-3d-btn-next',
+                    prevEl: '.kbb-3d-btn-prev',
+                },
+                pagination: {
+                    el: '.kbb-3d-pagination',
+                    clickable: true,
+                }
+            })
+
+            // -------------------------------------------------------------------------------
+
+            // 用生成的图片干点啥
+            async function createImage(parentEl, url) {
+
+                // 开始加载图片
+                setLoading(true)
+                let img = await createImageEl(url)
+                parentEl.appendChild(img)
+
+
+            }
+
+            // 创建
+            createImage(document.getElementsByClassName('swiper-slide')[0], imgUrl)
+
+
+            /** 
+             记得加 loading 图
+            */
+
+            // 创建图片
+            function createImageEl(url) {
+                let img = new Image()
+                img.src = url
+
+                return new Promise((reslove, reject) => {
+                    img.onload = function () {
+                        setTimeout(() => {
+                            setLoading(false)
+                            reslove(img)
+                        }, 1000);
+
+                        //  setLoading(false)
+                        // reslove(img)
+                    }
+                    img.error = function (error) {
+                        setLoading(false)
+                        reject(error)
+                    }
+                })
+
+            }
+
+
+            // 设置loading 
+            function setLoading(type) {
+                if (type) {
+                    let div = document.createElement('div')
+                    div.classList.add('loading')
+
+                    kbb.loading = div
+                    document.getElementsByClassName('kbb-3d-swiper')[0].appendChild(div)
+
+                } else {
+                    if (kbb.loading) {
+                        kbb.loading.remove()
+                    }
+                }
+            }
+
+
+            
+
+        })
+
+    </script>
+</body>
+
+</html>

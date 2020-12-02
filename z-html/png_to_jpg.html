@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            background: rgba(0, 0, 0, 0.47);
+        }
+
+    </style>
+</head>
+
+<body>
+    <img src="" alt="" id="img">
+
+    <script src="/static/js/jquery.min.js"></script>
+    <script>
+        var imgUrl = '/static/images/index_bg.png'
+
+        png_to_jpg({
+            imgUrl,
+            options: {
+                proW: 3000,
+                proH: 3000
+            },
+            callback: function (newUrl) {
+                console.log(newUrl)
+                document.getElementById('img').setAttribute('src', newUrl)
+
+            }
+        })
+        function png_to_jpg({ imgUrl, options = {
+            proW: undefined,
+            proH: undefined,
+        }, callback } = {
+
+            }) {
+            var img = new Image()
+            img.src = imgUrl
+            img.onload = function () {
+                let w = options.proW || img.width
+                let h = options.proH || img.height
+                console.log(w,h);
+                let canvas = document.createElement('canvas')
+                canvas.setAttribute('width', w)
+                canvas.setAttribute('height', h)
+
+                let ctx = canvas.getContext('2d')
+                ctx.fillStyle = '#fff'
+                ctx.fillRect(0, 0, w, h)
+                ctx.drawImage(img, 0, 0, w, h)
+                let newImgUrl = canvas.toDataURL('image/jpeg')
+
+                callback(newImgUrl)
+            }
+        }
+
+
+    </script>
+
+</body>
+
+</html>

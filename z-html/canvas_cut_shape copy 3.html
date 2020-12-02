@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>canvas 根据图形切割</title>
+    <style>
+        canvas {
+            background-color: #eee;
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <canvas id="canvas" width="500" height="500"></canvas>
+    <img src="" alt="" id="img">
+
+    <script>
+
+        let imgUrl = '/static/images/shape.png'
+        let imgUrl2 = '/static/images/index_bg.png'
+        let imgUrl3 = '/static/images/snow2.png'
+        // image superposition
+
+        async function superpositionCanvas(imgList) {
+            var canvas = document.getElementById('canvas')
+            let cw = 800
+            let ch = 800
+            canvas.setAttribute('width', cw)
+            canvas.setAttribute('height', ch)
+            var ctx = canvas.getContext('2d')
+            canvas = await drawImage(canvas, imgUrl)
+            canvas = await drawImage(canvas, imgUrl2, true)
+            return new Promise((reslove, reject) => {
+                let newImgUrl = canvas.toDataURL('image/png')
+              
+                reslove(newImgUrl)
+            })
+        }
+
+        async function drawImage(canvas, imgUrl, type) {
+            let ctx = canvas.getContext('2d')
+            var cw = canvas.getAttribute('width')
+            var ch = canvas.getAttribute('height')
+            var img = new Image()
+            img.src = imgUrl
+            return new Promise((reslove, reject) => {
+                img.onload = function () {
+                    setTimeout(() => {
+                        if (type) {
+                            ctx.globalCompositeOperation = "source-in";
+                        }
+                        ctx.drawImage(img, 0, 0, cw, ch)
+
+
+                        reslove(canvas)
+
+
+
+                    }, 800);
+                }
+            })
+        }
+
+
+        async function test() {
+           let url = await superpositionCanvas()
+           let img = new Image()
+           img.src = url
+           img.onload = function(){
+
+            let canvas = document.createElement('canvas')
+            canvas.setAttribute('width',img.width)
+            canvas.setAttribute('height',img.height)
+            let ctx = canvas.getContext('2d')
+            ctx.drawImage(img, 0,0,img.width, img.height)
+        
+            let imgUrls = canvas.toDataURL('image/png')
+              document.getElementById('img').setAttribute('src', imgUrls)
+           }
+        }
+
+        test()
+
+    </script>
+</body>
+
+</html>

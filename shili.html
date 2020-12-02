@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>递归菜单</title>
     <style>
         * {
             margin: 0;
@@ -12,35 +12,32 @@
         }
 
         body {
-            max-width: 1200px;
+            max-width: 1200;
             margin: 0 auto;
-
         }
 
-        .kbb-menu-wrap {
-            width: 280px;
+        .menu-wrap {
+            width: 200px;
             font-size: 16px;
         }
 
-        .kbb-menu-wrap .kbb-menu-item {
+        .menu-wrap .menu-item {
             height: 32px;
             overflow: hidden;
             padding-left: 18px;
             background: #fff;
         }
 
-        .kbb-menu-wrap .kbb-menu-item .kbb-menu-title {
+        .menu-wrap .menu-item .menu-title {
             height: 32px;
             line-height: 32px;
-            /* background: pink; */
             position: relative;
             cursor: pointer;
         }
 
-        .kbb-menu-wrap .kbb-menu-item.not-empty>.kbb-menu-title::after {
+        .menu-wrap .menu-item.not-empty>.menu-title::after {
             content: ' ';
             display: inline-block;
-            /* float: right; */
             position: relative;
             top: 50%;
             margin-left: 8px;
@@ -50,20 +47,18 @@
             height: 6px;
             border-bottom: 1px solid #ea9624;
             border-right: 1px solid #ea9624;
-
         }
 
-        .kbb-menu-wrap .kbb-menu-item .kbb-menu-title:hover {
+        .menu-wrap .menu-item .menu-title:hover {
             color: #555;
-            /* opacity: 0.7; */
             background: #eee;
         }
 
-        .kbb-menu-wrap .kbb-menu-item.active {
+        .menu-wrap .menu-item:active {
             height: auto;
         }
 
-        .kbb-menu-wrap .kbb-menu-item.active>.kbb-menu-title::before {
+        .menu-wrap .menu-item.active>.menu-title::before {
             content: ' ';
             display: block;
             height: 20px;
@@ -75,7 +70,7 @@
             transform: translateY(-50%);
         }
 
-        .kbb-menu-wrap .kbb-menu-item.active.not-empty>.kbb-menu-title::after {
+        .menu-wrap .menu-item.active.not-empty>.menu-title::after {
             transform: translateY(-5px) rotate(45deg);
         }
 
@@ -83,11 +78,8 @@
 </head>
 
 <body>
-    <div class="kbb-menu-wrap">
-
-    </div>
-
-    <script src="/static/js/jquery.min.js"></script>
+    <div class="menu-wrap"></div>
+    <script src="/static/js/jquery-3.5.1.js"></script>
     <script>
         $(function () {
             var menuList = [
@@ -101,9 +93,9 @@
                             children: [
                                 {
                                     title: '菜单1-1-1',
-                                    children: [ // 子菜单列表
+                                    children: [
                                         {
-                                            id: 111, // 菜单id, 用来发起ajax请求获取菜单对应的数据
+                                            id: 111,
                                             title: '菜单1-1-1-1',   // 菜单名称
                                         }
                                     ]
@@ -226,69 +218,57 @@
                     ]
                 },
             ]
-            createMenuList($('.kbb-menu-wrap').eq(0), menuList, function (menuId, url) {
-
+            createMenuList($('.menu-wrap').eq(0), menuList, function (menuId, url) {
             })
-            // 渲染菜单
 
-            // 创建菜单
+
             function createMenuList(parentEl, menuList, callback) {
 
-                // 菜单操作
-                $(document).on('click', '.kbb-menu-title', function () {
-                    var curParent = $(this).parent('.kbb-menu-item')
-                    var curParentSib = curParent.siblings('.kbb-menu-item')
+                // $(document).on('click', '.menu-title', function(){
+                //     var curParent = $(this).parent('.menu-item')
+                //     var curParentSib = curParent.siblings('.menu-item')
 
-                    // 移除非激活菜单的 active：
-                    curParentSib.removeClass('active')
+                //     curParentSib.removeClass('active')
 
-                    // 切换当点点击状态
-                    if (curParent.hasClass('active')) {
-                        curParent.removeClass('active')
-                    } else {
-                        curParent.addClass('active')
-                    }
+                //     if(curParent.hasClass('active')){
+                //         curParent.removeClass('active')
+                //     }else{
+                //         curParent.addClass('active')
+                //     }
 
-                    // 移除所有额外的 active
-                    curParent.find('.kbb-menu-item').removeClass('active')
-                    curParentSib.find('.kbb-menu-item').removeClass('active')
+                //     curParent.find('.menu-item').removeClass('active')
+                //     curParentSib.find('.menu-item').removeClass('active')
 
-                    // 如果菜单有链接或者 id ，则传入回调函数
-                    if ((!$(this).hasClass('not-empty') && $(this).attr('menu-url') != "undefined") || (!$(this).hasClass('not-empty') && $(this).attr('menu-id') != "undefined")) {
-                        callback($(this).attr('menu-id'), $(this).attr('menu-url'))
-                    }
-                })
-
-
-
+                //     if((!$(this).hasClass('not-empty') && $(this).attr('menu-url') != 'undefind') || (!$(this).hasClass('not-empty') && $(this).attr('menu-id') != 'undefind')){
+                //         callback($(this).attr('menu-id'), $(this).attr('menu-url'))
+                //     }
+                // })
 
                 createList(menuList, parentEl)
                 function createList(list, el) {
-
                     if (Array.isArray(list) && list.length > 0) {
-                        var menuListEl = $('<div class="kbb-menu-list"></div>')
+                        var menuListEl = $('<div class="menu-list"></div>')
+           
                         el.append(menuListEl)
                         for (var i = 0; i < list.length; i++) {
-
-                            var menuItemEl = $('<div class="kbb-menu-item"><p class="kbb-menu-title" menu-id="' + list[i].id + '">' + list[i].title + '</p></div>')
+                            var menuItemEl = $('<div class="menu-item"><p class="menu-title" menu-id="' + list[i].id +'">' + list[i].title + '</p></div>')
                             menuListEl.append(menuItemEl)
                             if (list[i].children) {
 
-                                // 添加菜单右侧箭头
                                 menuItemEl.addClass('not-empty')
 
-                                // 继续渲染下个子菜单
                                 createList(list[i].children, menuItemEl)
                             } else {
-                                menuItemEl.children('.kbb-menu-title').attr('menu-url', list[i].url)
-
+                                menuItemEl.children('.menu-title').attr('menu-url', list[i].url)
                             }
                         }
+
                     }
+                    // console.log(list,el)
                 }
+
             }
         })
-
 
     </script>
 </body>

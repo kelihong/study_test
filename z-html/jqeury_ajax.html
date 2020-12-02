@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="test"></div>
+    <script src="/static/js/jquery.min.js"></script>
+    <script>
+
+        $.ajax({
+            type: "get",
+            url: '/static/js/test.json', // 这路径改一下
+            success: function (res) {
+
+                let elArr = []
+
+                res.forEach(item => {
+                    elArr.push('<div>' + item.type + ':' + item.value + '</div>')
+                });
+                var elStr = elArr.join('')
+                console.log(elStr);
+                // 这里的test 换成你的html 里的元素
+                $('.test').html(elStr)
+            }
+        })
+    </script>
+</body>
+
+</html>
