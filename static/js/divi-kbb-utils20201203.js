@@ -5,8 +5,9 @@
  * @param {String} imgUrl: 图片地址
  * @param {Object} canvasSize: {width: 宽度, height: 高度}
  * @param {Array} options: 四个定位点参数（顺序： 右上、左上、左下、右下）
+ * @param {Function} callback: 回调函数： 返回参数： 所生成的base64图片  
  */
-function createTransformImage({
+function createTransformIamge({
     imgUrl,
     canvasSize,
     options = [
@@ -15,27 +16,23 @@ function createTransformImage({
         { x: 0, y: canvasSize.height }, // 左下
         { x: canvasSize.width, y: canvasSize.height },  // 右下
     ],
+    callback = function () { }
 } = {}) {
     let optionsCopy = []
     options.forEach(item => {
         optionsCopy.push({ x: parseFloat(item.x) + -2, y: parseFloat(item.y) + 2 })
     });
 
-    return new Promise(resolve => {
-        // 重叠两张图
-        transformImage({ imgUrl, options: options }).then(res1 => {
-            transformImage({ imgUrl, options: optionsCopy }).then(res2 => {
+    // 重叠两张图
+    transformImage({ imgUrl, options: options }).then(res1 => {
+        transformImage({ imgUrl, options: optionsCopy }).then(res2 => {
 
-                mergeImage(res1, res2).then(res3 => {
-                    resolve(res3)
-                })
-
-
+            mergeImage(res1, res2).then(res3 => {
+                callback(res3)
             })
+
         })
-
     })
-
 
     function transformImage({ imgUrl, options } = {}) {
 

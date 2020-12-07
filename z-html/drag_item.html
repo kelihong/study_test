@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            position: relative;
+        }
+
+        .wrap {
+            position: absolute;
+            left: 100px;
+            width: 600px;
+            height: 600px;
+        }
+
+        .item {
+            width: 100px;
+            height: 100px;
+
+            background: pink;
+            position: absolute;
+
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="wrap">
+        <div class="item"></div>
+
+    </div>
+
+    <script src="/static/js/jquery-3.5.1.js"></script>
+    <script>
+        document.onmousedown = function (e) {
+            let target = e.target
+            let wrap = document.getElementsByClassName('wrap')[0]
+            if (target.classList.contains('item')) {
+                let offsetX = e.offsetX
+                let offsetY = e.offsetY
+
+                let clientX = e.clientX
+                let clientY = e.clientY
+
+                console.log(clientX, clientY);
+
+                target.style.left = (clientX - offsetX - wrap.offsetLeft) + 'px'
+            }
+
+        }
+
+    </script>
+</body>
+
+</html>
