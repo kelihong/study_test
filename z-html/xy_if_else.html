@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="/static/js/vue.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <button @click="priceCalc">计算</button>
+    </div>
+    <!--  -->
+    <script>
+        let vue = new Vue({
+            el: "#app",
+            data: {
+                price: 100000,
+            },
+            methods: {
+
+                priceCalc() {
+                    let price = parseFloat(this.price); // 当前价格
+                    let result = 0  // 计算结果
+                    let leftPrice = price   // 剩余价格
+
+                    if (price <= 10000) {
+                        result = 50
+                    } else if (price <= 100000) {
+                        result = 50 + (price - 50) * 100 * 25 / 100000
+                    } else if (price <= 200000) {
+                        result = 50 + 2500 + (price - 100000) * 15 / 1000
+                    } else if (price <= 500000) {
+
+                    } else {
+
+                    }
+                },
+                // 计算价格：
+                priceCalc() {
+                    let price = parseFloat(this.price); // 当前价格
+                    let result = 0  // 计算结果
+                    let leftPrice = price   // 剩余价格
+                    // 如果金额小于1万元， 则 结果等于 50， 如果不是小于 1万元，则进入 下一个 else if ,以此类推
+                    if (price <= 10000) {
+                        result = 50
+                        /** 
+                         * 或者如果 金额不是小于等于 1万元， 则进入本判断，直接跳过上一步判断，
+                         * 判断是否小于等于 10 万元，如果大于了10万元，则进入下一个else if , 
+                         * 如果结果等于 50 + 超过部分 * 2.5% , 为
+                         * 了计算精确，将价格（默认两位小数）乘以100，计算利率2.5% 变成25， 
+                         * 计算结束后，再除以对应的倍数
+                         */
+                    } else if (price <= 100000) {
+                        result = 50 + (price - 50) * 100 * 25 / 100000
+                        /**  
+                         * 或者如果价格超过了10 万元， 则上面全部都不计算，直接进入这一步继续判断是否小于20万元，
+                         * 如果大于20万元，则跳过这一步else if，继续下一个判断
+                         * 计算公式等于： 一万元部分 + 1 万元至 10 万元部分 + 超过10万但是小于20万部分 * 2% 的总和
+                         * 其中， 一万元部分、 1 万元至 10 万元部分 的值是固定的
+                         */
+
+                    } else if (price <= 200000) {
+                        result = 50 + 2500 + (price - 100000) * 15 / 1000
+
+                        // 同理可得这里是 价格超过了 20万， 但是小于50万的计算方法
+                    } else if (price <= 500000) {
+
+                        // 划重点： 最后有一个else 是兜底的，如果上面的都不符合，比如大于一个亿之类的的计算方式
+                    } else {
+
+                    }
+                },
+
+            },
+            created() { },
+        });
+    </script>
+</body>
+
+</html>

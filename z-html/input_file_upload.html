@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style></style>
+</head>
+
+<body>
+
+    <input id="uploadBox" type="file" accept=".rar">
+
+    <script src="/static/js/jquery.min.js"></script>
+    <script>
+        var uploadBox = document.getElementById('uploadBox')
+        uploadBox.onchange = function () {
+            console.log(this.files[0]);
+            let files = this.files[0]
+
+            var size = files.size / 1024 / 1024
+            if (size > 100) {
+                return alert('不能大于100M')
+            }
+
+            var formData = new FormData()
+            formData.append('file', files)
+            
+                $.ajax({
+                    type: 'post',
+                    url: 'http://localhost:6800/file/upload',
+                    data:formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (res) {
+                        console.log(res);
+                    },
+                    error(error) {
+                        console.log(error);
+                    }
+                })
+
+
+        }
+    </script>
+
+</body>
+
+</html>

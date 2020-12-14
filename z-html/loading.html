@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>新增、关闭 loading </title>
+</head>
+
+<body>
+
+    <script src="/static/js/jquery.min.js"></script>
+    <script>
+
+        // 创建 loading: 
+        function createKbbLoading(loadTxt) {
+            loadTxt = loadTxt || '上传中, 请稍候...'
+
+            let prevLoad = document.getElementById('kbbLoading')
+            if (prevLoad) {
+                return
+            }
+
+            let load = document.createElement('div')
+            let mask = document.createElement('div')
+            let loadIcon = document.createElement('div')
+
+            load.id = 'kbbLoading'
+
+            // 添加 load 样式
+            load.style.zIndex = "999999"
+            load.style.position = 'fixed'
+            load.style.top = '0px'
+            load.style.bottom = '0px'
+            load.style.left = '0px'
+            load.style.right = '0px'
+
+            // 添加 mask 样式
+            mask.style.position = 'absolute'
+            mask.style.top = '0px'
+            mask.style.bottom = '0px'
+            mask.style.left = '0px'
+            mask.style.right = '0px'
+            mask.style.background = "rgba(0,0,0,0.6)"
+            mask.style.zIndex = "1"
+
+
+            // 添加 loadIcon 样式
+            loadIcon.style.position = 'absolute'
+            loadIcon.style.top = '40%'
+            loadIcon.style.left = '50%'
+            loadIcon.style.transform = 'translateX(-50%)'
+            loadIcon.style.color = "#fff"
+            loadIcon.style.zIndex = "10"
+            loadIcon.innerHTML = loadTxt
+
+            load.appendChild(mask)
+            load.appendChild(loadIcon)
+
+            load.onclick = function (e) {
+                e.preventDefault()
+                e.stopPropagation()
+            }
+
+            document.body.appendChild(load)
+        }
+
+        // 移除loading:
+        function removeKbbLoading() {
+            let loading = document.getElementById('kbbLoading')
+            if (loading) {
+                loading.remove()
+            }
+        }
+
+        let kbbLoad = {
+            show: createKbbLoading,
+            remove: removeKbbLoading
+        }
+        kbbLoad.show()
+
+    </script>
+</body>
+
+</html>

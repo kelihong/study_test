@@ -59,8 +59,8 @@
             height: var(--default-size);
             line-height: var(--default-size);
             text-align: center;
-            background-color: var(--default-color);
-            color: #fff;
+            background-color: #fff;
+            color: var(--default-color);
             margin: 0 3px;
             cursor: pointer;
             border: 1px solid var(--default-color);
@@ -77,10 +77,16 @@
             border-radius: 50%;
         }
 
+        .kbb-pagination.round:active .kbb-page-next:active,
+        .kbb-pagination.round .kbb-page-item-prev:active,
+        .kbb-pagination.round .kbb-page-item-next:active {
+            background-color: #eee;
+        }
+
         .kbb-click-btn.active {
-            color: var(--default-color);
-            background: #fff;
-            box-shadow: 0 0 2px var(--default-color) inset;
+            color: #fff;
+            background: var(--default-color);
+            box-shadow: 0 0 2p var(--default-color) inset;
         }
 
         .kbb-pagination .hide {
@@ -105,7 +111,6 @@
             border-radius: 5px;
             margin: 3px;
         }
-
     </style>
 </head>
 
@@ -144,7 +149,7 @@
             /** 
                 selfSelector: 分页器的选择器,
                 data: 分页数据,
-                callback: 回调函数，返回 {data , 当前页， 下一页}
+                callback: 回调函数，返回 { 下一页,当前页，data , }
             */
             pagination({
                 selfSelector: '.my-page',
