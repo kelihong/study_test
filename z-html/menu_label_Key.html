@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            max-width: 1200px;
+            margin: 0 auto;
+
+        }
+
+        .kbb-menu-wrap {
+            width: 280px;
+            font-size: 16px;
+        }
+
+        .kbb-menu-wrap .kbb-menu-item {
+            height: 32px;
+            overflow: hidden;
+            padding-left: 18px;
+            background: #fff;
+        }
+
+        .kbb-menu-wrap .kbb-menu-item .kbb-menu-label {
+            height: 32px;
+            line-height: 32px;
+            /* background: pink; */
+            position: relative;
+            cursor: pointer;
+        }
+
+        .kbb-menu-wrap .kbb-menu-item.not-empty>.kbb-menu-label::after {
+            content: ' ';
+            display: inline-block;
+            /* float: right; */
+            position: relative;
+            top: 50%;
+            margin-left: 8px;
+            vertical-align: top;
+            transform: rotate(-45deg) translateY(-4px);
+            width: 6px;
+            height: 6px;
+            border-bottom: 1px solid #ea9624;
+            border-right: 1px solid #ea9624;
+
+        }
+
+        .kbb-menu-wrap .kbb-menu-item .kbb-menu-label:hover {
+            color: #555;
+            /* opacity: 0.7; */
+            background: #eee;
+        }
+
+        .kbb-menu-wrap .kbb-menu-item.active {
+            height: auto;
+        }
+
+        .kbb-menu-wrap .kbb-menu-item.active>.kbb-menu-label::before {
+            content: ' ';
+            display: block;
+            height: 20px;
+            width: 4px;
+            background-color: #ea9624;
+            position: absolute;
+            left: -12px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .kbb-menu-wrap .kbb-menu-item.active.not-empty>.kbb-menu-label::after {
+            transform: translateY(-5px) rotate(45deg);
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="kbb-menu-wrap">
+
+    </div>
+
+    <script src="/static/js/jquery.min.js"></script>
+    <script>
+        $(function () {
+            var menuList = [
+                {
+                    label: '菜单1',
+                    url: '/',
+                    children: [
+                        {
+                            label: '菜单1-1',
+                            url: '/',
+                            children: [
+                                {
+                                    label: '菜单1-1-1',
+                                    children: [ // 子菜单列表
+                                        {
+                                            id: 111, // 菜单id, 用来发起ajax请求获取菜单对应的数据
+                                            label: '菜单1-1-1-1',   // 菜单名称
+                                        }
+                                    ]
+                                },
+                                {
+                                    label: '菜单1-1-2'
+                                },
+                                {
+                                    label: '菜单1-1-3'
+                                },
+                            ]
+                        },
+                        {
+                            label: '菜单1-2',
+                            url: '/',
+                            children: [
+                                {
+                                    label: '菜单1-2-1'
+                                },
+                                {
+                                    label: '菜单1-2-2'
+                                },
+                                {
+                                    label: '菜单1-2-3'
+                                },
+                            ]
+                        },
+                    ]
+                },
+                {
+                    label: '菜单2',
+                    url: '/',
+                    children: [
+                        {
+                            label: '菜单2-1',
+                            url: '/',
+                            children: [
+                                {
+                                    label: '菜单2-1-1'
+                                },
+                                {
+                                    label: '菜单2-1-2'
+                                },
+                                {
+                                    label: '菜单2-1-3'
+                                },
+                            ]
+                        },
+                        {
+                            label: '菜单2-2',
+                            url: '/',
+                            children: [
+                                {
+                                    label: '菜单2-2-1'
+                                },
+                                {
+                                    label: '菜单2-2-2'
+                                },
+                                {
+                                    label: '菜单2-2-3'
+                                },
+                            ]
+                        },
+                        {
+                            label: '菜单2-3',
+                            url: '/',
+                            children: [
+                                {
+                                    label: '菜单2-3-1'
+                                },
+                                {
+                                    label: '菜单2-3-2'
+                                },
+                                {
+                                    label: '菜单2-3-3'
+                                },
+                                {
+                                    label: '菜单2-3-4',
+                                    url: '/'
+                                },
+                            ]
+                        },
+                    ]
+                },
+                {
+                    label: '菜单3',
+                    url: '/',
+                    children: [
+                        {
+                            label: '菜单3-1',
+                            url: '/',
+                            children: [
+                                {
+                                    label: '菜单3-1-1'
+                                },
+                                {
+                                    label: '菜单3-1-2'
+                                },
+                                {
+                                    label: '菜单3-1-3'
+                                },
+                            ]
+                        },
+                        {
+                            label: '菜单3-2',
+
+                            children: [
+                                {
+                                    label: '菜单3-2-1',
+                                    url: '/',
+                                },
+                                {
+                                    label: '菜单3-2-2'
+                                },
+                                {
+                                    label: '菜单3-2-3'
+                                },
+                            ]
+                        }
+                    ]
+                },
+            ]
+            createMenuList($('.kbb-menu-wrap').eq(0), menuList, function (menuId, url) {
+
+            })
+            // 渲染菜单
+
+            // 创建菜单
+            function createMenuList(parentEl, menuList, callback) {
+
+                // 菜单操作
+                $(document).on('click', '.kbb-menu-label', function () {
+                    var curParent = $(this).parent('.kbb-menu-item')
+                    var curParentSib = curParent.siblings('.kbb-menu-item')
+
+                    // 移除非激活菜单的 active：
+                    curParentSib.removeClass('active')
+
+                    // 切换当点点击状态
+                    if (curParent.hasClass('active')) {
+                        curParent.removeClass('active')
+                    } else {
+                        curParent.addClass('active')
+                    }
+
+                    // 移除所有额外的 active
+                    curParent.find('.kbb-menu-item').removeClass('active')
+                    curParentSib.find('.kbb-menu-item').removeClass('active')
+
+                    // 如果菜单有链接或者 id ，则传入回调函数
+                    if ((!$(this).hasClass('not-empty') && $(this).attr('menu-url') != "undefined") || (!$(this).hasClass('not-empty') && $(this).attr('menu-id') != "undefined")) {
+                        callback($(this).attr('menu-id'), $(this).attr('menu-url'))
+                    }
+                })
+
+
+
+                // ！递归创建菜单部分
+                createList(menuList, parentEl)
+                function createList(list, el) {
+
+                    if (Array.isArray(list) && list.length > 0) {
+                        var menuListEl = $('<div class="kbb-menu-list"></div>')
+                        el.append(menuListEl)
+                        for (var i = 0; i < list.length; i++) {
+
+                            var menuItemEl = $('<div class="kbb-menu-item"><p class="kbb-menu-label" menu-id="' + list[i].id + '">' + list[i].label + '</p></div>')
+                            menuListEl.append(menuItemEl)
+                            if (list[i].children) {
+
+                                // 添加菜单右侧箭头
+                                menuItemEl.addClass('not-empty')
+
+                                // 继续渲染下个子菜单
+                                createList(list[i].children, menuItemEl)
+                            } else {
+                                menuItemEl.children('.kbb-menu-label').attr('menu-url', list[i].url)
+
+                            }
+                        }
+                    }
+                }
+            }
+        })
+
+
+    </script>
+</body>
+
+</html>

@@ -4,29 +4,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>2d 切片 转换 3d 2d转3d</title>
+    <title>变形 获取定位点</title>
 
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        
         body {
             -moz-user-select: none;
         }
         
-        #cas {
+        #cas,
+        #casCover {
             position: absolute;
-            top: 80px;
+            top: 90px;
             left: 0;
             right: 0;
             margin: auto;
             border: 1px solid;
         }
         
-        #cas2 {
-            position: absolute;
-            top: 78px;
-            left: 2px;
-            right: -2px;
-            margin: auto;
-            border: 1px solid;
+        #cas {
+            opacity: 0.5;
+        }
+        
+        .kbb-btn {
+            cursor: pointer;
+            /* border: 1px solid #ddd; */
+            border-radius: 5px;
+            display: inline-block;
+            font-size: 14px;
+            color: #fff;
+            text-align: center;
+            background: rgb(0, 119, 255);
         }
         
         .tips {
@@ -37,37 +49,154 @@
         .control {
             text-align: center;
         }
+        
+        .show-item {
+            display: inline-block;
+            margin-right: 10px;
+            border: 1px dashed blue;
+            padding: 5px 10px;
+        }
+        
+        .show-item .key {
+            color: blue;
+        }
+        
+        .upload-btn {
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .upload-btn span {
+            cursor: pointer;
+            display: inline-block;
+            padding: 5px 15px;
+        }
+        
+        .upload-btn input {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            opacity: 0;
+            cursor: pointer;
+        }
     </style>
 </head>
 
 <body>
 
-    <canvas id="cas2" width="600" height="500">
+    <!-- <div class="tips">Tips:拖动图片四个角</div> -->
+    <div class="control">
+        <input type="checkbox" id="dot" /><label for="dot">点</label>
+        <input type="checkbox" id="rect" /><label for="rect">方格</label>
 
+        <div class="show-item">
+            <span class="key">左上</span>
+            <input type="text" class="value">
+        </div>
+        <div class="show-item">
+            <span class="key">右上</span>
+            <input type="text" class="value">
+        </div>
+        <div class="show-item">
+            <span class="key">右下</span>
+            <input type="text" class="value">
+        </div>
+        <div class="show-item">
+            <span class="key">左下</span>
+            <input type="text" class="value">
+        </div>
+
+    </div>
+
+    <div class="kbb-btn upload-btn">
+        <span>添加模型</span>
+        <input id="uploadBtn" type="file">
+    </div>
+    <div class="kbb-btn upload-btn">
+        <span>添加花纹</span>
+        <input id="uploadCoverBtn" type="file">
+    </div>
+
+    <canvas id="casCover" width="600" height="600">
         亲，你滴浏览器太out啦，换一个吧
     </canvas>
-    <canvas id="cas" width="600" height="500">
+
+    <canvas id="cas" width="600" height="600">
         亲，你滴浏览器太out啦，换一个吧
     </canvas>
+
 
     <script>
-        transformImage('cas')
-        transformImage('cas2')
+        var uploadBtn = document.getElementById('uploadBtn')
+        var uploadCoverBtn = document.getElementById('uploadCoverBtn')
+        uploadBtn.onchange = function() {
+            let file = this.files[0]
 
-        function transformImage(selector) {
+            var reader = new FileReader()
+            reader.readAsDataURL(file)
+            reader.onload = function(e) {
+                let url = this.result
+                drawCover(url)
 
-            // 矩阵计算函数
+            }
+        }
+
+        uploadCoverBtn.onchange = function() {
+            let file = this.files[0]
+
+            var reader = new FileReader()
+            reader.readAsDataURL(file)
+            reader.onload = function(e) {
+                let url = this.result
+                transformImage(url)
+
+            }
+        }
+
+
+        function drawCover(src) {
+            var casCover = document.getElementById("casCover")
+            let ctx = casCover.getContext('2d')
+            var img = new Image()
+            img.src = src || ''
+            img.onload = function() {
+                ctx.drawImage(img, 0, 0, 600, 600)
+            }
+        }
+
+
+        function transformImage(coverSrc) {
+
             matrixfun()
 
-            var imgRatio = 4
-            var count = getSelected()
+            //是否显示贴图的checkbox
+            // 展示四个顶点位置
+            var showItems = document.getElementsByClassName('show-item')
 
-
-            function getSelected() {
-                return 4
+            //获取url后面跟的参数
+            var a = document.createElement('A');
+            a.href = window.location.href;
+            var ret = {},
+                seg = a.search.replace(/^\?/, '').split('&'),
+                len = seg.length,
+                i = 0,
+                s;
+            for (; i < len; i++) {
+                if (!seg[i]) continue;
+                s = seg[i].split('=');
+                ret[s[0]] = s[1];
             }
 
-            var canvas = document.getElementById(selector);
+            var hasDot = false,
+                hasRect = false,
+                imgRatio = 1,
+                count = 10
+
+
+
+            var canvas = document.getElementById('cas');
             var ctx = canvas.getContext('2d');
 
             var dots = [];
@@ -75,8 +204,18 @@
 
             var img = new Image();
             var maxHeight = 460;
-            img.src = '/static/images/test23.png';
+            img.src = coverSrc;
+
+
+            let subc = document.createElement('canvas')
+            let subctx = subc.getContext('2d')
+            subctx.rect
+
+
+            console.log(1)
+
             img.onload = function() {
+
                 var img_w = img.width,
                     img_h = img.height;
 
@@ -92,29 +231,23 @@
                 img.width = img_w;
                 img.height = img_h;
 
-                var cHeight = canvas.height
-                var cWidth = canvas.width
-
-                console.log(canvas.height);
-
                 dots = [{
-                        x: cWidth,
-                        y: 0
-                    }, // 右上 
-                    {
                         x: 0,
                         y: 0
                     }, // 左上
                     {
-                        x: 0,
-                        y: cHeight
-                    }, // 左下
+                        x: 600,
+                        y: 0
+                    }, // 右上 
                     {
-                        x: cWidth,
-                        y: cHeight
+                        x: 600,
+                        y: 600
                     }, // 右下
+                    {
+                        x: 0,
+                        y: 600
+                    }, // 左下
                 ];
-                console.log(dots)
 
                 //保存一份不变的拷贝
                 dotscopy = [{
@@ -138,21 +271,94 @@
             };
 
             /**
+             * 鼠标拖动事件绑定
+             * @param e
+             */
+            window.onmousedown = function(e) {
+                // e.preventDefault();
+
+                if (!dots.length) return;
+
+                var area = getArea(e);
+                var dot, i;
+                //鼠标事件触发区域
+                var qy = 150;
+
+                for (i = 0; i < dots.length; i++) {
+                    dot = dots[i];
+                    if (area.t >= dot.y - qy && area.t <= dot.y + qy && area.l >= dot.x - qy && area.l <= dot.x + qy) {
+                        break;
+                    } else {
+                        dot = null;
+                    }
+                }
+
+                if (!dot) return;
+
+                window.onmousemove = function(e) {
+                    var narea = getArea(e);
+                    var nx = narea.l - area.l;
+                    var ny = narea.t - area.t;
+
+                    dot.x += nx;
+                    dot.y += ny;
+
+                    area = narea;
+
+
+
+                    render();
+                };
+
+
+
+                window.onmouseup = function() {
+
+
+
+                    window.onmousemove = null;
+                    window.onmouseup = null;
+                };
+            };
+
+            function showFourDots() {
+                dots.forEach((item, index) => {
+                    showItems[index].getElementsByClassName('value')[0].value = "x:" + parseInt(item.x * 2 * 100) / 100 + ', y:' + parseInt(item.y * 2 * 100) / 100
+
+                })
+            }
+
+            /**
+             * 获取鼠标点击/移过的位置
+             * @param e
+             * @returns {{t: number, l: number}}
+             */
+            function getArea(e) {
+                e = e || window.event;
+                return {
+                    t: e.clientY - canvas.offsetTop + document.body.scrollTop + document.documentElement.scrollTop,
+                    l: e.clientX - canvas.offsetLeft + document.body.scrollLeft + document.documentElement.scrollLeft,
+                };
+            }
+
+            /**
              * 画布渲染
              */
             function render() {
+
+                showFourDots()
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-                console.log(count)
                 var ndots = rectsplit(count, dots[0], dots[1], dots[2], dots[3]);
 
-                console.log(ndots)
                 ndots.forEach(function(d, i) {
                     //获取平行四边形的四个点
                     var dot1 = ndots[i];
                     var dot2 = ndots[i + 1];
                     var dot3 = ndots[i + count + 2];
                     var dot4 = ndots[i + count + 1];
+
+
 
                     //获取初始平行四边形的四个点
                     var idot1 = idots[i];
@@ -168,6 +374,10 @@
                         renderImage(idot1, dot1, idot2, dot2, idot4, dot4, idot1);
                     }
 
+                    if (hasDot) {
+                        ctx.fillStyle = 'red';
+                        ctx.fillRect(d.x - 1, d.y - 1, 2, 2);
+                    }
                 });
             }
 
@@ -183,15 +393,56 @@
             function renderImage(arg_1, _arg_1, arg_2, _arg_2, arg_3, _arg_3, vertex) {
                 ctx.save();
 
+                // if (!_arg_1.img) {
+                //   var canvas = document.createElement('canvas');
+                //   var _ctx = canvas.getContext('2d');
+                //   var w = img.width / count;
+                //   var h = img.height / count;
+                //   canvas.width = w;
+                //   canvas.height = h;
+                //   _ctx.beginPath();
+                //   _ctx.moveTo(_arg_1.x - vertex.x, _arg_1.y - vertex.y);
+                //   _ctx.lineTo(_arg_2.x - vertex.x, _arg_2.y - vertex.y);
+                //   _ctx.lineTo(_arg_3.x - vertex.x, _arg_3.y - vertex.y);
+                //   _ctx.closePath();
+
+                //   if (hasRect) {
+                //     _ctx.lineWidth = 2;
+                //     _ctx.strokeStyle = 'red';
+                //     _ctx.stroke();
+                //   }
+
+                //   _ctx.clip();
+
+                //   //绘制图片
+                //   _ctx.drawImage(
+                //     img,
+                //     (vertex.x - idots[0].x) / imgRatio,
+                //     (vertex.y - idots[0].y) / imgRatio,
+                //     w / imgRatio,
+                //     h / imgRatio,
+                //     0,
+                //     0,
+                //     w,
+                //     h
+                //   );
+
+                //   _arg_1.img = canvas;
+                // }
+
                 //根据变换后的坐标创建剪切区域
                 ctx.beginPath();
                 ctx.moveTo(_arg_1.x, _arg_1.y);
                 ctx.lineTo(_arg_2.x, _arg_2.y);
                 ctx.lineTo(_arg_3.x, _arg_3.y);
                 ctx.closePath();
-
-
+                if (hasRect) {
+                    ctx.lineWidth = 2;
+                    ctx.strokeStyle = 'red';
+                    ctx.stroke();
+                }
                 ctx.clip();
+
 
                 //传入变换前后的点坐标，计算变换矩阵
                 var result = matrix.getMatrix.apply(this, arguments);
@@ -214,6 +465,7 @@
                     w + 2,
                     h + 2
                 );
+
 
                 ctx.restore();
             }

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <img id="img" src="" alt="">
+    <script>
+        let shapeUrl = '/static/images/shape.png'
+        let imgUrl = '/static/images/index_bg.png'
+
+        imgCutShape(shapeUrl, imgUrl).then(res => {
+            let finalUrl = res
+            console.log(finalUrl)
+            img.src = finalUrl
+        })
+
+        async function imgCutShape(shapeUrl, imgUrl) {
+            var cw = 1200
+            var ch = 1200
+            let canvas = document.createElement('canvas')
+            canvas.setAttribute('width', cw)
+            canvas.setAttribute('height', ch)
+            let ctx = canvas.getContext('2d')
+
+
+            canvas = await drawImage(canvas, shapeUrl)
+            canvas = await drawImage(canvas, imgUrl, true)
+            return new Promise((reslove, reject) => {
+                let newImgUrl = canvas.toDataURL('image/png')
+
+                reslove(newImgUrl)
+            })
+            async function drawImage(canvas, url, type) {
+
+                var img = new Image()
+                img.src = url
+                return new Promise((reslove, reject) => {
+                    img.onload = function() {
+                        if (type) {
+
+                            ctx.globalCompositeOperation = 'source-in'
+                        }
+                        ctx.drawImage(img, 0, 0, cw, ch)
+                        reslove(canvas)
+                    }
+                })
+            }
+        }
+    </script>
+</body>
+
+</html>

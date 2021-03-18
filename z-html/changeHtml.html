@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="item">AAA</div>
+    <div class="item">BBB</div>
+    <div class="item">CCC</div>
+    <div class="item">DDD</div>
+    <div class="item">EEE</div>
+    <div class="item">FFF</div>
+    <div class="item">GGG</div>
+
+    <script src="/static/js/jquery-3.5.1.js"></script>
+    <script>
+        $(document).on('click', '.item', function() {
+            let x = $(this)
+            let index = $(this).index()
+            if (index === $('.item').length - 1) {
+                return
+            }
+            $(this).siblings().eq(index).after(x)
+        })
+    </script>
+</body>
+
+</html>

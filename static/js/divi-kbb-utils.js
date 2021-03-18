@@ -13,12 +13,12 @@ function createTransformImage({
         { x: canvasSize.width, y: 0 }, // 右上 
         { x: 0, y: 0 }, // 左上
         { x: 0, y: canvasSize.height }, // 左下
-        { x: canvasSize.width, y: canvasSize.height },  // 右下
+        { x: canvasSize.width, y: canvasSize.height }, // 右下
     ],
 } = {}) {
     let optionsCopy = []
     options.forEach(item => {
-        optionsCopy.push({ x: parseFloat(item.x) + -2, y: parseFloat(item.y) + 2 })
+        optionsCopy.push({ x: parseFloat(item.x) + -20, y: parseFloat(item.y) + 20 })
     });
 
     return new Promise(resolve => {
@@ -63,7 +63,7 @@ function createTransformImage({
         var maxHeight = 460;
         img.src = imgUrl;
         return new Promise(resolve => {
-            img.onload = function () {
+            img.onload = function() {
                 var img_w = img.width,
                     img_h = img.height;
 
@@ -107,7 +107,7 @@ function createTransformImage({
 
             var ndots = rectsplit(count, dots[0], dots[1], dots[2], dots[3]);
 
-            ndots.forEach(function (d, i) {
+            ndots.forEach(function(d, i) {
                 //获取平行四边形的四个点
                 var dot1 = ndots[i];
                 var dot2 = ndots[i + 1];
@@ -231,9 +231,9 @@ function createTransformImage({
 
         function matrixfun() {
 
-            !function (root, fatory) {
+            ! function(root, fatory) {
                 if ('define' in root && define.cmd) {
-                    define(function (require, exports, module) {
+                    define(function(require, exports, module) {
                         module.exports = fatory()
                     })
                 } else if (typeof module === "object" && module.exports) {
@@ -241,7 +241,7 @@ function createTransformImage({
                 } else {
                     window.matrix = fatory();
                 }
-            }(this, function () {
+            }(this, function() {
                 /**
                  * 根据变化前后的点坐标，计算矩阵
                  * @param arg_1     变化前坐标1
@@ -345,9 +345,9 @@ function createTransformImage({
         img1.src = url2
         let canvas = document.createElement('canvas')
         let ctx = canvas.getContext('2d')
-        // 第一张图片SA
+            // 第一张图片SA
         return new Promise(resolve => {
-            img1.onload = function () {
+            img1.onload = function() {
                 let imgW = img1.width
                 let imgH = img1.height
                 canvas.setAttribute('width', imgW)
@@ -362,7 +362,7 @@ function createTransformImage({
             let img2 = new Image()
             img2.src = url1
             return new Promise(resolve => {
-                img2.onload = function () {
+                img2.onload = function() {
                     let imgW = img2.width
                     let imgH = img2.height
                     ctx.drawImage(img2, 0, 0, imgW, imgH)

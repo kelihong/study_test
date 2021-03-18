@@ -1,6 +1,5 @@
-let AjaxUrlData = 'http://192.168.88.200:8082/api/goods/listGoodsCompositeGraph'
+let urlData = 'http://localhost:1314/'
 let urlResult = '/static/images/test23.png'
-
 create3DBox({ urlData, urlResult })
 
 function create3DBox({ urlData, urlResult } = {}) {
@@ -33,26 +32,28 @@ function create3DBox({ urlData, urlResult } = {}) {
 
     function fetchImageData(imageUrl) {
         $.ajax({
-            type: "post",
-            url: AjaxUrlData,
-            data: {
-                productId: 12,
-            },
+            type: 'get',
+            url: urlData,
             success: function(res) {
-                let styles = res.data;
+                let styles = res.data.styles
 
                 // 先创建 轮播图
-                create3D.createImageSwiper(styles);
-                create3D.datas.styleList = styles;
-                console.log(1)
-                resolve(styles)
+                createImageSwiper(styles)
+                kbbnice.styleList = styles
+
+
+                // 等canvas 渲染好了，用dataURL 填充这个函数
+                for (let i = 0; i < styles.length; i++) {
+                    createAppointIndexSwiperImage(i, imageUrl)
+                }
 
                 // 获取到图片列表渲染 swiper
             },
             error: function(error) {
-                reject(error)
-            },
-        });
+                console.log(error);
+            }
+
+        })
 
     }
 
@@ -229,51 +230,16 @@ function create3DBox({ urlData, urlResult } = {}) {
             ctx.drawImage(imgEl, 0, 0, width, height)
         });
         return canvas
+
     }
 
     // canvas 转 base64
     function canvasToDataURL(canvas, type) {
         type = type || 'png'
-            // if (type === 'jpeg') {
-            //     let ctx = canvas.getContext('2d')
-            //     let w = canvas.width
-            //     let h = canvas.height
-            //     ctx.fillStyle = '#ffffff';
-            //     ctx.fillRect(0, 0, w, h)
-            // }
-
-
         let dataURL = canvas.toDataURL('image/' + type)
-
-        // delete ctx
         return dataURL
 
     }
-
-    // png 转 jpeg
-    function pngToJpg(url) {
-        return new Promise(resolve => {
-            createImage(url).then(img => {
-                var canvas = document.createElement('canvas')
-                let ctx = canvas.getContext('2d')
-                let w = canvas.width
-                let h = canvas.height
-                ctx.fillStyle = '#ffffff';
-                ctx.fillRect(0, 0, w, h)
-                ctx.drawImage(img, 0, 0, w, h)
-
-
-                let dataURL = canvas.toDataURL('image/jpeg')
-                resolve(dataURL)
-
-                delete canvas
-                delete ctx
-            })
-        })
-
-    }
-
-    // 添加背景色： 
 
     // 转换分辨率
     async function resetImageSize({ url, size }) {

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        canvas {
+            border: 1px solid grey;
+
+        }
+    </style>
+</head>
+
+<body>
+
+    <canvas id="test" width="500" height="500"></canvas>
+    <script src="/static/js/fabric.min.js"></script>
+
+    <script>
+        let canvas = new fabric.Canvas('test', {
+            preserveObjectStacking: true, // 添加图层时自动固定图层zindex, 不随着点击而提升层级
+            centeredScaling: true, // 居中拉伸
+        })
+    </script>
+</body>
+
+</html>

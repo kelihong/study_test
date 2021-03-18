@@ -9,7 +9,6 @@
         canvas {
             background-color: #eee;
         }
-
     </style>
 </head>
 
@@ -19,11 +18,10 @@
     <img src="" alt="" id="img">
 
     <script>
-
         let imgUrl = '/static/images/shape.png'
         let imgUrl2 = '/static/images/index_bg.png'
         let imgUrl3 = '/static/images/snow2.png'
-        // image superposition
+            // image superposition
 
         async function superpositionCanvas(imgList) {
             var canvas = document.getElementById('canvas')
@@ -36,7 +34,7 @@
             canvas = await drawImage(canvas, imgUrl2, true)
             return new Promise((reslove, reject) => {
                 let newImgUrl = canvas.toDataURL('image/png')
-              
+
                 reslove(newImgUrl)
             })
         }
@@ -48,39 +46,35 @@
             var img = new Image()
             img.src = imgUrl
             return new Promise((reslove, reject) => {
-                img.onload = function () {
+                img.onload = function() {
                     setTimeout(() => {
                         if (type) {
                             ctx.globalCompositeOperation = "source-in";
                         }
                         ctx.drawImage(img, 0, 0, cw, ch)
-                        
                         reslove(canvas)
                     }, 800);
                 }
             })
         }
 
-
         async function test() {
-           let url = await superpositionCanvas()
-           let img = new Image()
-           img.src = url
-           img.onload = function(){
+            let url = await superpositionCanvas()
+            let img = new Image()
+            img.src = url
+            img.onload = function() {
 
-            let canvas = document.createElement('canvas')
-            canvas.setAttribute('width',img.width)
-            canvas.setAttribute('height',img.height)
-            let ctx = canvas.getContext('2d')
-            ctx.drawImage(img, 0,0,img.width, img.height)
-        
-            let imgUrls = canvas.toDataURL('image/png')
-              document.getElementById('img').setAttribute('src', imgUrls)
-           }
+                let canvas = document.createElement('canvas')
+                canvas.setAttribute('width', img.width)
+                canvas.setAttribute('height', img.height)
+                let ctx = canvas.getContext('2d')
+                ctx.drawImage(img, 0, 0, img.width, img.height)
+
+                let imgUrls = canvas.toDataURL('image/png')
+                document.getElementById('img').setAttribute('src', imgUrls)
+            }
         }
         test()
-
-        
     </script>
 </body>
 

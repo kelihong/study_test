@@ -4,13 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>变形 最初原型</title>
 
     <style>
         body {
             -moz-user-select: none;
         }
-
+        
         #cas {
             position: absolute;
             top: 80px;
@@ -19,16 +19,15 @@
             margin: auto;
             border: 1px solid;
         }
-
+        
         .tips {
             text-align: center;
             margin: 15px 0;
         }
-
+        
         .control {
             text-align: center;
         }
-
     </style>
 </head>
 
@@ -55,8 +54,8 @@
 
 
     <script>
-
         transformImage()
+
         function transformImage() {
 
             matrixfun()
@@ -105,19 +104,19 @@
                 imgRatio = 1,
                 count = getSelected();
 
-            dotChoose.onchange = function () {
+            dotChoose.onchange = function() {
                 hasDot = this.checked;
                 render();
             };
-            rectChoose.onchange = function () {
+            rectChoose.onchange = function() {
                 hasRect = this.checked;
                 render();
             };
-            picChoose.onchange = function () {
+            picChoose.onchange = function() {
                 hasPic = this.checked;
                 render();
             };
-            countChoose.onchange = function () {
+            countChoose.onchange = function() {
                 count = getSelected();
                 //count更改后需要重新计算所有点的初始位置
                 idots = rectsplit(count, dotscopy[0], dotscopy[1], dotscopy[2], dotscopy[3]);
@@ -142,7 +141,7 @@
             var img = new Image();
             var maxHeight = 460;
             img.src = '/static/images/test23.png';
-            img.onload = function () {
+            img.onload = function() {
                 var img_w = img.width,
                     img_h = img.height;
 
@@ -158,21 +157,39 @@
                 img.width = img_w;
                 img.height = img_h;
 
-                dots = [
-                    { x: 411.19, y: 109.95 }, // 右上 
-                    { x: 6.25, y: 227.28 }, // 左上
-                    { x: 111.19, y: 515.95 }, // 左下
-                    { x: 600, y: 302.95 },  // 右下
+                dots = [{
+                        x: 411.19,
+                        y: 109.95
+                    }, // 右上 
+                    {
+                        x: 6.25,
+                        y: 227.28
+                    }, // 左上
+                    {
+                        x: 111.19,
+                        y: 515.95
+                    }, // 左下
+                    {
+                        x: 600,
+                        y: 302.95
+                    }, // 右下
                 ];
                 console.log(dots)
 
                 //保存一份不变的拷贝
-                dotscopy = [
-                    { x: left, y: top },
-                    { x: left + img_w, y: top },
-                    { x: left + img_w, y: top + img_h },
-                    { x: left, y: top + img_h },
-                ];
+                dotscopy = [{
+                    x: left,
+                    y: top
+                }, {
+                    x: left + img_w,
+                    y: top
+                }, {
+                    x: left + img_w,
+                    y: top + img_h
+                }, {
+                    x: left,
+                    y: top + img_h
+                }, ];
 
                 //获得所有初始点坐标
                 idots = rectsplit(count, dotscopy[0], dotscopy[1], dotscopy[2], dotscopy[3]);
@@ -184,7 +201,7 @@
              * 鼠标拖动事件绑定
              * @param e
              */
-            window.onmousedown = function (e) {
+            window.onmousedown = function(e) {
                 if (!dots.length) return;
 
                 var area = getArea(e);
@@ -203,7 +220,7 @@
 
                 if (!dot) return;
 
-                window.onmousemove = function (e) {
+                window.onmousemove = function(e) {
                     var narea = getArea(e);
                     var nx = narea.l - area.l;
                     var ny = narea.t - area.t;
@@ -216,7 +233,7 @@
                     render();
                 };
 
-                window.onmouseup = function () {
+                window.onmouseup = function() {
                     window.onmousemove = null;
                     window.onmouseup = null;
                 };
@@ -244,7 +261,7 @@
                 var ndots = rectsplit(count, dots[0], dots[1], dots[2], dots[3]);
 
                 console.log(ndots)
-                ndots.forEach(function (d, i) {
+                ndots.forEach(function(d, i) {
                     //获取平行四边形的四个点
                     var dot1 = ndots[i];
                     var dot2 = ndots[i + 1];
@@ -407,9 +424,9 @@
 
             function matrixfun() {
 
-                !function (root, fatory) {
+                ! function(root, fatory) {
                     if ('define' in root && define.cmd) {
-                        define(function (require, exports, module) {
+                        define(function(require, exports, module) {
                             module.exports = fatory()
                         })
                     } else if (typeof module === "object" && module.exports) {
@@ -417,7 +434,7 @@
                     } else {
                         window.matrix = fatory();
                     }
-                }(this, function () {
+                }(this, function() {
                     /**
                      * 根据变化前后的点坐标，计算矩阵
                      * @param arg_1     变化前坐标1

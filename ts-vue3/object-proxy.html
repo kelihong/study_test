@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="box">1</div>
+    <button id="btn">change</button>
+    <script>
+        const btn = document.getElementById('btn')
+        const box = document.getElementById('box')
+
+        const data = {}
+        let val = {city: 1121}
+
+        Object.defineProperty(data, 'name', {
+            set(param) {
+                val = param
+                box.innerHTML = param
+                console.log(1)
+            },
+            get() {
+                return val
+            },
+
+        })
+
+        btn.onclick = function () {
+            // data.name = 'asdfsdffa'
+            data.name.city  = 232
+            console.log(data)
+        }
+    </script>
+</body>
+
+</html>

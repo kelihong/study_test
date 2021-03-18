@@ -1,0 +1,12 @@
+.sort-wrap body {
+  color: red;
+}
+.sort-wrap body div {
+  color: red;
+}
+.sort-wrap body div span {
+  color: red;
+}
+.sort-wrap body span {
+  color: white;
+}

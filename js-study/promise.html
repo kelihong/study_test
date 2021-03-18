@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // Promise.reject(1).then(res => {
+        //     console.log(res)
+        // }).catch(error => {
+        //     console.log(error)
+        // }).then(res => {
+        //     console.log(res)
+        // })
+
+
+        // Promise.resolve(new Error()).then((res,res2) => {
+
+        //     console.log(res)
+        //     console.log(res2)
+        // }).catch(error => {
+        //     console.log(error)
+        // })
+
+        const promise = new Promise((resolve, rejected) => {
+            throw new Error('test')
+        })
+
+        promise.then(res => {
+                console.log(res)
+            },
+            err => {
+                console.log('第二个参数',err)
+            }
+
+        ).catch(error => {
+            console.log(error)
+        })
+    </script>
+</body>
+
+</html>

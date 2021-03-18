@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        const obj = {
+            name: '小明',
+            wife: {
+                name: '丽丽'
+            }
+        }
+
+        const proxy = new Proxy(obj, {
+            get(target, prop, receiver) {
+                console.log('获取', prop)
+                return Reflect.get(target, prop)
+            },
+            set(target, prop,value, receiver) {
+                console.log('设置',prop)
+                return Reflect.set(target, prop,value)
+            }
+        })
+
+        proxy.hasband = {}
+        proxy.hasband.name  = 222
+        proxy.hasband.age  = 222
+        let c = proxy.hasband
+
+        let e = delete proxy.name
+
+
+        console.log('a的值是： ', c)
+
+        console.log('----------------------------------')
+
+        const obj2 = {
+            name: '小明',
+            wife: {
+                name: '丽丽',
+                city: {
+                    name: '没过'
+                }
+            }
+        }
+
+        let wName = {
+            name: "韩梅梅",
+            city: {
+                name: 'sfd'
+            }
+        }
+        Object.defineProperty(obj2, 'wife', {
+            get() {
+                console.log('get wife name! ')
+                return wName
+            }
+        })
+
+        let b = obj2.wife.city.name
+        console.log('b的值是： ', b)
+    </script>
+</body>
+
+</html>

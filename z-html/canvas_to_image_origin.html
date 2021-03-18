@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <canvas id="canvas" width="600" height="600"></canvas>
+
+    <script src="/static/js/jquery-3.5.1.js"></script>
+    <script>
+
+        // let src = 'http://images.dividiy.com/group1/M00/00/09/wKhYI2AaaZeAQuuFAASmjPtUcCk936.jpg'
+        // let src = 'http://localhost:9999/group1/M00/00/0F/wKhYI2BPfKeAAiLPAASmjPtUcCk515.jpg'
+        // let src = 'http://images.dividiy.com/group1/M00/00/11/wKhYI2BRXTiAVicaAAbc6SMLNq8292.png'
+        // let src = 'http://www.testkbb.com:801/static/images/big_star.png'
+        // let src = 'http://www.testkbb.com/group1/M00/00/0F/wKhYI2BPfKeAAiLPAASmjPtUcCk515.jpg'
+        // let src = 'http://images.dividiy.com/group1/M00/00/0F/wKhYI2BPN3GAbvhJAAb3X8nr7sU337.png'
+        // let src = 'https://nimg5.hicustom.com/static/gallery/Y6CZ4G-800-1b04bd6ee48cf730c95206afefbe9.png'
+        // let src  = 'https://nimg5.hicustom.com/static/gallery/QHJBY9-150-918ca5b4f6ac406b4d0973fa1842c.jpg'
+        let src = '/static/images/2.png'
+
+        let canvas = document.getElementById('canvas')
+        let ctx = canvas.getContext('2d')
+
+        // let image = new Image()
+        // image.setAttribute("crossOrigin", "anonymous")
+        // image.src = src
+
+       
+            ctx.drawImage(src, 0,0, 1200, 1200)
+
+            let url = canvas.toDataURL("image/png");
+
+            console.log(url)
+
+
+    </script>
+</body>
+</html>
