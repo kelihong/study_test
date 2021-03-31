@@ -243,7 +243,7 @@
             // 创建菜单
             function createMenuList(parentEl, menuList, callback) {
 
-                function  handleMenuItemEvents2222() {
+                function  handleMenuItemEvents() {
                     
                  
                     var curParent = $(this).parent('.kbb-menu-item')
@@ -272,11 +272,7 @@
                 // 菜单操作
 
 
-                $(parentEl).on('click', '.kbb-menu-label', handleMenuItemEvents2222)
-
-
-                let events = $(document).data('events')
-                    console.log(events)
+                $(parentEl).on('click', '.kbb-menu-label', handleMenuItemEvents)
 
                 // ！递归创建菜单部分
                 createList(menuList, $(parentEl))

@@ -1,0 +1,109 @@
+.ktool-pagination-full {
+    --ktool-main-fontsize: 12px;
+    --ktool-main-color: #fdaf48;
+    box-sizing : border-box;
+    font-size  : var(--ktool-main-fontsize);
+    color      : #333;
+    font-weight: normal;
+    margin     : 0;
+    padding    : 0;
+
+    & * {
+        margin : 0;
+        padding: 0;
+    }
+
+    .ktool-pagination-wrap {
+        text-align: center;
+        min-width: 220px;
+        width: 400px;
+        // background-color: pink;
+        line-height: 22px;
+        &>div {
+            font-size: var(--ktool-main-fontsize);
+            margin:0 10px;
+
+        }
+        .ktool-pagination-total-num {
+            float: left;
+            .ktool-pagination-total-value {
+                padding: 0 3px;
+            }
+        }
+
+        .ktool-pagination-page-show {
+
+            display: inline-block;
+          
+            .ktool-pagination-page-item {
+                
+                display: inline-block;
+                .ktool-pagination-cur-page {
+                    .ktool-pagination-cur-page-value {
+                        width: 60px;
+                        height: 16px;
+                        line-height: 16px;
+                        margin: 0;
+                        border: 1px solid #ddd;
+                        padding: 0;
+                        margin: 0;
+                        text-align: center;
+                        outline: none;
+                       &:focus {
+                           border-color: #aaa;;
+                       }
+                    }
+                }
+            }
+            .ktool-pagination-page-next,.ktool-pagination-page-prev {
+                display: inline-block;
+                padding: 0 10px;
+                cursor: pointer;
+                font-size: 14px;
+                vertical-align:top;
+                color: #666;
+                &:hover {
+                    color: #333333;
+                }
+                &.disabled {
+                    pointer-events: none;
+                    color: #999;
+                }
+            }
+            
+        }
+        .ktool-pagination-limit-select {
+            float: right;
+            width: 100px;
+            .ktool-pagination-limit-value {
+                cursor: pointer;
+                border: 1px solid #ddd;
+            }
+            .ktool-pagination-limit-list {
+                display: none;
+                .ktool-pagination-limit-item {
+                    cursor: pointer;
+                    border: 1px solid #ddd;
+                    margin-top: -1px;
+                    &:hover {
+                        color: #fff;
+                        background-color: var(--ktool-main-color);
+                    }
+                }
+            }
+
+            &.active {
+                .ktool-pagination-limit-list {
+                    display: block;
+                }
+            }
+        }
+        
+
+        &::after {
+            content: ' ';
+            display: block;
+            clear: both;
+        }
+    }
+}

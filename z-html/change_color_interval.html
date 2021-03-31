@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>切换颜色</title>
+    <style>
+      #box {
+        width: 100px;
+        height: 100px;
+        border: 1px solid red;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="box"></div>
+
+    <script>
+      function setColorNum(num) {
+        if (num <= 14) {
+          let str = "";
+          num += 1;
+
+          switch (num) {
+            case 10:
+              str = "A";
+              break;
+            case 11:
+              str = "B";
+              break;
+            case 12:
+              str = "C";
+              break;
+            case 13:
+              str = "D";
+              break;
+            case 14:
+              str = "E";
+              break;
+            case 15:
+              str = "F";
+              break;
+            default:
+              str = num;
+          }
+          console.log(num);
+          return str;
+        } else {
+          return 0;
+        }
+      }
+      let box = document.getElementById("box");
+      let color = [1, 2, 8, 2, 0, 3];
+
+    //   start()
+      function start() {
+        setInterval(() => {
+          let final = [];
+          color.forEach((item, index) => {
+            let newItem = setColorNum(color[index]);
+
+            color[index] = item < 15 ? item + 1 : 0;
+            final.push(newItem);
+          });
+          let finalcoloe = "#" + final.join("");
+          box.style.backgroundColor = finalcoloe;
+        }, 50);
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      body {
+        background: pink;
+      }
+      canvas {
+        border: 1px solid grey;
+      }
+    </style>
+  </head>
+
+  <body>
+    <canvas id="test" width="500" height="500"></canvas>
+    <script src="/static/js/fabric.min.js"></script>
+
+    <script>
+
+      let repeatType = 'repeat-x'
+      let canvas = new fabric.Canvas("test", {
+        preserveObjectStacking: true, // 添加图层时自动固定图层zindex, 不随着点击而提升层级
+        centeredScaling: true, // 居中拉伸
+      });
+
+      
+
+      fabric.Object.prototype.transparentCorners = false;
+
+      function loadPattern(url) {
+        fabric.util.loadImage(url, function (img) {
+          text.set(
+            "fill",
+            new fabric.Pattern({
+              source: img,
+              repeat: repeatType,
+            })
+          );
+          shape.set(
+            "fill",
+            new fabric.Pattern({
+              source: img,
+              repeat: repeatType,
+            })
+          );
+          canvas.renderAll();
+        });
+      }
+
+      var text = new fabric.Text("Honey,\nI'm subtle", {
+        fontSize: 250,
+        left: 0,
+        top: 0,
+        lineHeight: 1,
+        originX: "left",
+        fontFamily: "Helvetica",
+        fontWeight: "bold",
+        statefullCache: true,
+        scaleX: 0.4,
+        scaleY: 0.4,
+      });
+      var shape = new fabric.Rect({
+        width: 200,
+        height: 100,
+        left: 10,
+        top: 300,
+      });
+      canvas.add(text, shape);
+
+      loadPattern("/static/images/下载.png");
+
+      // document.getElementById("patterns").onchange = function () {
+      //   loadPattern("/static/" + this.value);
+      // };
+      // document.getElementById("repeat").onchange = function () {
+      //   text.fill.repeat = this.value;
+      //   canvas.renderAll();
+      // };
+    </script>
+  </body>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+        .ktool-process-line-wrap {
+            min-width: 100px;
+            margin: 0 auto;
+            max-width: 400px;
+            height: 10px;
+            border: 1px solid #aaa;
+            border-radius: 10px;
+        }
+        
+        .ktool-process-line-wrap .ktool-process-line {
+            background: rgb(0, 192, 0);
+            width: 100%;
+            height: 100%;
+            border-radius: inherit;
+        }
+    </style>
+</head>
+
+<body>
+
+    <input id="upload" type="file">
+    <div class="ktool-process-line-wrap">
+        <div class="ktool-process-line"></div>
+    </div>
+
+    <script src="/static/js/jquery-3.5.1.js"></script>
+
+    <script>
+        let urlData = 'http://localhost:999/file/upload'
+        let fileInput = document.getElementById('upload')
+
+        fileInput.oninput = function() {
+            upload(urlData, fileInput.files[0])
+        }
+
+
+        function upload(urlData, file) {
+            console.log(file)
+            let xhr = new XMLHttpRequest()
+            xhr.open('post', urlData, true)
+            console.log(xhr.upload)
+            xhr.upload.onprogress = function(ev) {
+                console.log(ev.loaded, ev.total)
+                if (ev.lengthComputable) {
+                    var percent = 100 * ev.loaded / ev.total
+                    console.log(percent)
+
+                }
+            }
+            let formData = new FormData()
+                // formData.append('xxx', 'xxx')
+            formData.append('file', file)
+            xhr.send(formData)
+        }
+    </script>
+
+
+
+
+    <script>
+        // let status = false;
+        // setTimeout(() => {
+        //     status = true;
+        // }, 5000);
+        // let line = $(".ktool-process-line");
+        // let startWidth = 0;
+        // let processTimer = setInterval(() => {
+        //     startWidth += 1;
+        //     if (startWidth < $(".ktool-process-line-wrap").width() - 50) {
+        //         line.width(startWidth);
+        //     } else {
+        //         if (!status) {
+        //             line.width($(".ktool-process-line-wrap").width() - 50);
+        //         } else {
+        //             line.width($(".ktool-process-line-wrap").width());
+        //             clearInterval(processTimer);
+        //             processTimer = null;
+        //         }
+
+        //     }
+        // }, 10);
+    </script>
+</body>
+
+</html>

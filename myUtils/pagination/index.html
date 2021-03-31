@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/static/css/initialize.css" />
+    <link rel="stylesheet" href="../pagination/css/pagination.css" />
+    <title>完整的分页器</title>
+
+    <style></style>
+</head>
+
+<body>
+    <div class="ktool-pagination-full my-page">
+        <div class="ktool-pagination-wrap">
+            <div class="ktool-pagination-total-num">
+                <span>共</span><span class="ktool-pagination-total-value">100</span
+          ><span>项</span>
+            </div>
+            <div class="ktool-pagination-page-show">
+                <div class="ktool-pagination-page-prev disabled">&lt;</div>
+                <div class="ktool-pagination-page-item">
+                    <span class="ktool-pagination-cur-page"><input
+                class="ktool-pagination-cur-page-value"
+                type="text"
+                value="1"
+            /></span>
+                    <span class="ktool-pagination-icon">/</span>
+                    <span class="ktool-pagination-total-page">10</span>
+                </div>
+                <div class="ktool-pagination-page-next">&gt;</div>
+            </div>
+            <div class="ktool-pagination-limit-select active">
+                <div class="ktool-pagination-limit-value">adsf</div>
+                <div class="ktool-pagination-limit-list">
+                    <div class="ktool-pagination-limit-item">10条/页</div>
+                    <div class="ktool-pagination-limit-item">20条/页</div>
+                    <div class="ktool-pagination-limit-item">30条/页</div>
+                    <div class="ktool-pagination-limit-item">50条/页</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="./js/resData.js"></script>
+    <script src="/static/js/jquery-3.5.1.js"></script>
+
+    <script>
+        console.log(resData.data);
+
+        // 必须为分页器指定类名
+        let params = {
+            selector: ".my-page",
+            nowPage: resData.data.nowPage,
+            list: resData.data.list,
+            total: resData.data.total,
+            options: {
+                totalTxt: "项",
+            },
+        };
+        createFullPagination(params);
+
+        function createFullPagination({
+            selector = "",
+            list = [],
+            total = 1,
+            nowPage = 1,
+            callback = function(curPage, list) {
+                console.log(nowPage);
+            },
+        } = {}) {
+            // 如果没指定分页器类名，且存在两个及两个以上分页器则：
+            if (!selector) {
+                if ($(".ktool-pagination-full").length > 0) {
+                    return console.log("请为分页器指定特殊的类名！");
+                }
+            }
+
+            // 选定分页器元素：
+            selector = ".ktool-pagination-full" + selector;
+
+            // 首先，判断是否有数据：
+            if (!list || list.length === 0) {
+                return console.log("没有数据！");
+            }
+
+            // 创建整体框架样式：
+            function createNormalEl() {
+                let str = `
+                
+                `;
+            }
+        }
+    </script>
+</body>
+
+</html>

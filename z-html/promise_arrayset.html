@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <script src="/static/js/jquery-3.5.1.js"></script>
+    <script>
+        let num = 1
+        function test() {
+            return new Promise(resolve =>{
+                setTimeout(() => {
+                    num += 2
+                    resolve(num)
+                }, 1000);
+            })
+        }
+
+        async function final () {
+            
+            let arr = []
+            let promiselist = []
+            // for(let i = 0; i < 5; i++) {
+            //     console.log(i)
+            //     arr.push(await test())
+            //     // let num2 = await test()
+            // }
+            // console.log(arr)
+
+            for(let i = 0; i < 5; i++) {
+                console.log(i)
+                promiselist.push(test())
+                // let num2 = await test()
+            }
+
+            Promise.all(promiselist).then(res =>{
+                console.log(res)
+            })
+
+        }
+
+        final()
+    </script>
+</body>
+</html>
