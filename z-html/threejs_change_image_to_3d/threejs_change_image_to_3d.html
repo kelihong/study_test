@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/initialize.css">
+    <style>
+        body {
+            text-align: center;
+        }
+        
+        canvas {
+            border: 1px dashed green;
+            margin-top: 100px;
+        }
+        
+        #box {
+            width: 600px;
+            height: 600px;
+            margin: 0 auto;
+        }
+    </style>
+    <title>three.js 渲染平面图片</title>
+
+</head>
+
+<body>
+    <!-- <canvas id="canvas" width="600" height="600"></canvas> -->
+    <div id="box"></div>
+
+    <!-- <script src="/static/js/jquery-3.5.1.js"></script> -->
+    <script src="/static/js/three.js"></script>
+
+    <script>
+        let canvas = document.getElementById('canvas')
+        let box = document.getElementById('box')
+        let width = box.offsetWidth - 2
+        let height = box.offsetHeight - 2
+
+        let t = THREE
+        var scene = new t.Scene()
+
+        var camera = new t.PerspectiveCamera(90, width / height, 0.1, 1000)
+
+        camera.position.set(0, 0, 10)
+
+        let renderer = new t.WebGLRenderer()
+        renderer.setSize(width, height)
+
+        box.appendChild(renderer.domElement)
+
+        renderer.render(scene, camera)
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>切割图片</title>
+    <link rel="stylesheet" href="/static/css/initialize.css">
+    <style>
+        body {
+            text-align: center;
+            position: relative;
+            padding-top: 100px;
+        }
+        
+        input {
+            border: none;
+            outline: none;
+        }
+        
+        canvas {
+            width: 600px;
+            height: 600px;
+            /* border: 1px solid grey; */
+            background: rgba(196, 196, 196, 0.133);
+            position: absolute;
+            left: calc(50% - 300px);
+        }
+        
+        .bg-red {
+            background: rgb(218, 0, 0) !important;
+        }
+        
+        #canvas {
+            opacity: 0.3;
+            z-index: 5;
+        }
+        
+        #canvasBg {
+            z-index: 3;
+        }
+        
+        .point-item {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            line-height: 30px;
+            text-align: center;
+            font-size: 12px;
+            color: #fff;
+            background: crimson;
+            opacity: 0.4;
+            border-radius: 50%;
+            /* pointer-events: none; */
+            cursor: pointer;
+            transform: translate(-50%, -50%);
+            z-index: 99;
+        }
+        
+        .tool-list {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        
+        .tool-item {
+            display: inline-block;
+            cursor: pointer;
+            margin-right: 10px;
+            position: relative;
+            overflow: hidden;
+            padding: 1px;
+        }
+        
+        .tool-item.no-event {
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+        
+        .tool-item .tool-btn {
+            background-color: rgb(255, 187, 0);
+            padding: 3px 10px;
+            color: #fff;
+            border-radius: 5px;
+        }
+        
+        .tool-item:active .tool-btn {
+            opacity: .3;
+        }
+        
+        .tool-item:hover .tool-btn {
+            opacity: .7;
+        }
+        
+        .tool-item .file-input {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            opacity: 0;
+        }
+        
+        .tool-item .tool-value {
+            display: block;
+            min-width: 600px;
+            color: #333;
+            background: #ccc;
+            padding: 2px 5px;
+            text-align: center;
+        }
+        
+        .desc-list {
+            color: #999;
+        }
+        
+        .desc-item {
+            display: inline-block;
+        }
+        
+        #dotsValue {
+            pointer-events: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="tool-list">
+        <div class="tool-item">
+            <span id="resetBtn" class="tool-btn bg-red">重置</span>
+
+        </div>
+        <div class="tool-item">
+            <span class="tool-btn">添加背景</span>
+            <input class="file-input" id="bgInput" type="file">
+        </div>
+
+        <div class="tool-item">
+            <span class="tool-btn" id="copyBtn">复制</span>
+        </div>
+
+    </div>
+    <div class="tool-list">
+        <div class="tool-item no-event ">
+            <input class="tool-value" id="dotsValue" type="text">
+        </div>
+
+    </div>
+    <div class="desc-list">
+        【拖动四个定点即可看到效果】 操作提示：
+        <div class="desc-item">
+            1. 移动： 按住空格。
+        </div>
+        <div class="desc-item">
+            2. 拉伸： 按住ctrl，并拖拽【右下】。
+        </div>
+
+    </div>
+    <div class="desc-list">
+        <div class="desc-item">
+            3. 不按键盘： 【左上】定位，【右上】向左下斜切，【右下】向左上斜切，【左下】向右上斜切。
+        </div>
+
+    </div>
+    <div class="point-item">左上</div>
+    <div class="point-item">右上</div>
+    <div class="point-item">右下</div>
+    <div class="point-item">左下</div>
+
+    <canvas id="canvas" width="600" height="600"></canvas>
+    <canvas id="canvasBg" width="600" height="600"></canvas>
+
+
+
+    <script src="/static/js/jquery-3.5.1.js"></script>
+    <script src="./utils.js"></script>
+
+    <script>
+        matrixfun()
+
+
+        // 
+        let resetBtn = document.getElementById('resetBtn')
+        let copyBtn = document.getElementById('copyBtn')
+        let bgInput = document.getElementById('bgInput')
+        let canvas = document.getElementById('canvas')
+        let canvasBg = document.getElementById('canvasBg')
+        let transformParam = {}
+        let ctx = canvas.getContext('2d')
+        let eventType = 'default'
+
+
+        let prev = [{
+                x: 0.1,
+                y: 0.1
+            }, {
+                x: 600,
+                y: 0.1
+            }, {
+                x: 600,
+                y: 600
+            }, {
+                x: 0.1,
+                y: 600
+            },
+
+        ]
+        let next = [{
+                x: 0.1,
+                y: 0.1
+            }, {
+                x: 600,
+                y: 0.1
+            }, {
+                x: 600,
+                y: 600
+            }, {
+                x: 0.1,
+                y: 600
+            },
+
+        ]
+
+        setPointItems()
+        render()
+        setFinalData()
+
+        // 可拉伸区域
+        let resizableSize = 30 // 不能大于canvas最短边的一半
+        let area = null,
+            curDot = null,
+            index = undefined
+        window.addEventListener('mousedown', down, false)
+
+        // 鼠标按下
+        function down(e) {
+            if (!e.target.classList.contains('point-item') && e.target.tagName !== "CANVAS") {
+                return
+            }
+
+            // 获取鼠标点击坐标：
+            area = getArea(e)
+
+
+
+
+            for (let i = 0; i < next.length; i++) {
+
+                curDot = next[i]
+                nextDot = next[0]
+                if (area.t > curDot.y - resizableSize && area.t < curDot.y + resizableSize && area.l > curDot.x - resizableSize && area.l < curDot.x + resizableSize) {
+                    index = i
+                    break
+                } else {
+                    curDot = null
+                }
+            }
+
+
+
+            window.addEventListener('mousemove', move, false)
+            window.addEventListener('mouseup', up, false)
+        }
+
+        // 鼠标移动
+        function move(e) {
+
+            doWhenNearOut(e)
+
+            e.preventDefault();
+            let narea = getArea(e);
+            let nx = narea.l - area.l;
+            let ny = narea.t - area.t;
+            area = narea;
+
+
+            if (eventType === 'move') {
+                // 只是移动
+                next.forEach(item => {
+                    item.x += nx
+                    item.y += ny
+                })
+            } else if (eventType === 'resize') {
+                if (!curDot) {
+                    setCursor('default')
+                    return
+                }
+
+                setCursor('se-resize')
+
+                if (index === 2) {
+                    next[1].x += nx
+                    next[2].x += nx
+                    next[2].y += ny
+                    next[3].y += ny
+                }
+
+            } else {
+
+                if (!curDot) {
+                    return
+                }
+
+                // 正常为四个点拖拽
+                if (index === 3) {
+                    next[1].x -= nx;
+                    next[1].y -= ny;
+                } else if (index === 1) {
+                    next[3].x -= nx
+                    next[3].y -= ny
+                } else if (index === 0) {
+                    next[3].x += nx
+                    next[3].y += ny
+                } else if (index === 2) {
+                    next[3].x += nx
+                    next[3].y += ny
+                }
+
+                curDot.x += nx
+                curDot.y += ny
+            }
+
+
+            setPointItems()
+
+
+            render();
+        }
+
+        // 鼠标抬起
+        function up(e) {
+
+            renderImage()
+            setFinalData()
+            window.removeEventListener('mousemove', move, false)
+            window.removeEventListener('mouseup', up, false)
+        }
+
+        // 渲染图片
+        function renderImage() {
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            let img = new Image()
+            img.src = '/static/images/my.png'
+
+
+            img.onload = function() {
+                ctx.save()
+                let result = matrix.getMatrix(prev[0], next[0], prev[1], next[1], prev[2], next[2])
+                transformParam = result
+                ctx.transform(result.a, result.b, result.c, result.d, result.e, result.f)
+                ctx.drawImage(img, 0, 0)
+                ctx.restore()
+
+            }
+        }
+
+
+
+        // 当可能超边界：f
+        function doWhenNearOut(e) {
+            if (e.clientY <= 1) {
+                canvas.style.marginTop = canvasBg.offsetTop + 1 + 'px'
+                canvasBg.style.marginTop = canvasBg.offsetTop + 1 + 'px'
+
+                next.forEach(item => {
+                    item.y += 1
+                })
+
+            }
+            if (e.clientX <= 1) {
+                canvas.style.marginLeft = canvas.offsetTop + 1 + 'px'
+                canvasBg.style.marginLeft = canvasBg.offsetTop + 1 + 'px'
+
+                next.forEach(item => {
+                    item.x += 1
+                })
+
+            }
+
+            setPointItems()
+
+        }
+
+        // 设置四个点位置：
+        function setPointItems() {
+            let points = $('.point-item')
+            next.forEach((item, index) => {
+                points.eq(index).css({
+                    left: item.x + canvas.offsetLeft,
+                    top: item.y + canvas.offsetTop
+                })
+            })
+        }
+
+
+
+        // 设置鼠标形状
+        function setCursor(params) {
+            document.getElementById('canvas').style.cursor = params || 'default'
+        }
+
+        // 获取鼠标移动的位置
+        function getArea(e) {
+            e = e || window.event;
+            return {
+                l: e.clientX - canvas.offsetLeft + document.body.scrollLeft + document.documentElement.scrollLeft,
+                t: e.clientY - canvas.offsetTop + document.body.scrollTop + document.documentElement.scrollTop,
+            };
+        }
+
+        // 展示最终的next 在结果栏：
+        function setFinalData() {
+            let newNext = []
+            next.forEach(item => {
+                newNext.push({
+                    x: parseInt(item.x) * 1000 * 2 / 1000,
+                    y: parseInt(item.y) * 1000 * 2 / 1000
+                })
+            })
+            let result = JSON.stringify(newNext)
+            $('#dotsValue').val(result)
+        }
+
+        // 渲染canvas
+        function render() {
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            ctx.save()
+
+            let result = matrix.getMatrix(prev[0], next[0], prev[1], next[1], prev[2], next[2])
+            ctx.transform(result.a, result.b, result.c, result.d, result.e, result.f)
+            ctx.beginPath()
+            ctx.moveTo(0, 0)
+            ctx.lineTo(600, 0)
+            ctx.lineTo(600, 600)
+            ctx.lineTo(0, 600)
+            ctx.closePath()
+            ctx.stroke()
+            ctx.restore();
+
+
+            // ctx.fill()
+
+
+        }
+
+
+        // 添加背景图片
+        bgInput.onclick = function() {
+            this.value = ''
+        }
+
+        // 重置：
+        resetBtn.onclick = function() {
+            window.location.reload()
+        }
+
+        // 设置添加背景：
+        bgInput.onchange = function(e) {
+
+            let file = this.files[0]
+            console.log(file)
+
+            let reader = new FileReader()
+            reader.readAsDataURL(file)
+            reader.onload = function(e) {
+                let ctxBg = canvasBg.getContext('2d')
+                let bgImg = new Image()
+                bgImg.src = this.result
+                bgImg.onload = function() {
+                    ctxBg.drawImage(bgImg, 0, 0, canvasBg.width, canvasBg.height)
+                }
+
+            }
+
+        }
+
+        // 复制：
+        copyBtn.onclick = function() {
+            $('#dotsValue').select()
+            document.execCommand("Copy");
+            showMsg({
+                type: 'success',
+                msg: '已复制！'
+            })
+        }
+
+
+
+        // 快捷键
+        function shortCut(e) {
+            let keyCode = e.keyCode
+            let ctrlKey = e.ctrlKey
+
+            eventList.isCtrlKey.forEach(item => {
+                if (keyCode === item.code) {
+                    e.preventDefault()
+                    item.keydownEvent()
+                }
+            });
+
+        }
+
+        // 弹窗
+        function showMsg(param) {
+            let params = {
+                msg: '',
+                type: ''
+            }
+            if (typeof param === 'string') {
+                params.msg = param
+            } else {
+                params = param
+            }
+            let msgBox = document.getElementById('kbbMsgBox')
+
+            if (msgBox) {
+                msgBox.remove()
+            }
+            let div = document.createElement('div')
+            div.id = 'kbbMsgBox'
+            div.style.position = 'fixed'
+            div.style.top = 300 + 'px'
+            div.style.left = '50%'
+            div.style.transform = 'translateX(-50%)'
+            div.style.backgroundColor = '#8c8c8c'
+            div.style.color = '#fff'
+            div.style.borderRadius = '8px'
+            div.style.padding = '5px 15px'
+            div.style.zIndex = 19999
+            div.innerHTML = params.msg || ''
+
+            if (params.type === 'success') {
+                div.style.backgroundColor = '#4CAF50'
+            } else if (params.type === 'error') {
+                div.style.backgroundColor = '#d61313'
+            } else if (params.type === 'warning') {
+                div.style.backgroundColor = 'rgb(231 144 32)'
+            } else {
+                div.style.backgroundColor = '#8c8c8c'
+            }
+            document.body.appendChild(div)
+            setTimeout(() => {
+                div.remove()
+            }, 2000);
+        }
+
+
+        // 取消快捷键
+        function cancelShortCut() {
+            eventType = 'default'
+            setCursor('default')
+        }
+        window.addEventListener('keydown', shortCut, false)
+        window.addEventListener('keyup', cancelShortCut, false)
+
+        // 事件列表
+        eventList = {
+            isCtrlKey: [{
+                    code: 32,
+                    name: "移动",
+                    keydownEvent: function() {
+
+                        if (eventType === 'move') {
+                            return
+                        }
+                        eventType = 'move'
+                        setCursor('move')
+
+                    },
+                }, {
+                    code: 17,
+                    name: "拉伸",
+                    keydownEvent: function() {
+
+                        if (eventType === 'resize') {
+
+                            return
+                        }
+                        eventType = 'resize'
+
+                    },
+                },
+                //  {
+                //     code: 32,
+                //     name: "移动",
+                //     keydownEvent: function() {
+
+                //         if (eventType === 'move') {
+                //             return
+                //         }
+                //         eventType = 'move'
+                //         setCursor('se-resize')
+
+                //     },
+                // }
+
+            ]
+        }
+        window.onresize = function() {
+            setPointItems()
+        }
+    </script>
+</body>
+
+</html>

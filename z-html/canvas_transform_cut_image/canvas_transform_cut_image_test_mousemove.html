@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>切割图片</title>
+    <link rel="stylesheet" href="/static/css/initialize.css">
+    <style>
+        body {
+            text-align: center;
+        }
+        
+        canvas {
+            width: 600px;
+            height: 600px;
+            border: 1px solid grey;
+            margin: 50px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <canvas id="canvas" width="600" height="600"></canvas>
+
+    <script src="/static/js/jquery-3.5.1.js"></script>
+    <script src="./utils.js"></script>
+
+    <script>
+        matrixfun()
+
+
+        // 
+        let canvas = document.getElementById('canvas')
+        let ctx = canvas.getContext('2d')
+
+
+
+        let prev = [{
+                x: 0.1,
+                y: 0.1
+            }, {
+                x: 600,
+                y: 0.1
+            }, {
+                x: 600,
+                y: 600
+            }, {
+                x: 0.1,
+                y: 600
+            },
+
+        ]
+        let next = [{
+                x: 0.1,
+                y: 0.1
+            }, {
+                x: 600,
+                y: 0.1
+            }, {
+                x: 600,
+                y: 600
+            }, {
+                x: 0.1,
+                y: 600
+            },
+
+        ]
+
+        // let next = [{
+        //     x: 0,
+        //     y: 0
+        // }, {
+        //     x: 100,
+        //     y: 0
+        // }, {
+        //     x: 100,
+        //     y: 100
+        // }, {
+        //     x: 0,
+        //     y: 100
+        // }, ]
+
+
+        // let dots = [{
+        //     x: 0,
+        //     y: 0
+        // }]
+
+        render()
+
+        // 可拉伸区域
+        let resizableSize = 30 // 不能大于canvas最短边的一半
+        let area = null,
+            curDot = null,
+            index = undefined
+        window.addEventListener('mousedown', down, false)
+
+        function down(e) {
+            // 获取鼠标点击坐标：
+            area = getArea(e)
+                // console.log(area)
+            console.log(area)
+
+
+
+            for (let i = 0; i < next.length; i++) {
+
+                curDot = next[i]
+                nextDot = next[0]
+                if (area.t > curDot.y - resizableSize && area.t < curDot.y + resizableSize && area.l > curDot.x - resizableSize && area.l < curDot.x + resizableSize) {
+                    index = i
+                    break
+                } else {
+                    curDot = null
+                }
+            }
+            console.log(curDot)
+
+            // console.log(curDot)
+            if (!curDot) {
+                return
+            }
+            window.addEventListener('mousemove', move, false)
+            window.addEventListener('mouseup', up, false)
+        }
+
+        function move(e) {
+
+            e.preventDefault();
+            let narea = getArea(e);
+            let nx = narea.l - area.l;
+            let ny = narea.t - area.t;
+            area = narea;
+
+            if (index === 3) {
+
+                next[1].x -= nx;
+                next[1].y -= ny;
+            } else if (index === 1) {
+                next[3].x -= nx
+                next[3].y -= ny
+            } else if (index === 0) {
+                next[3].x += nx
+                next[3].y += ny
+            } else if (index === 2) {
+                next[3].x += nx
+                next[3].y += ny
+            }
+
+            curDot.x += nx
+            curDot.y += ny
+
+
+            // console.log(next[0])
+
+            // console.log(area)
+
+            // console.log(next[3])
+            render();
+        }
+
+
+        function up(e) {
+            // console.log('up')
+            window.removeEventListener('mousemove', move, false)
+            window.removeEventListener('mouseup', up, false)
+        }
+
+
+
+
+        function setCursor(params) {
+            document.getElementById('canvas').style.cursor = params || 'default'
+        }
+
+        // 获取鼠标移动的位置
+        function getArea(e) {
+            e = e || window.event;
+            return {
+                l: e.clientX - canvas.offsetLeft + document.body.scrollLeft + document.documentElement.scrollLeft,
+                t: e.clientY - canvas.offsetTop + document.body.scrollTop + document.documentElement.scrollTop,
+            };
+        }
+
+        function render() {
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            ctx.save()
+
+            let result = matrix.getMatrix(prev[0], next[0], prev[1], next[1], prev[2], next[2])
+            ctx.transform(result.a, result.b, result.c, result.d, result.e, result.f)
+
+
+            ctx.beginPath()
+            ctx.moveTo(0, 0)
+            ctx.lineTo(600, 0)
+            ctx.lineTo(600, 600)
+            ctx.lineTo(0, 600)
+            ctx.closePath()
+            ctx.fill()
+
+            ctx.restore();
+        }
+    </script>
+</body>
+
+</html>
