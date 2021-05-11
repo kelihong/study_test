@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>从四个定点值，复原变形数据</title>
+    <style>
+        canvas {
+            width: 600px;
+            height: 600px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <canvas id="canvas" width="1200" height="1200"></canvas>
+
+    <script src="./static/js/utils.js"></script>
+    <script>
+        let imgUrl = '/static/images/my.png'
+        transformNo({
+            imgUrl: imgUrl,
+            options: [{
+                "x": 114,
+                "y": 320
+            }, {
+                "x": 1200,
+                "y": 0.1
+            }, {
+                "x": 1200,
+                "y": 1200
+            }, {
+                "x": 0.1,
+                "y": 1200
+            }]
+        })
+
+        function transformNo({
+            imgUrl = '',
+            options = [{
+                "x": 0.1,
+                "y": 0.1
+            }, {
+                "x": 1200,
+                "y": 0.1
+            }, {
+                "x": 1200,
+                "y": 1200
+            }, {
+                "x": 0.1,
+                "y": 1200
+            }],
+            canvasConfig = {
+                width: 1200,
+                height: 1200
+            }
+        } = {}) {
+            let defaultOptions = [{
+                "x": 0.1,
+                "y": 0.1
+            }, {
+                "x": 1200,
+                "y": 0.1
+            }, {
+                "x": 1200,
+                "y": 1200
+            }, {
+                "x": 0.1,
+                "y": 1200
+            }]
+            let params = matrix.getMatrix(defaultOptions[0], options[0], defaultOptions[1], options[1], defaultOptions[2], options[2])
+
+            let canvas = document.getElementById('canvas')
+            let ctx = canvas.getContext('2d')
+            ctx.transform(params.a, params.b, params.c, params.d, params.e, params.f)
+            let image = new Image()
+            image.src = imgUrl
+            return new Promise((resolve, reject) => {
+                image.onload = function() {
+
+                    ctx.drawImage(image, 0, 0, canvasConfig.width, canvasConfig.height)
+                    let dataUrl = canvas.toDataURL('image/png')
+                    resolve(dataUrl)
+                }
+                image.onerror = function(e) {
+                    reject('image src is not exist')
+                }
+            })
+
+        }
+    </script>
+</body>
+
+</html>

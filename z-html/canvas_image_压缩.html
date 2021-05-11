@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>尝试用canvas压缩图片 ! 成功！</title>
+</head>
+
+<body>
+    <canvas id="canvas" width="300" height="300"></canvas>
+
+    <img id="image" src="" alt="">
+    <script>
+        let image = document.getElementById('image')
+        let canvas = document.getElementById('canvas')
+        let ctx = canvas.getContext('2d')
+
+        let img = new Image()
+            // img.width = canvas.width
+            // img.height = canvas.height
+        img.src = '/static/images/my.png'
+        img.onload = function() {
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height)
+
+            let blob = canvas.toBlob(function(blobObj) {
+                console.log(blobObj)
+                let src = window.URL.createObjectURL(blobObj)
+                image.src = src
+            })
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/initialize.css">
+    <title>tab拖拽</title>
+    <style>
+        .tab-wrap .tab-item {
+            height: 40px;
+            line-height: 40px;
+            background: #ffeeee;
+            border: 1px solid grey;
+            width: 100px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .tab-item.active {
+            opacity: 0.5;
+            /* position: relative;
+            margin-bottom: 40px; */
+            /* border-bottom: 2px dashed springgreen; */
+        }
+        /* .tab-item.active::after {
+            content: ' ';
+            display: block;
+            position: relative;
+            width: 100px;
+            height: 40px;
+            border: 1px dashed #999;
+        } */
+    </style>
+</head>
+
+<body>
+    <div id="tabWrap" class="tab-wrap">
+        <div class="tab-item" draggable="true">暗室逢灯1</div>
+        <div class="tab-item" draggable="true">暗室逢灯2</div>
+        <div class="tab-item" draggable="true">暗室逢灯3</div>
+        <div class="tab-item" draggable="true">暗室逢灯4</div>
+        <div class="tab-item" draggable="true">暗室逢灯5</div>
+        <div class="tab-item" draggable="true">暗室逢灯6</div>
+    </div>
+
+
+    <script>
+        let tabWrap = document.getElementById('tabWrap')
+        let itemList = tabWrap.getElementsByClassName('tab-item')
+        let mirror = null // 镜像
+        let overItem = null // 当前经过的元素
+        let curDragItem = null // 当前拖拽的元素
+        tabWrap.ondragover = function(e) {
+            e.preventDefault()
+            if (!e.target.classList.contains('tab-item')) {
+                return
+            }
+
+            let target = e.target
+                // curDragItem.remove()
+
+        }
+
+        tabWrap.ondragstart = function(e) {
+            if (!e.target.classList.contains('tab-item')) {
+                return
+            }
+
+            let target = e.target
+            curDragItem = target
+
+
+        }
+        tabWrap.ondrop = function(e) {
+            let clone = cloneDom(curDragItem)
+            mirror = clone
+
+            console.log(curDragItem)
+            console.log(curDragItem)
+        }
+
+
+        function cloneDom(curItem) {
+            let styles = window.getComputedStyle(curItem, null)
+            let clonedNode = curItem.cloneNode(true)
+            clonedNode.style.cssText = window.getComputedStyle(curItem, null).cssText
+
+            curItem.parentNode.appendChild(clonedNode)
+            return clonedNode
+
+        }
+    </script>
+</body>
+
+</html>

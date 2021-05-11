@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script src="/static/js/jquery-3.5.1.js"></script>
+    <script>
+        $(document).on('keydown', function(e) {
+            let keyCode = e.keyCode
+            console.log(keyCode)
+            setKeyEvent(e, keyCode)
+
+        })
+
+        let eventFunList = {
+            ctrlKey: [{
+                title: '复制',
+                keyCode: 65,
+                event: function() {
+                    console.log('adsfasdffsaffd1')
+                },
+
+            }, {
+                title: '保存',
+                keyCode: 83,
+                event: function() {
+                    console.log('1dsafsfdff')
+                },
+
+            }, ]
+
+        }
+
+        function setKeyEvent(e, keyCode) {
+            e.preventDefault()
+            if (e.ctrlKey) {
+                switch (keyCode) {
+                    case eventFunList.ctrlKey[0].keyCode:
+                        eventFunList.ctrlKey[0].event()
+                        break
+                    default:
+
+                }
+            }
+
+        }
+    </script>
+</body>
+
+</html>

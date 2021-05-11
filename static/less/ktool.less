@@ -1,0 +1,193 @@
+.ktool-pagination-full {
+    --ktool-main-fontsize: 12px;
+    --ktool-main-color   : #fdaf48;
+    box-sizing           : border-box;
+    font-size            : var(--ktool-main-fontsize);
+    color                : #333;
+    font-weight          : normal;
+    margin               : 0;
+    padding              : 0;
+    z-index              : 1003;
+
+    & * {
+        margin : 0;
+        padding: 0;
+    }
+
+    .ktool-pagination-wrap {
+        text-align         : center;
+        min-width          : 350px;
+        width              : 380px;
+        // background-color: pink;
+        line-height        : 22px;
+
+        &>div {
+            font-size: var(--ktool-main-fontsize);
+
+        }
+
+        .ktool-pagination-total-num {
+            float: left;
+
+            .ktool-pagination-total-value {
+                padding: 0 3px;
+            }
+        }
+
+        .ktool-pagination-page-show {
+
+            display: inline-block;
+
+            .ktool-pagination-page-item {
+
+                display: inline-block;
+
+                .ktool-pagination-cur-page {
+                    .ktool-pagination-cur-page-value {
+                        width      : 60px;
+                        height     : 16px;
+                        line-height: 16px;
+                        margin     : 0;
+                        border     : 1px solid #ddd;
+                        padding    : 0;
+                        margin     : 0;
+                        font-size  : 12px;
+                        text-align : center;
+                        outline    : none;
+
+                        &:focus {
+                            border-color: #aaa;
+                            ;
+                        }
+                    }
+                }
+            }
+
+            .ktool-pagination-page-next,
+            .ktool-pagination-page-prev {
+                display       : inline-block;
+                width         : 24px;
+                height        : 20px;
+                cursor        : pointer;
+                font-size     : 14px;
+                vertical-align: middle;
+                color         : #666;
+                position      : relative;
+
+                &:hover {
+                    color: var(--ktool-main-color);
+
+
+                }
+
+                &.disabled {
+                    pointer-events: none;
+                    color         : #999;
+
+                    &::after {
+                        border-color: #ddd !important;
+                    }
+                }
+
+                &.ktool-pagination-page-prev {
+                    &::after {
+                        content    : ' ';
+                        position   : absolute;
+                        width      : 8px;
+                        height     : 8px;
+                        border-top : 1px solid grey;
+                        border-left: 1px solid grey;
+                        top        : 50%;
+                        left       : 50%;
+                        transform  : translate(-50%, -50%) rotate(-45deg);
+                    }
+
+                    &:hover {
+                        &::after {
+                            border-top : 1px solid var(--ktool-main-color);
+                            border-left: 1px solid var(--ktool-main-color);
+                        }
+                    }
+                }
+
+                &.ktool-pagination-page-next {
+                    &::after {
+                        content      : ' ';
+                        position     : absolute;
+                        width        : 8px;
+                        height       : 8px;
+                        border-right : 1px solid grey;
+                        border-bottom: 1px solid grey;
+                        top          : calc(50% - 1px);
+                        left         : 50%;
+                        transform    : translate(-50%, -50%) rotate(-45deg);
+                    }
+
+                    &:hover {
+                        &::after {
+                            border-right : 1px solid var(--ktool-main-color);
+                            border-bottom: 1px solid var(--ktool-main-color);
+                        }
+                    }
+                }
+            }
+
+            .ktool-pagination-submit-btn {
+                display         : inline-block;
+                background-color: var(--ktool-main-color);
+                color           : #fff;
+                padding         : 0 8px;
+                cursor          : pointer;
+                border-radius   : 3px;
+                margin-left     : 10px;
+
+                &:hover {
+                    opacity: 0.8;
+                }
+
+                &:active {
+                    opacity: 0.5;
+                }
+            }
+
+        }
+
+        .ktool-pagination-limit-select {
+            float: right;
+            width: 70px;
+
+            .ktool-pagination-limit-value {
+                cursor: pointer;
+                border: 1px solid #ddd;
+            }
+
+            .ktool-pagination-limit-list {
+                display  : none;
+
+                .ktool-pagination-limit-item {
+                    cursor    : pointer;
+                    border    : 1px solid #ddd;
+                    margin-top: -1px;
+
+                    &:hover {
+                        color           : #fff;
+                        background-color: var(--ktool-main-color);
+                    }
+                }
+            }
+
+            &.active {
+                .ktool-pagination-limit-list {
+                    display: block;
+                }
+            }
+        }
+
+
+        &::after {
+            content: ' ';
+            display: block;
+            clear  : both;
+        }
+    }
+}

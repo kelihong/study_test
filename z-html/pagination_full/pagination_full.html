@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/ktool.css">
+    <title>完整的分页器</title>
+</head>
+
+<body>
+
+    <div class="ktool-pagination-full my-page"> </div>
+    <div class="ktool-pagination-full my-page1"> </div>
+
+    <script src="/static/js/jquery-3.5.1.js"></script>
+    <script>
+        let data = {
+            index: 1, // 当前页，默认从1开始
+            totalCount: 45, // 总个数
+            limit: 10, // 每页个数
+            list: [
+                // {
+                //     id: 11,
+                //     name: 111,
+                // }
+            ],
+            options: {
+                totalTxt: "项",
+            },
+        };
+
+        for (let i = 0; i < 30; i++) {
+            data.list.push({
+                id: i,
+                name: 'name' + i
+            })
+        }
+
+
+        console.log(data.list)
+            // // 渲染分页器
+
+        paginationFull({
+            selfSelector: '.my-page',
+            data: data,
+            callback: function(index, data) {
+                console.log(index, data)
+            }
+        })
+
+        function paginationFull({
+            selfSelector = '',
+            data,
+            callback = function(index, data) {}
+        } = {}) {
+            // 如果没指定分页器类名，且存在两个及两个以上分页器则：
+            if (!selfSelector) {
+                if ($(".ktool-pagination-full").length > 0) {
+                    return console.log("请为分页器指定特殊的类名！");
+                }
+            }
+
+            // 选定分页器元素：
+            selfSelector = ".ktool-pagination-full" + selfSelector;
+
+            // 首先，判断是否有数据：
+            if (!data.list || data.list.length === 0) {
+                return console.log("没有数据！");
+            }
+
+            let myTotalPages = Math.ceil(data.totalCount / data.limit)
+
+            unbindEvent()
+            $(selfSelector).html('')
+
+            // 创建基础框架：
+            createPaginationEl()
+
+            // 绑定事件
+            createEvents()
+
+
+            // 创建基础框架：
+            function createPaginationEl() {
+
+                // 外包边
+                let wrapEl = $('<div class="ktool-pagination-wrap"></div>')
+
+                // 总页数
+                let totalEl = $('<div class="ktool-pagination-total-num"></div>')
+
+                let totalStr = `
+                <span>共</span><span class="ktool-pagination-total-value">${data.totalCount}</span>
+                <span>${data.options.totalTxt || '项'}</span >
+                `
+
+                totalEl.html(totalStr)
+
+                // 页码部分
+                let pagesEl = $('<div class="ktool-pagination-page-show"></div>')
+
+                let pagesStr = `
+                
+                    <div class="ktool-pagination-page-prev disabled"></div>
+                    <div class="ktool-pagination-page-item">
+                        <span class="ktool-pagination-cur-page"><input class="ktool-pagination-cur-page-value" type="text"
+                                value="${data.index}" /></span>
+                        <span class="ktool-pagination-icon">/</span>
+                        <span class="ktool-pagination-total-page">${myTotalPages}</span>
+                    </div>
+                    <div class="ktool-pagination-page-next disabled"></div>
+                    <div class="ktool-pagination-submit-btn">跳转</div>
+                    
+                
+                `
+
+                pagesEl.html(pagesStr)
+
+                // 每页条数：
+                let limitEl = $('<div class="ktool-pagination-limit-select"></div>')
+                let limitListStr = `
+                 <div class="ktool-pagination-limit-value">${data.limit}项/页</div>
+                    <div class="ktool-pagination-limit-list">
+                        <div class="ktool-pagination-limit-item">10${data.options.totalTxt || '项'}/页</div>
+                        <div class="ktool-pagination-limit-item">20${data.options.totalTxt || '项'}/页</div>
+                        <div class="ktool-pagination-limit-item">30${data.options.totalTxt || '项'}/页</div>
+                        <div class="ktool-pagination-limit-item">50${data.options.totalTxt || '项'}/页</div>
+                    </div>
+                `
+
+                limitEl.html(limitListStr)
+
+                // 统统加外包边里
+                wrapEl.append(totalEl)
+                wrapEl.append(pagesEl)
+                wrapEl.append(limitEl)
+
+
+
+
+
+                // 放心的把外包边加进分页器
+                $(selfSelector).append(wrapEl)
+
+                renderPageNums(data.index, myTotalPages)
+
+            }
+
+            function unbindEvent() {
+                $(document).off('click', selfSelector + ' .ktool-pagination-page-next')
+                $(document).off('click', selfSelector + ' .ktool-pagination-page-prev')
+                $(document).off('click', selfSelector + ' .ktool-pagination-submit-btn')
+                $(document).off('click', selfSelector + ' .ktool-pagination-limit-value')
+                $(document).off('click', selfSelector + ' .ktool-pagination-limit-item')
+            }
+
+            // 事件绑定
+            function createEvents() {
+                // 右切换分页：
+                $(document).on('click', selfSelector + ' .ktool-pagination-page-next', function() {
+                        if (data.index < myTotalPages) {
+                            data.index += 1
+                        }
+                        renderPageNums()
+
+                    })
+                    // 左切换分页：
+                $(document).on('click', selfSelector + ' .ktool-pagination-page-prev', function() {
+                    if (data.index > 1) {
+                        data.index -= 1
+                    }
+                    renderPageNums()
+
+
+                })
+
+                $(document).on('click', selfSelector + ' .ktool-pagination-submit-btn', function() {
+                    let value = $(selfSelector + ' .ktool-pagination-cur-page-value').val()
+                    if (!value) {
+                        return console.log('页码值错误！')
+                    }
+
+                    if (value > myTotalPages) {
+                        $(selfSelector + ' .ktool-pagination-cur-page-value').val(data.index)
+                        return console.log('当前页数不可大于总页数')
+                    }
+
+                    data.index = parseInt(value)
+                    renderPageNums()
+
+                })
+
+                // 当前分页限制框点击：
+                $(document).on('click', selfSelector + ' .ktool-pagination-limit-value', function() {
+                    let limitList = $(this).siblings('.ktool-pagination-limit-list')
+                    limitList.slideToggle()
+
+                })
+
+                // 选择每页限制条数
+                $(document).on('click', selfSelector + ' .ktool-pagination-limit-item', function() {
+                    let parent = $(this).parent('.ktool-pagination-limit-list')
+                    let curHtml = $(this).html()
+                    parent.siblings('.ktool-pagination-limit-value').html(curHtml)
+                    parent.slideUp()
+
+                    let curLimit = parseInt(curHtml)
+                    data.limit = curLimit
+
+                    // 改变分页总数：
+                    curPages = Math.ceil(data.totalCount / curLimit)
+
+                    renderPageNums(1, curPages)
+
+                })
+            }
+
+            // 测试是否可点击：
+            function checkIsClickable() {
+                let curVal = parseInt($(selfSelector + ' .ktool-pagination-cur-page-value').val())
+                let totalVal = parseInt($(selfSelector + ' .ktool-pagination-total-page').html())
+
+                let prevEl = $(selfSelector + ' .ktool-pagination-page-prev')
+                let nextEl = $(selfSelector + ' .ktool-pagination-page-next')
+
+                prevEl.removeClass('disabled')
+                nextEl.removeClass('disabled')
+                if (curVal === 1) {
+                    prevEl.addClass('disabled')
+                }
+
+                if (curVal === totalVal) {
+                    nextEl.addClass('disabled')
+                }
+            }
+
+            function renderPageNums(index, pages) {
+                if (index) {
+                    data.index = index
+
+                }
+                if (pages) {
+                    myTotalPages = pages
+                }
+                $(selfSelector + ' .ktool-pagination-total-page').html(myTotalPages)
+                $(selfSelector + ' .ktool-pagination-cur-page-value').val(data.index)
+                checkIsClickable()
+                callback(data.index, data)
+
+
+            }
+
+        }
+    </script>
+</body>
+
+</html>

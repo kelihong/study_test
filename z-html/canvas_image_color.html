@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>给半透明的图片上背景色，看是否会变色</title>
+</head>
+
+<body>
+    <canvas id="canvas" width="600" height="600"></canvas>
+    <script>
+        let src = '/static/images/colorImage.png'
+        let canvas = document.getElementById('canvas')
+        let ctx = canvas.getContext('2d')
+
+
+        ctx.fillStyle = '#1E1313'
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        let image = new Image()
+        image.src = src
+        image.onload = function() {
+            ctx.drawImage(image, 0, 0, canvas.width, canvas.height)
+        }
+
+        let result = " 事实证明，它不会变色,只是传入的颜色值不对"
+        console.log(result)
+            // 事实证明，它不会变色
+    </script>
+
+</body>
+
+</html>

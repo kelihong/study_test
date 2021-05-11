@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/initialize.css">
+    <title>tab拖拽</title>
+    <style>
+        .tab-wrap .tab-item {
+            height: 40px;
+            line-height: 40px;
+            background: #ffeeee;
+            border: 1px solid grey;
+            width: 100px;
+            text-align: center;
+        }
+        
+        .tab-item.active {
+            position: relative;
+            margin-bottom: 40px;
+            /* border-bottom: 2px dashed springgreen; */
+        }
+        
+        .tab-item.active::after {
+            content: ' ';
+            display: block;
+            position: relative;
+            width: 100px;
+            height: 40px;
+            border: 1px dashed #999;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="tabWrap" class="tab-wrap">
+        <div class="tab-item" draggable="true">暗室逢灯1</div>
+        <div class="tab-item" draggable="true">暗室逢灯2</div>
+        <div class="tab-item" draggable="true">暗室逢灯3</div>
+        <div class="tab-item" draggable="true">暗室逢灯4</div>
+        <div class="tab-item" draggable="true">暗室逢灯5</div>
+        <div class="tab-item" draggable="true">暗室逢灯6</div>
+    </div>
+
+
+    <script>
+        let tabWrap = document.getElementById('tabWrap')
+        let itemList = tabWrap.getElementsByClassName('tab-item')
+        let overItem = null
+        let curDragItem = null
+        tabWrap.ondragover = function(e) {
+            e.preventDefault()
+            if (e.target === overItem) {
+                return
+            }
+
+            overItem = e.target
+            for (let i = 0; i < itemList.length; i++) {
+                itemList[i].classList.remove('active')
+            }
+            // 如果当前项与移动项相吻合
+            if (overItem === curDragItem) {
+                return
+            }
+            overItem.classList.add('active')
+
+            console.log(overItem)
+        }
+
+        tabWrap.ondragstart = function(e) {
+            if (!e.target.classList.contains('tab-item')) {
+                return
+            }
+
+            let targetPrev = e.target
+            curDragItem = targetPrev
+
+        }
+        tabWrap.ondrop = function(e) {
+            if (!e.target.classList.contains('tab-item')) {
+                return
+            }
+            let target = e.target.nextSibling
+
+            tabWrap.insertBefore(curDragItem, target)
+            curDragItem = null
+            overItem.classList.remove('active')
+        }
+
+
+        function getIndex(current) {
+            for (let i = 0; i < itemList.length; i++) {
+                if (itemList[i] === current) {
+                    return i
+                }
+            }
+        }
+        let item = itemList[0]
+        tabWrap.insertBefore(item, itemList[3])
+    </script>
+</body>
+
+</html>

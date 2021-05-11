@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        function promiseObject(num) {
+            return new Promise(((resolve, reject) => {
+                setTimeout(() => {
+                    if (num > 10) {
+                        resolve(num)
+                    } else {
+                        resolve('bigger')
+                    }
+                }, 800);
+
+            }))
+        }
+
+
+
+        function setAllPromiseList() {
+
+            let arr = [11, 2, 322, 2, 4, 53, 33, 8, 11, 23, 6, 7]
+            let promiseArr = []
+            for (let key in arr) {
+                promiseArr.push(promiseObject(arr[key]))
+            }
+
+            return promiseArr
+        }
+
+
+
+        async function awaitWrapper(promise) {
+            if (!promise) {
+                return console.error('no promise object')
+            }
+            let promiseArr = setAllPromiseList()
+
+            return new Promise(resolve => {
+                Promise.all(promiseArr).then(res => {
+                    resolve([null, res])
+                }).catch(error => {
+                    resolve([error, null])
+                })
+            })
+
+
+
+        }
+
+        awaitWrapper(promiseObject).then(res => {
+            console.log(res)
+        })
+    </script>
+</body>
+
+</html>

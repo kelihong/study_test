@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        img {
+            width: 600px;
+            height: 600px;
+            background: rgb(255, 220, 145);
+        }
+    </style>
+</head>
+
+<body>
+    <img id="img" src="" alt="">
+    <script>
+        let src = '/static/images/my.png'
+            // let src = '/static/images/no_data.png'
+        let img = document.getElementById('img')
+        let newP = [{
+            x: 40,
+            y: 50
+        }, {
+            x: 500,
+            y: 0
+        }, {
+            x: 1200,
+            y: 1200
+        }, {
+            x: 0,
+            y: 600
+        }]
+
+        window.addEventListener('mousedown', down, false)
+
+        // 鼠标按下
+        function down(e) {
+            if (!e.target.classList.contains('point-item') && e.target.tagName !== "CANVAS") {
+                return
+            }
+
+            // 获取鼠标点击坐标：
+            area = getArea(e)
+
+
+
+
+            for (let i = 0; i < next.length; i++) {
+
+                curDot = next[i]
+                nextDot = next[0]
+                if (area.t > curDot.y - resizableSize && area.t < curDot.y + resizableSize && area.l > curDot.x - resizableSize && area.l < curDot.x + resizableSize) {
+                    index = i
+                    break
+                } else {
+                    curDot = null
+                }
+            }
+
+
+
+            window.addEventListener('mousemove', move, false)
+            window.addEventListener('mouseup', up, false)
+        }
+
+        // 鼠标移动
+        function move(e) {
+
+            doWhenNearOut(e)
+
+            e.preventDefault();
+            let narea = getArea(e);
+            let nx = narea.l - area.l;
+            let ny = narea.t - area.t;
+            area = narea
+
+
+            curDot.x += nx
+            curDot.y += ny
+
+
+            setPointItems()
+
+        }
+
+        // 鼠标抬起
+        function up(e) {
+
+            window.removeEventListener('mousemove', move, false)
+            window.removeEventListener('mouseup', up, false)
+        }
+
+
+
+
+
+        transform2d({
+            imgUrl: src,
+            // options: newP
+        }).then(res => {
+            img.src = res
+        })
+
+
+        function transform2d({
+            imgUrl = '',
+            options = [{
+                "x": 0,
+                "y": 0
+            }, {
+                "x": 1200,
+                "y": 0
+            }, {
+                "x": 1200,
+                "y": 1200
+            }, {
+                "x": 0,
+                "y": 1200
+            }],
+            canvasSize = {
+                width: 1200,
+                height: 1200
+            }
+        }) {
+
+            let defaultParams = [{
+                x: 0,
+                y: 0
+            }, {
+                x: canvasSize.width,
+                y: 0
+            }, {
+                x: canvasSize.width,
+                y: canvasSize.height
+            }, {
+                x: 0,
+                y: canvasSize.height
+            }, ]
+            let canvas = document.createElement('canvas')
+            canvas.setAttribute('width', canvasSize.width)
+            canvas.setAttribute('height', canvasSize.height)
+            let ctx = canvas.getContext('2d')
+            let img = new Image()
+            let sp = 4
+            img.src = imgUrl
+            return new Promise((resolve => {
+                img.onload = function() {
+
+                    let newOp = getMeshPoints(options)
+                    newOp[0][sp / 2] = {
+                            x: 600,
+                            y: 40
+                        }
+                        // 新的三角形
+                    let newRectainArr = getPoint(newOp)
+
+
+                    // 旧的三角形
+                    let oldRectainArr = getPoint(getMeshPoints(defaultParams))
+
+                    // 合成最后的图形
+                    for (let i = 0; i < newRectainArr.length; i++) {
+                        drawTriangle(ctx, img, newRectainArr[i], oldRectainArr[i])
+                    }
+
+                    let url = canvas.toDataURL('image/png')
+                    resolve(url)
+
+                }
+            }))
+
+            // 画每一个三角形
+            function drawTriangle(ctx, img, pre, nxt) {
+                let s = 0.3
+
+                // 设置偏移量画两遍，解决缝隙问题
+                drawTexturedTriangle(ctx, img, pre[0].x, pre[0].y + s, pre[1].x + s, pre[1].y + s, pre[2].x + s, pre[2].y + s, nxt[0].x + s, nxt[0].y + s, nxt[1].x + s, nxt[1].y + s, nxt[2].x + s, nxt[2].y + s)
+                drawTexturedTriangle(ctx, img, pre[0].x, pre[0].y, pre[1].x, pre[1].y, pre[2].x, pre[2].y, nxt[0].x, nxt[0].y, nxt[1].x, nxt[1].y, nxt[2].x, nxt[2].y)
+
+            }
+
+
+            // 获取每个三角形的点坐标数组
+            function getPoint(matrixArr) {
+
+                let dotsDatas = []
+
+                for (let i = 0; i < matrixArr.length - 1; i++) {
+
+                    for (let j = 0; j < matrixArr[i].length - 1; j++) {
+                        let item1 = matrixArr[i][j]
+                        let item2 = matrixArr[i][j + 1]
+                        let item3 = matrixArr[i + 1][j + 1]
+                        let item4 = matrixArr[i + 1][j]
+                        dotsDatas.push([item1, item2, item4])
+                        dotsDatas.push([item2, item3, item4])
+                    }
+                }
+                return dotsDatas
+
+            }
+
+
+
+            // 画三角形
+            function drawTexturedTriangle(ctx, img, x0, y0, x1, y1, x2, y2,
+                u0, v0, u1, v1, u2, v2) {
+
+                ctx.beginPath();
+                // ctx.moveTo(x0, y0);
+                // ctx.lineTo(x1, y1);
+                // ctx.lineTo(x2, y2);
+                // 为了去掉缝隙
+                ctx.moveTo(x0, y0 - 1);
+                ctx.lineTo(x1 + 1, y1 + 1);
+                ctx.lineTo(x2 - 1, y2 + 1);
+
+                ctx.closePath();
+
+                x1 -= x0;
+                y1 -= y0;
+                x2 -= x0;
+                y2 -= y0;
+
+                u1 -= u0;
+                v1 -= v0;
+                u2 -= u0;
+                v2 -= v0;
+
+                var det = 1 / (u1 * v2 - u2 * v1),
+
+                    // linear transformation
+                    a = (v2 * x1 - v1 * x2) * det,
+                    b = (v2 * y1 - v1 * y2) * det,
+                    c = (u1 * x2 - u2 * x1) * det,
+                    d = (u1 * y2 - u2 * y1) * det,
+
+                    // translation
+                    e = x0 - a * u0 - c * v0,
+                    f = y0 - b * u0 - d * v0;
+
+                ctx.save();
+                ctx.transform(a, b, c, d, e, f);
+
+                ctx.clip();
+                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                ctx.restore();
+
+
+
+                return ctx
+            }
+
+            // 获取每个点的坐标
+            function getMeshPoints(param) {
+
+
+                let m1 = param[0]
+                let m2 = param[1]
+                let m3 = param[2]
+                let m4 = param[3]
+
+                // 算出最上排
+                let mtt = singleLinePoints(m1, m2)
+                    // 算最下排
+                let mtb = singleLinePoints(m4, m3)
+                    // 算右边：
+                let mtr = singleLinePoints(m2, m3)
+                    // 算左边：
+                let mtl = singleLinePoints(m1, m4)
+
+                console.log(mtl)
+                console.log(mtr)
+
+                // 算剩下的排，并合起来变成数组
+                let finalArr = [mtt]
+                    // 算出中间：
+                for (let i = 1; i < sp; i++) {
+                    let item = singleLinePoints(mtl[i], mtr[i])
+                    finalArr.push(item)
+                }
+                finalArr.push(mtb)
+
+                return finalArr
+            }
+
+            // 获取单行（单列）的坐标
+            function singleLinePoints(m1, m2) {
+                let mt = []
+                let mtX = (m2.x - m1.x) / sp
+                let mtY = (m2.y - m1.y) / sp
+
+                for (let i = 0; i <= sp; i++) {
+                    mt.push({
+                        x: m1.x + mtX * i,
+                        y: m1.y + mtY * i
+                    })
+                }
+                return mt
+            }
+        }
+    </script>
+</body>
+
+</html>
