@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=`, initial-scale=1.0">
+    <title>改变css颜色变量</title>
+    <style>
+        body {}
+
+        .test.pink {
+            --color-main: pink;
+
+        }
+
+        .test {
+            --color-main: red;
+            color: var(--color-main);
+        }
+    </style>
+</head>
+
+<body>
+    <div id="test" class="test">test</div>
+    <div id="test" class="test pink">test</div>
+    <script>
+        
+    </script>
+</body>
+
+</html>

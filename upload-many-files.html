@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <input id="input" type="file" multiple>
+    <script>
+        let formData = new FormData()
+
+        let input = document.getElementById('input')
+        input.onchange = function() {
+            console.log(input.files)
+            let fileList = input.files
+            formData.append('file', fileList[0])
+            formData.append('file', fileList[0])
+            formData.append('file', fileList[0])
+            formData.append('file', fileList[0])
+            formData.append('file', fileList[0])
+            formData.append('file', fileList[0])
+            formData.append('file', fileList[0])
+            console.log(formData.get('file'))
+        }
+    </script>
+</body>
+
+</html>

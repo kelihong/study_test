@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/initialize.css">
+    <link rel="stylesheet" href="/static/css/index.css">
+    <title>Document</title>
+    <style>
+        body {
+            text-align: center;
+        }
+        
+        canvas {
+            margin-top: 20px;
+            background-color: rgba(255, 210, 217, 0.473);
+        }
+    </style>
+</head>
+
+<body>
+
+    <canvas id="canvas" width="500" height="500"></canvas>
+    <script>
+        let canvas = document.getElementById('canvas')
+        let width = canvas.width
+        let height = canvas.height
+        let ctx = canvas.getContext('2d')
+
+        let _canvas = document.createElement('canvas')
+        _canvas.width = 50
+        _canvas.height = 50
+        let _ctx = _canvas.getContext('2d')
+        let _img = new Image()
+        _img.src = '/static/images/covers/7.jpg'
+        _img.onload = function() {
+            _ctx.drawImage(0, 0, _img.width, _img.height)
+            _canvas.toDataURL('image/png')
+        }
+
+
+        let img = new Image()
+        img.src =
+            img.onload = function() {
+                var pattern = ctx.createPattern(img, 'repeat-x')
+
+                setPattern(pattern, img.width, 0)
+                for (let i = 0; i < Math.ceil(canvas.height / img.height); i++) {
+
+                    if (i % 2 === 0) {
+
+                        setPattern(pattern, -img.width / 2, img.height * i)
+                        setPattern(pattern, img.width / 2, img.height * i)
+                    } else {
+                        setPattern(pattern, 0, img.height * i)
+                        setPattern(pattern, 0, img.height * i)
+
+                    }
+                }
+            }
+
+        function setPattern(pattern, left, top) {
+            ctx.save()
+            ctx.transform(1, 0, 0, 1, left, top)
+            ctx.fillStyle = pattern
+            ctx.fillRect(0, 0, width, img.height)
+            ctx.restore()
+        }
+    </script>
+</body>
+
+</html>

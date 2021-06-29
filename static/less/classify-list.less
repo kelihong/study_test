@@ -1,0 +1,36 @@
+.classify-list-box {
+    display: flex;
+    white-space: nowrap;
+    
+    background-color: burlywood;
+    .classify-list-wrap {
+        // flex: 1 1 auto;
+        white-space: nowrap;
+        display: flex;
+        flex-direction: column;
+        background-color: cornflowerblue;
+        padding: 5px;
+        .classify-item {
+           .classify-name {
+               background-color: pink;
+            &::after {
+                content: '=>';
+            }
+           }
+            &.active {
+                color:blue;
+            }
+            
+        }
+        // &:last-child {
+        //     .classify-list-item {
+        //         &::after {
+        //             display: none;
+        //         }
+        //     }
+        // }
+
+        // display: inline-block;
+        // vertical-align: top;
+    }
+}

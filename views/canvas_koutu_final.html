@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/initialize.css">
+    <link rel="stylesheet" href="/static/css/index.css">
+    <title>Document</title>
+    <style>
+        body {
+            text-align: center;
+        }
+        
+        canvas {
+            margin-top: 20px;
+            background-color: #fff;
+            /* background-color: rgba(255, 210, 217, 0.473); */
+        }
+    </style>
+</head>
+
+<body>
+
+    <canvas id="canvas" width="500" height="500"></canvas>
+
+    <script>
+        // let src = '/static/images/covers/7.jpg'
+        // let src = '/static/images/covers/test.jpg'
+        let src = '/static/images/covers/7.jpg'
+        let canvas = document.getElementById('canvas')
+        let ctx = canvas.getContext('2d')
+        let width = canvas.width
+        let height = canvas.height
+        let image = new Image()
+        image.src = src
+        image.onload = function() {
+            ctx.drawImage(image, 0, 0, width, height)
+
+            // 开始抠：
+            let imageInfo = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            console.log(imageInfo.data)
+            let data = imageInfo.data
+            let color = [25, 25, 25]
+                // let color2 = [144, 144, 144]
+            let range = 10
+                // 四个角颜色值：
+            let tl = ctx.getImageData(0, 0, 1, 1).data
+            let tr = ctx.getImageData(width - 1, 0, 1, 1).data
+            let br = ctx.getImageData(width - 1, height - 1, 1, 1).data
+            let bl = ctx.getImageData(0, height - 1, 1, 1).data
+
+            for (let i = 0; i < data.length; i += 4) {
+                let r = data[i]
+                let g = data[i + 1]
+                let b = data[i + 2]
+                if (test([r, g, b], tl, range)) {
+                    data[i + 3] = 0
+                }
+            }
+            ctx.putImageData(imageInfo, 0, 0)
+        }
+
+        function setItem(item, range) {
+            range = range || 0
+            item += range
+            item = item > 255 ? 255 : item
+            return item
+        }
+
+        function randomColorItem(max) {
+            max = max || 122
+            max = max > 255 ? 255 : max
+            max = max < 0 ? 0 : max
+            let item = Math.floor(Math.random() * max)
+            return item
+        }
+
+        function test(cur, target, range) {
+            for (let i = 0; i < 3; i++) {
+                if (!(target[i] + range >= cur[i] && target[i] - range <= cur[i])) {
+                    return false
+                }
+            }
+            return true
+        }
+    </script>
+</body>
+
+</html>

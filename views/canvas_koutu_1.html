@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/initialize.css">
+    <link rel="stylesheet" href="/static/css/index.css">
+    <title>Document</title>
+    <style>
+        body {
+            text-align: center;
+        }
+        
+        canvas {
+            margin-top: 20px;
+            background-color: rgba(255, 210, 217, 0.473);
+        }
+    </style>
+</head>
+
+<body>
+
+    <canvas id="canvas" width="500" height="500"></canvas>
+
+    <script>
+        let src = '/static/images/covers/7.jpg'
+        let canvas = document.getElementById('canvas')
+        let ctx = canvas.getContext('2d')
+        let width = canvas.width
+        let height = canvas.height
+        let image = new Image()
+        image.src = src
+        image.onload = function() {
+            ctx.drawImage(image, 0, 0, width, height)
+
+            // 开始抠：
+            let imageInfo = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            console.log(imageInfo.data)
+            let data = imageInfo.data
+
+
+            for (let i = 0; i < data.length; i++) {
+                let item = data[i]
+                if (item === 25 && ((i + 1) % 4 !== 0)) {
+                    item = 255
+                }
+                imageInfo.data[i] = item
+            }
+            console.log(imageInfo)
+
+            ctx.putImageData(imageInfo, 0, 0)
+
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        canvas {
+            border: 1px solid grey
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="canvas" width="500" height="500"></canvas>
+    <canvas id="canvas2" width="500" height="500"></canvas>
+    <script src="/static/js/fabric.min.js"></script>
+    <script>
+        let canvas = new fabric.Canvas('canvas')
+        let canvas2 = new fabric.Canvas('canvas2')
+        fabric.Image.fromURL('/static/images/covers/7.jpg', function(img) {
+            if (img.width > canvas.width) {
+                img.scale(canvas.width / img.width / 2)
+            }
+            canvas.add(img)
+            fabric.Image.fromURL('/static/images/covers/7.jpg', function(img2) {
+                if (img2.width > canvas.width) {
+                    img2.scale(canvas.width / img2.width / 2).set({
+                        left: 100
+                    })
+                }
+
+                canvas.add(img2)
+                canvas.setActiveObject(img2)
+                let active = canvas.getActiveObject()
+                canvas.remove(active)
+                active.clone(function(cloned) {
+
+                    let ctx = canvas2.getContext('2d')
+
+                    let test = cloned.toDataURL('image/png')
+                    koutu(test, active.width, active.height, function(src) {
+                        console.log(src)
+
+                        fabric.Image.fromURL(src, function(img3) {
+
+                            console.log(img2.scaleX)
+                            console.log(img2.scaleY)
+                            let obj = {}
+                            for (let key in img2) {
+                                if (key.indexOf('_') === -1 && img2.hasOwnProperty(key)) {
+                                    console.log(key)
+                                    obj[key] = img2[key]
+                                }
+                            }
+
+                            img3.set(obj)
+
+
+                            canvas.add(img3)
+                        })
+                    })
+
+                })
+
+
+
+            })
+
+
+        })
+
+
+        function koutu(url, _width, _height, callback) {
+            let src = url
+            let canvas = document.createElement('canvas')
+            canvas.setAttribute('width', _width)
+            canvas.setAttribute('height', _height)
+            let ctx = canvas.getContext('2d')
+            let width = canvas.width
+            let height = canvas.height
+            let image = new Image()
+            image.src = src
+            image.onload = function() {
+                ctx.drawImage(image, 0, 0, width, height)
+
+                // 开始抠：
+                let imageInfo = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                console.log(imageInfo.data)
+                let data = imageInfo.data
+                let color = [25, 25, 25]
+                    // let color2 = [144, 144, 144]
+                let range = 10
+                    // 四个角颜色值：
+                let tl = ctx.getImageData(0, 0, 1, 1).data
+                let tr = ctx.getImageData(width - 1, 0, 1, 1).data
+                let br = ctx.getImageData(width - 1, height - 1, 1, 1).data
+                let bl = ctx.getImageData(0, height - 1, 1, 1).data
+
+                for (let i = 0; i < data.length; i += 4) {
+                    let r = data[i]
+                    let g = data[i + 1]
+                    let b = data[i + 2]
+                    if (test([r, g, b], tl, range)) {
+                        data[i + 3] = 0
+                    }
+                }
+                ctx.putImageData(imageInfo, 0, 0)
+                let src = canvas.toDataURL('image/png')
+                callback(src)
+            }
+
+            function setItem(item, range) {
+                range = range || 0
+                item += range
+                item = item > 255 ? 255 : item
+                return item
+            }
+
+            function randomColorItem(max) {
+                max = max || 122
+                max = max > 255 ? 255 : max
+                max = max < 0 ? 0 : max
+                let item = Math.floor(Math.random() * max)
+                return item
+            }
+
+            function test(cur, target, range) {
+                for (let i = 0; i < 3; i++) {
+                    if (!(target[i] + range >= cur[i] && target[i] - range <= cur[i])) {
+                        return false
+                    }
+                }
+                return true
+            }
+        }
+    </script>
+</body>
+
+</html>

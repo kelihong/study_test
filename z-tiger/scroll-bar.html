@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>滚动条测试</title>
+    <style>
+.outer {
+    height: 400px;
+    background: hotpink;
+    overflow-y: auto;
+}
+.inner {
+    background: linear-gradient(rgb(154, 255, 247) ,white,rgb(164, 164, 255), white,pink);
+    height: 800px;
+}
+
+/* 滚动条整体 */
+.scroll-bar::-webkit-scrollbar{
+    /* 可以设置各种背景样式，可以引入图片 */
+    background: linear-gradient(rgb(0, 219, 117) ,white,rgb(164, 164, 255), white,pink); 
+
+    /* 滚动条宽度 */
+    width: 10px;
+}
+
+/* 滚动条两端按钮 */
+.scroll-bar::-webkit-scrollbar-button{
+    /* 可以设置各种背景样式，可以引入图片 */
+    /* background: linear-gradient(pink,#fff,pink); */
+    background: url('/static/images/line-bg.jpg');
+}
+
+/* 滚动条滑块 */
+.scroll-bar::-webkit-scrollbar-thumb{
+    background: url('/static/images/line-bg.jpg');
+}
+    </style>
+</head>
+<body>
+    <div class="outer scroll-bar">
+        <div class="inner"></div>
+    </div>
+</body>
+</html>

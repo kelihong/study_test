@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        img {
+            /* width: 1200px; */
+            /* height: 1200px; */
+        }
+    </style>
+</head>
+
+<body>
+    <img id="img" src="" alt="">
+    <img id="img1" src="" alt="">
+
+
+    <script>
+        let src = '/static/images/covers/x.png'
+        let canvas = document.createElement('canvas')
+        let img = document.getElementById('img')
+        let img1 = document.getElementById('img1')
+        let width = 196
+        let height = 196
+        canvas.setAttribute('width', width)
+        canvas.setAttribute('height', height)
+        let ctx = canvas.getContext('2d')
+
+        let image = new Image()
+        image.src = src
+        image.onload = function() {
+            ctx.drawImage(image, 0, 0, width, height)
+            let url = canvas.toDataURL('image/jpeg')
+            let url1 = canvas.toDataURL('image/png')
+            img.src = url
+            img1.src = url1
+        }
+    </script>
+</body>
+
+</html>

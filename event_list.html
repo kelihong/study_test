@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>循环事件</title>
+    <style>
+        .box {
+            width: 100px;
+            height: 100px;
+            border: 1px solid grey;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="box" class="box">asdf</div>
+
+    <script src="/static/js/jquery-1.8.2.min.js"></script>
+    <script>
+        let eventList = {
+            ctrlKey: [{
+                keyCode: 83,
+                fun: function() {
+                    console.log('ctrl-key')
+                }
+
+            }],
+            altKey: [{
+                keyCode: 83,
+                fun: function() {
+                    console.log('alt-key')
+                }
+
+            }],
+        }
+        $(document).on('keydown', function(e) {
+            e.preventDefault()
+            let keyCode = e.keyCode
+            if (e.ctrlKey) {
+
+                for (let i = 0; i < eventList.ctrlKey.length; i++) {
+                    let item = eventList.ctrlKey[i]
+                    if (keyCode === item.keyCode) {
+                        item.fun()
+                    }
+                }
+            }
+            if (e.altKey) {
+                for (let i = 0; i < eventList.altKey.length; i++) {
+                    let item = eventList.altKey[i]
+                    if (keyCode === item.keyCode) {
+                        item.fun()
+                    }
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=`, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+
+    </style>
+</head>
+
+<body>
+    <canvas id="canvas" width="1200" height="1200"></canvas>
+    <script src="/static/js/fabric.min.js"></script>
+    <script>
+        let src = '/static/images/covers/3.jpg'
+        let canvas = new fabric.Canvas('canvas')
+
+        function setBg(active, canvas) {
+            active.scaleToWidth(100);
+
+            // 这里的img相当于active：
+            var patternSourceCanvas = new fabric.StaticCanvas();
+            patternSourceCanvas.add(active);
+            patternSourceCanvas.renderAll();
+            var pattern = new fabric.Pattern({
+                source: patternSourceCanvas.getElement(),
+                repeat: 'repeatX',
+            });
+
+
+            let item = pattern.toObject(active)
+
+            // 此时打印item,会发现，实际上item里有个属性：source,
+            console.log(item)
+
+            canvas.setBackgroundColor({
+                source: item.source,
+                repeat: 'repeat',
+                offsetX: 200,
+                offsetY: 100
+            }, canvas.renderAll.bind(canvas));
+        }
+    </script>
+</body>
+
+</html>
