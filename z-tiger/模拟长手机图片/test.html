@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        button {
+            margin: 30px;
+            padding: 40px;
+        }
+    </style>
+</head>
+<body>
+    <img id="img" src="http://law.kebaoye.com/static/img/index-banner.7d541517.png" alt="">
+    <button id="btn">测试！</button>
+    <script>
+        let btn = document.getElementById('btn')
+        btn.onclick = function() {
+            btn.ontouchstart()
+            setTimeout(() => {
+                btn.ontouchend()
+            }, 3000);
+        }
+
+        btn.ontouchstart = function(){
+            console.log(1)
+        }
+    </script>
+</body>
+</html>

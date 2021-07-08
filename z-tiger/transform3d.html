@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        canvas,
+        img {
+            width: 600px;
+            height: 600px;
+            background-color: rgba(255, 176, 176, 0.397);
+        }
+
+        .show {
+            display: inline-block;
+            width: 600px;
+            vertical-align: top;
+        }
+
+        .param {
+            display: inline-block;
+            width: 300px;
+            vertical-align: top;
+        }
+        .desc {
+            font-size: 12px;
+            color: #999;
+        }
+
+        .param .param-item {
+            margin: 6px 0;
+            line-height: 30px;
+        }
+
+        .param .param-item span {
+            display: inline-block;
+            width: 90px;
+        }
+
+        .param .param-item input {
+            width: 80px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="param">
+        <div class="param-item">
+            <span>EyeX: </span>
+            <input type="number" param-key="EyeX" step="0.1">
+        </div>
+        <div class="param-item">
+            <span>EyeY: </span>
+            <input type="number" param-key="EyeY" step="0.1">
+        </div>
+        <div class="param-item">
+            <span>EyeZ:</span>
+            <input type="number" param-key="EyeZ" step="0.1">
+        </div>
+        <div class="param-item">
+            <span>PositionX:</span>
+            <input type="number" param-key="PositionX" step="0.1">
+        </div>
+        <div class="param-item">
+            <span>PositionY:</span>
+            <input type="number" param-key="PositionY" step="0.1">
+        </div>
+        <div class="param-item">
+            <span>PositionZ:</span>
+            <input type="number" param-key="PositionZ" step="0.1">
+        </div>
+        <div class="param-item">
+            <span>RotateX:</span>
+            <input type="number" param-key="RotateX" step="0.1">
+        </div>
+        <div class="param-item">
+            <span>RotateY:</span>
+            <input type="number" param-key="RotateY" step="0.1">
+        </div>
+        <div class="param-item">
+            <span>RotateZ:</span>
+            <input type="number" param-key="RotateZ" step="0.1">
+        </div>
+    </div>
+    <div class="show">
+        <img id="img" src="" alt="">
+    </div>
+    <script src="/static/js/jquery-3.5.1.js"></script>
+    <script src="/static/js/design_preview_d3_img.js"></script>
+    <script src="/static/js/webgl/cuon-utils.js"></script>
+    <script src="/static/js/webgl/cuon-matrix.js"></script>
+    <script>
+        async function init() {
+
+        }
+
+        let url = '/static/images/covers/1.jpg'
+        let config = {
+            EyeX: 0,
+            EyeY: 0,
+            EyeZ: 3.7,
+            PositionX: 0,
+            PositionY: 0,
+            PositionZ: 0,
+            RotateX: 0,
+            RotateY: 0,
+            RotateZ: 0
+        }
+        let obj = null
+
+        $(document).on('mousewheel', 'input', function () {
+            console.log($(this).val())
+            let paramKey = $(this).attr('param-key')
+            config[paramKey] = $(this).val()
+            obj = null
+            obj = new design_preview_d3_img({
+                url,
+                config,
+                callback: function (base64) {
+
+
+                    console.log(base64)
+                    $('#img').attr('src', base64)
+                }
+            }).transform()
+        })
+
+        config = JSON.stringify(config)
+
+        // obj = new design_preview_d3_img({
+        //     url,
+        //     config,
+        //     callback: function (base64) {
+
+
+        //         console.log(base64)
+        //         $('#img').attr('src', base64)
+        //     }
+        // }).transform()
+    </script>
+</body>
+
+</html>

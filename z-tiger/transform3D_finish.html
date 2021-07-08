@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        .desc {
+            color: #999;
+            font-size: 12px;
+            padding: 0 10px;
+        }
+        .danger {
+            color: rgb(214, 0, 0);
+            font-size: 12px;
+            padding: 0 10px;
+        }
+        .settings {
+            display: inline-block;
+            padding:0 30px;
+            border: 1px dashed #ccc;
+            margin: 20px;
+            border-radius: 10px;
+            vertical-align: middle;
+        }
+        h3 {
+            line-height: 40px;
+            color: #33adff;
+            font-weight: normal;
+            font-size: 16px;
+            
+        }
+
+        .step-box {
+            padding: 0 0 20px 0;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ccc;
+        }
+
+        .step-box button {
+            width: 40px;
+            height: 20px;
+            line-height: 20px;
+            padding: 0;
+            margin: 0 3px;
+            background-color: #ffffff;
+            border: 1px solid #33adff;
+            border-radius: 3px;
+            color: #33adff;
+        }
+
+        .step-box button:active {
+            opacity: 0.5
+        }
+
+        .step-box button:hover {
+            opacity: 0.8;
+        }
+
+        .step-box button.active {
+            background-color: #33adff;
+            border: 1px solid #33adff;
+            color: #ffffff;
+        }
+
+        .show {
+            display: inline-block;
+            width: 600px;
+            height: 600px;
+            vertical-align: middle;
+            position: relative;
+            border: 1px solid grey;
+        }
+
+        .show img {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .show #imgModel {
+            background-color: #fff;
+            z-index: 0;
+        }
+
+        .show #img {
+            /* background-color: rgba(255, 176, 176, 0.397); */
+            z-index: 1;
+        }
+
+        .param {
+            display: inline-block;
+            width: 300px;
+            vertical-align: top;
+        }
+
+        .param .param-item {
+            margin: 6px 0;
+            line-height: 30px;
+        }
+
+        .param .param-item span {
+            display: inline-block;
+            width: 90px;
+        }
+
+        .param h4 {
+            padding-left: 4px;
+            /* display: inline-block; */
+            border-bottom: 1px dashed #ccc;
+        }
+
+        .param .param-item input {
+            width: 80px;
+            border: 1px solid #ccc;
+            line-height: 25px;
+            text-align: center;
+        }
+
+        
+    </style>
+</head>
+
+<body>
+    <div class="settings">
+        <h3>步长<span class="danger">默认步长不统一,选择后将统一所有步长</span></h3>
+        <div class="step-box">
+           
+            <button step-val="1">1</button>
+            <button step-val="0.1">0.1</button>
+            <button step-val="10">10</button>
+        </div>
+        <h3>参数</h3>
+        <div id="paramBox" class="param">
+            <h4>视角<span class="desc">默认步长：0.1</span></h4>
+            <div class="param-item">
+                <span>EyeX: </span>
+                <input type="number" param-key="EyeX" step="0.1">
+            </div>
+            <div class="param-item">
+                <span>EyeY: </span>
+                <input type="number" param-key="EyeY" step="0.1">
+            </div>
+            <div class="param-item">
+                <span>EyeZ:</span>
+                <input type="number" param-key="EyeZ" step="0.1">
+            </div>
+
+            <h4>位置<span class="desc">默认步长：0.1</span></h4>
+
+            <div class="param-item">
+                <span>PositionX:</span>
+                <input type="number" param-key="PositionX" step="0.1">
+            </div>
+            <div class="param-item">
+                <span>PositionY:</span>
+                <input type="number" param-key="PositionY" step="0.1">
+            </div>
+            <div class="param-item">
+                <span>PositionZ:</span>
+                <input type="number" param-key="PositionZ" step="0.1" min="0">
+            </div>
+
+            <h4>旋转<span class="desc">默认步长：10</span></h4>
+
+            <div class="param-item">
+                <span>RotateX:</span>
+                <input type="number" param-key="RotateX" step="10">
+            </div>
+            <div class="param-item">
+                <span>RotateY:</span>
+                <input type="number" param-key="RotateY" step="10">
+            </div>
+            <div class="param-item">
+                <span>RotateZ:</span>
+                <input type="number" param-key="RotateZ" step="10">
+            </div>
+        </div>
+    </div>
+    <div class="show">
+        <img id="img" src="" alt="">
+        <img id="imgModel" src="" alt="">
+    </div>
+    <script src="/static/js/jquery-3.5.1.js"></script>
+    <script src="/static/js/transform3d.js"></script>
+    <script src="/static/js/webgl/cuon-utils.js"></script>
+    <script src="/static/js/webgl/cuon-matrix.js"></script>
+    <script>
+
+        let url = '/static/images/covers/9.jpg'
+        let defaultConfig = {
+            EyeX: 0,
+            EyeY: 0,
+            EyeZ: 3.7,
+            PositionX: 0,
+            PositionY: 0,
+            PositionZ: 0,
+            RotateX: 0,
+            RotateY: 0,
+            RotateZ: 0
+        }
+        let config = {
+            EyeX: 0,
+            EyeY: 0,
+            EyeZ: 3.7,
+            PositionX: 0,
+            PositionY: 0,
+            PositionZ: 0,
+            RotateX: 0,
+            RotateY: 0,
+            RotateZ: 0
+        }
+        createParamBox()
+        function createParamBox() {
+            // let inputs = 
+            for (let key in config) {
+                $('input[param-key="' + key + '"]').val(config[key])
+            }
+        }
+
+        let imageConfig = {
+            url,
+            config: JSON.stringify(config),
+            callback: function (base64) {
+                // console.log(base64)
+                $('#img').attr('src', base64)
+            }
+        }
+
+
+        $(document).on('mousewheel', 'input', function () {
+            // let stepVal = $(this).attr('')
+            // let val = $(this).val()
+            // let step = $(this).
+            // $(this.val += )
+
+
+        })
+
+        $(document).on('input', 'input', function () {
+            let paramKey = $(this).attr('param-key')
+            console.log(paramKey)
+            config[paramKey] = $(this).val()
+            console.log(config)
+            imageConfig.config = JSON.stringify(config)
+            console.log(imageConfig)
+            createNew3dImage(imageConfig)
+        })
+
+        $(document).on('click', '.step-box button', function () {
+
+            $(this).addClass('active').siblings().removeClass('active')
+            let step = parseFloat($(this).attr('step-val'))
+            $('#paramBox input').attr('step', step)
+        })
+
+        // $('.step-box button').eq(0).click()
+
+        createNew3dImage(imageConfig)
+
+
+    </script>
+</body>
+
+</html>
