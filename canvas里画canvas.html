@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        canvas {
+            border: 1px solid grey;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="c1" width="500" height="500"></canvas>
+    <canvas id="c2" width="500" height="500"></canvas>
+    <canvas id="c3" width="500" height="500"></canvas>
+
+
+    <script>
+        let c1 = document.getElementById('c1')
+        let c2 = document.getElementById('c2')
+        let c3 = document.getElementById('c3')
+
+        let ctx1 = c1.getContext('2d')
+        let ctx2 = c2.getContext('2d')
+        let ctx3 = c3.getContext('2d')
+        ctx2.fillStyle = 'red'
+        ctx2.fillRect(0, 0, 100, 100)
+        ctx3.fillStyle = 'blue'
+        ctx3.fillRect(100, 100, 200,200)
+
+        ctx1.drawImage(c2, 0,0)
+        ctx1.drawImage(c3,0,0)
+        console.log(c1.toDataURL('image/png'))
+    </script>
+</body>
+
+</html>

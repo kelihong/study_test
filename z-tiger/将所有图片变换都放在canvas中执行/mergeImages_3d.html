@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>将所有图片变换都放在canvas中执行</title>
+    <style>
+        .canvas-container {
+            display: inline-block;
+            width: 600px !important;
+            height: 600px !important;
+        }
+
+        canvas,
+        img {
+            display: inline-block;
+            width: 600px !important;
+            height: 600px !important;
+            border: 1px solid grey;
+        }
+
+        .container-hide {
+            display: none;
+            opacity: 0;
+            pointer-events: none;
+            z-index: -1;
+        }
+    </style>
+</head>
+
+<body>
+
+    <canvas id="c" width="1600" height="1600"></canvas>
+    <!-- <img src="" alt=""> -->
+    <script src="/static/js/jquery-3.5.1.js"></script>
+    <script src="/static/js/fabric.min.js"></script>
+    <script src="/static/js/webgl/cuon-matrix.js"></script>
+    <script src="/static/js/webgl/cuon-utils.js"></script>
+    <script src="/static/js/transform3d-canvas-test.js"></script>
+
+
+    <script>
+        let paths = [
+            '/static/images/covers/1.jpg',
+            '/static/images/covers/1.jpg',
+            '/static/images/covers/2.jpg',
+            '/static/images/covers/9.jpg',
+        ]
+
+        let config = {
+            EyeX: 1,
+            EyeY: 0,
+            EyeZ: 3.7,
+            PositionX: 0,
+            PositionY: 0,
+            PositionZ: 0,
+            RotateX: 11,
+            RotateY: 0,
+            RotateZ: 0
+        }
+        let c = new fabric.Canvas('c')
+        let canvas = document.createElement('canvas')
+        let cc = document.getElementById('c')
+        canvas.id = 'fcanvas'
+        canvas.setAttribute('width', 1600)
+        canvas.setAttribute('height', 1600)
+        let ctx = canvas.getContext('2d')
+        document.body.appendChild(canvas)
+
+
+
+        c.on('mouse:up', function () {
+            createNew3dImage({
+                canvas: canvas,
+                url: cc,
+                config: JSON.stringify(config),
+                callback: function (canvas3d) {
+                    console.log(canvas3d)
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                    let img = new Image()
+                    img.src = '/static/images/cut.png'
+                    img.onload = function () {
+                        ctx.drawImage(img, 0, 0, 1600,1600)
+                        ctx.globalCompositeOperation="source-in";
+                        ctx.drawImage(canvas3d, 0, 0, 1600,1600)
+                        
+                        ctx.globalCompositeOperation="source-over";
+                        // $('img').attr('src', canvas3d.toDataURL())
+                    }
+
+                }
+            })
+
+
+            // ctx.drawImage(cc, 0, 0)
+
+        })
+
+        createImage(c, paths[2], function (img) {
+            createImage(c, paths[3], function (img) {
+                // ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                // ctx.drawImage(cc, 0, 0)
+                // $('img').attr('src', canvas.toDataURL())
+            })
+        })
+
+        // createImage(fcanvas, paths[2], function (img) {
+        //     createImage(fcanvas, paths[3], function (img) {
+        //         $('img').attr('src', fcanvas.toDataURL('iamge/png'))
+        //     })
+        // })
+
+
+
+
+        function createImage(fc, path, callback) {
+            fabric.Image.fromURL(path, function (img) {
+                fc.add(img)
+                fc.renderAll()
+                callback(img)
+            })
+        }
+
+
+    </script>
+</body>
+
+</html>
