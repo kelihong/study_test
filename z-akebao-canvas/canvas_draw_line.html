@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>像fabric一样操作canvas内容
+
+    </title>
+    <style>
+        canvas {
+            position: absolute;
+            left: 0;
+            top: 0;
+            background: url('/static/images/covers/8.jpg');
+            /* transform: translate(-50%, -50%); */
+            /* transform: scale(.5); */
+        }
+    </style>
+</head>
+
+<body>
+    <img id="img" width="5" height="5" src="/static/images/my.png" alt="">
+    <canvas id="canvas" width="500" height="500"></canvas>
+
+    <script>
+        let canvas = document.getElementById('canvas')
+
+        let ctx = canvas.getContext('2d')
+        let kebao = {
+            ctx: ctx,
+            width: window.innerWidth,
+            height: window.innerHeight,
+            pencilLine: null
+
+        }
+
+        canvas.setAttribute('width', kebao.width)
+        canvas.setAttribute('height', kebao.height)
+
+        let list = kebao.objects
+
+        kebao.PencilLine = class {
+
+            constructor(param) {
+                for (let key in param) {
+                    this[key] = param[key]
+                }
+            }
+            endX = 0
+            endY = 0
+            startX = 0
+            startY = 0
+            lineWidth = 20
+            style = '#008000'
+            draw() {
+                let ctx = kebao.ctx
+                ctx.strokeStyle = this.style
+                let img = document.getElementById('img')
+                
+                img.width = 5
+                img.height = 5
+                var pat = ctx.createPattern(img, "repeat");
+                ctx.strokeStyle = pat
+                ctx.lineWidth = this.lineWidth
+
+                ctx.beginPath()
+                ctx.moveTo(this.startX, this.startY)
+                ctx.lineTo(this.endX, this.endY)
+                ctx.stroke()
+            }
+        }
+
+        kebao.pencilLine = new kebao.PencilLine({})
+
+        // 判断鼠标在哪个图层上：
+        canvas.onmousedown = function (e) {
+
+            let point = {
+                x: e.offsetX,
+                y: e.offsetY
+            }
+
+            kebao.pencilLine.startX = point.x
+            kebao.pencilLine.startX = point.y
+            kebao.pencilLine.endX = point.x
+            kebao.pencilLine.endY = point.y
+
+
+            canvas.onmousemove = function (e2) {
+                kebao.pencilLine.startX = point.x
+                kebao.pencilLine.startY = point.y
+
+                kebao.pencilLine.endX = e2.layerX
+                kebao.pencilLine.endY = e2.layerY
+
+                point.y = e2.offsetY
+                point.x = e2.offsetX
+                drawLine()
+
+            }
+
+            window.onmouseup = function (e) {
+
+                canvas.onmousemove = null
+                window.onmouseup = null
+            }
+
+        }
+
+        function drawLine() {
+
+            kebao.pencilLine.draw()
+
+        }
+
+
+        drawLine()
+
+
+
+
+    </script>
+</body>
+
+</html>

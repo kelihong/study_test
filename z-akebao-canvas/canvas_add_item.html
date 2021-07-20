@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>像fabric一样操作canvas内容
+
+    </title>
+    <style>
+        canvas {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            /* transform: translate(-50%, -50%); */
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="canvas" width="500" height="500"></canvas>
+
+    <script>
+        let canvas = document.getElementById('canvas')
+        let ctx = canvas.getContext('2d')
+        let kebao = {
+            ctx: ctx,
+            activeObject: null,
+            objects: [],
+
+        }
+        let list = kebao.objects
+
+        kebao.Rect = class {
+
+            constructor(param) {
+                for (let key in param) {
+                    this[key] = param[key]
+                }
+            }
+            left = 0
+            top = 0
+            width = 100
+            height = 100
+            color = '#008000'
+            active = false
+            draw() {
+                let ctx = kebao.ctx
+                this.active ? ctx.strokeStyle = '#008000' : ctx.strokeStyle = '#000000'
+
+                ctx.strokeRect(this.left, this.top, this.width, this.height)
+            }
+        }
+
+        list.push(new kebao.Rect({
+            left: 0,
+            top: 0
+        }))
+        list.push(new kebao.Rect({
+            left: 10,
+            top: 10
+        }))
+        list.push(new kebao.Rect({
+            left: 20,
+            top: 20,
+        }))
+        list.push(new kebao.Rect({
+            left: 30,
+            top: 30
+        }))
+        list.push(new kebao.Rect({
+            left: 40,
+            top: 40
+        }))
+
+        // console.log(obj.draw())
+        // 判断鼠标在哪个图层上：
+        canvas.onmousedown = function (e) {
+
+            let point = {
+                x: e.offsetX,
+                y: e.offsetY
+            }
+            setActiveObject(point)
+
+            if (kebao.activeObject === null) {
+                return
+            }
+
+            canvas.onmousemove = function (e2) {
+                kebao.activeObject.top += e2.offsetY - point.y
+                kebao.activeObject.left += e2.offsetX - point.x
+                point.y = e2.offsetY
+                point.x = e2.offsetX
+                renderAll()
+
+            }
+
+            window.onmouseup = function () {
+
+
+                renderAll()
+
+                canvas.onmousemove = null
+                canvas.onmouseup = null
+            }
+
+        }
+
+
+        function setActiveObject(point) {
+            let x = point.x
+            let y = point.y
+
+            let reList = list.slice().reverse()
+
+            discartActiveObject()
+
+            let index = undefined
+
+            for (let i = 0; i < reList.length; i++) {
+                let item = reList[i]
+                if (x > item.left && x < (item.left + item.width) && y > item.top && y < (item.top + item.height)) {
+                    index = i
+                    break
+                }
+            }
+            console.log(index)
+            if (index !== undefined) {
+                kebao.activeObject = reList[index]
+                kebao.activeObject.active = true
+
+            } else {
+                kebao.activeObject = null
+            }
+
+            renderAll()
+        }
+
+        function discartActiveObject() {
+            list.forEach(item => {
+                item.active = false
+            })
+        }
+
+        function renderAll() {
+            ctx.clearRect(0, 0, 500, 500)
+
+            for (let i = 0; i < list.length; i++) {
+                let item = list[i]
+                item.draw()
+            }
+
+        }
+
+
+        renderAll()
+
+
+
+
+    </script>
+</body>
+
+</html>

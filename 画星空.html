@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            padding: 0 30px;
+        }
+
+        #bgCanvas {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 0;
+        }
+
+        .event-wrap {
+            height: auto;
+            min-height: 100%;
+            position: relative;
+            z-index: 1;
+            margin: 0 20px;
+            max-width: 750px;
+            margin: 0 auto;
+        }
+
+        .event-list {
+            margin: 10px;
+            margin-left: 40px;
+
+        }
+
+
+
+        .event-list .event-item {
+            width: 100%;
+            color: #fff;
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .event-list .event-item::after {
+            content: ' ';
+            /* width: 20px; */
+            height: 0;
+            border-right: 12px solid rgba(0, 0, 0, 0.314);
+            /* border-left: 10px solid transparent; */
+            border-top: 5px solid transparent;
+            border-bottom: 5px solid transparent;
+            position: absolute;
+            top: 10px;
+            left: -12px;
+            /* transform: translateY(-50%); */
+
+        }
+
+        .event-list .event-item .event-item-inner {
+            background: rgba(0, 0, 0, 0.314);
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.58);
+            padding: 10px 5px;
+            font-size: 12px;
+            border-radius: 6px;
+            text-indent: 2em;
+        }
+
+        .event-list .event-item .event-item-inner p {
+            line-height: 18px;
+            margin-bottom: 8px;
+        }
+
+        /* .event-list .event-item:nth-child(odd) .event-item-inner {
+            float: left;
+        }
+
+        .event-list .event-item:nth-child(even) .event-item-inner {
+            float: right;
+        } */
+
+        .event-line {
+            height: 100%;
+            width: 5px;
+            position: absolute;
+            top: 0;
+            /* left: 50%; */
+            left: 10px;
+            /* transform: translateX(-50%); */
+            background-color: #00000038;
+            border-radius: 10px;
+            box-shadow: 0 0 10px #fff;
+
+        }
+
+
+        .t-scroll-x {
+            white-space: nowrap;
+            overflow-y: hidden;
+            overflow-x: auto;
+        }
+
+        .t-scroll-x::-webkit-scrollbar {
+            height: 7px;
+            position: absolute;
+            width: 100%;
+        }
+
+        .t-scroll-x::-webkit-scrollbar-thumb {
+            -webkit-border-radius: 3px;
+            border-radius: 3px;
+            background-color: rgba(0, 0, 0, 0.37);
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="bgCanvas"></canvas>
+    <div class="event-wrap">
+        <div class="event-list">
+            <div class="event-item">
+                <div class="event-item-inner">
+                    <p>sadfsd撒打发斯蒂芬的</p>
+                    <p>sadfsd撒打发斯蒂芬的</p>
+                    <p>sadfsd撒打发斯蒂芬的sadfsd撒打发斯蒂芬的sadfsd撒打发斯蒂芬的sadfsd撒打发斯蒂芬的sasadfsd撒打发斯蒂芬的sadfsd撒打发斯蒂芬的dfsd撒打发斯蒂芬的</p>
+                    <p>sadfsd撒打发斯蒂芬的</p>
+                    <p>sadfsd撒打发斯蒂芬的</p>
+                    <p>sadfsd撒打发斯蒂芬的</p>
+                    <p>sadfsd撒打发斯蒂芬的</p>
+                </div>
+            </div>
+            <div class="event-item">
+                <div class="event-item-inner">
+                    <p>sadfsd撒打发斯蒂芬的</p>
+                    <p>sadfsd撒打发斯蒂芬的</p>
+                    <p>sadfsd撒打发斯蒂芬的</p>
+                    <p>sadfsd撒打发斯蒂芬的</p>
+                    <p>sadfsd撒打发斯蒂芬的</p>
+                    <p>sadfsd撒打发斯蒂芬的</p>
+                    <p>sadfsd撒打发斯蒂芬的</p>
+                </div>
+            </div>
+            <div class="event-item">
+                <div class="event-item-inner">
+                    <p>sadfsd撒打发斯蒂芬的</p>
+                    <p>sadfsd撒打发斯蒂芬的</p>
+                    <p>sadfsd撒打发斯蒂芬的</p>
+                    <p>sadfsd撒打发斯蒂芬的</p>
+                    <p>sadfsd撒打发斯蒂芬的</p>
+                    <p>sadfsd撒打发斯蒂芬的</p>
+                    <p>sadfsd撒打发斯蒂芬的</p>
+                </div>
+            </div>
+            <div class="event-item">
+                <div class="event-item-inner">
+                    <p>sadfsd撒打发斯蒂芬的</p>
+                    <p>sadfsd撒打发斯蒂芬的</p>
+                    <p>sadfsd撒打发斯蒂芬的</p>
+                    <p>sadfsd撒打发斯蒂芬的</p>
+                    <p>sadfsd撒打发斯蒂芬的</p>
+                    <p>sadfsd撒打发斯蒂芬的</p>
+                    <p>sadfsd撒打发斯蒂芬的</p>
+                </div>
+            </div>
+            <div class="event-item">
+                <div class="event-item-inner">
+                    <p>sadfsd撒打发斯蒂芬的</p>
+                    <p>sadfsd撒打发斯蒂芬的</p>
+                    <p>sadfsd撒打发斯蒂芬的</p>
+                    <p>sadfsd撒打发斯蒂芬的</p>
+                    <p>sadfsd撒打发斯蒂芬的</p>
+                    <p>sadfsd撒打发斯蒂芬的</p>
+                    <p>sadfsd撒打发斯蒂芬的</p>
+                </div>
+            </div>
+            <div class="event-item">
+                <div class="event-item-inner">sadfsd撒打发斯蒂芬的</div>
+            </div>
+            <div class="event-item">
+                <div class="event-item-inner">sadfsd撒打发斯蒂芬的</div>
+            </div>
+            <div class="event-item">
+                <div class="event-item-inner">sadfsd撒打发斯蒂芬的</div>
+            </div>
+            <div class="event-item">
+                <div class="event-item-inner">sadfsd撒打发斯蒂芬的</div>
+            </div>
+            <div class="event-item">
+                <div class="event-item-inner">sadfsd撒打发斯蒂芬的</div>
+            </div>
+            <div class="event-item">
+                <div class="event-item-inner">sadfsd撒打发斯蒂芬的</div>
+            </div>
+            <div class="event-item">
+                <div class="event-item-inner">sadfsd撒打发斯蒂芬的</div>
+            </div>
+            <div class="event-item">
+                <div class="event-item-inner">sadfsd撒打发斯蒂芬的</div>
+            </div>
+            <div class="event-item">
+                <div class="event-item-inner">sadfsd撒打发斯蒂芬的</div>
+            </div>
+
+        </div>
+        <div class="event-line"></div>
+    </div>
+    <script src="/static/js/jquery-3.5.1.js"></script>
+    <script>
+        renderImage()
+        function renderImage() {
+            let width = window.innerWidth
+            let height = window.innerHeight
+            $('#bgCanvas').attr('width', width)
+            $('#bgCanvas').attr('height', height)
+
+            let canvas = $('#bgCanvas')[0]
+            let ctx = canvas.getContext('2d')
+            ctx.fillStyle = '#000000'
+            ctx.fillRect(0, 0, width, height)
+            ctx.clearRect(0, 0, width, height)
+            let img = new Image()
+            img.src = '/static/images/sky.jpg'
+            img.onload = function () {
+                ctx.drawImage(img, 0, 0, width, height)
+
+            }
+        }
+
+        window.onresize = function () {
+            renderImage()
+        }
+    </script>
+</body>
+
+</html>
